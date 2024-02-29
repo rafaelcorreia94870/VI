@@ -1,0 +1,9 @@
+C:/Users/inesf/Desktop/Perfil CG/VI/src/out/build/x64-Debug/CMakeFiles/main.dir
+C:/Users/inesf/Desktop/Perfil CG/VI/src/out/build/x64-Debug/CMakeFiles/LibCamera.dir
+C:/Users/inesf/Desktop/Perfil CG/VI/src/out/build/x64-Debug/CMakeFiles/LibImage.dir
+C:/Users/inesf/Desktop/Perfil CG/VI/src/out/build/x64-Debug/CMakeFiles/LibPrimitive.dir
+C:/Users/inesf/Desktop/Perfil CG/VI/src/out/build/x64-Debug/CMakeFiles/LibRenderer.dir
+C:/Users/inesf/Desktop/Perfil CG/VI/src/out/build/x64-Debug/CMakeFiles/LibScene.dir
+C:/Users/inesf/Desktop/Perfil CG/VI/src/out/build/x64-Debug/CMakeFiles/LibShader.dir
+C:/Users/inesf/Desktop/Perfil CG/VI/src/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+C:/Users/inesf/Desktop/Perfil CG/VI/src/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,8 @@
+﻿  1>Building Custom Rule D:/4ano/2sem/vi/projeto/src/CMakeLists.txt
+  scene.cpp
+D:\4ano\2sem\vi\projeto\src\Primitive\../utils/vector.hpp(56,21): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\4ano\2sem\vi\projeto\src\Primitive\../utils/vector.hpp(55,21): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\4ano\2sem\vi\projeto\src\Primitive\../utils/vector.hpp(54,35): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\4ano\2sem\vi\projeto\src\Primitive\../Rays/ray.hpp(13,25): warning C4305: 'initializing': truncation from 'double' to 'float'
+D:\4ano\2sem\vi\projeto\src\Primitive\BRDF\../../utils/RGB.hpp(57,37): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+  LibScene.vcxproj -> D:\4ano\2sem\vi\projeto\build\Release\LibScene.lib

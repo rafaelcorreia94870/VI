@@ -1,0 +1,114 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "VI-RT",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "LibCamera::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-LibCamera-Debug-107c4bb05f4ba6e3d624.json",
+					"name" : "LibCamera",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "LibImage::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-LibImage-Debug-1cd343b1080e3b8f6051.json",
+					"name" : "LibImage",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "LibPrimitive::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-LibPrimitive-Debug-72e342cad6b1b17c3f4b.json",
+					"name" : "LibPrimitive",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "LibRenderer::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-LibRenderer-Debug-f6037a1dab0e7a64d2f7.json",
+					"name" : "LibRenderer",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "LibScene::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-LibScene-Debug-ce19ed49784bbdd5758f.json",
+					"name" : "LibScene",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "LibShader::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-LibShader-Debug-b05920f804a6af371cb6.json",
+					"name" : "LibShader",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "main::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-main-Debug-3c9e34c3cf9176d202a8.json",
+					"name" : "main",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/inesf/Desktop/Perfil CG/VI/src/out/build/x64-Debug",
+		"source" : "C:/Users/inesf/Desktop/Perfil CG/VI/src"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}
