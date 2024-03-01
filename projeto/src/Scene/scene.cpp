@@ -83,95 +83,145 @@ bool Scene::Load (const std::string &fname) {
     
     //PrintInfo (myObjReader);
 
-    #define TINYOBJLOADER_IMPLEMENTATION // define this in only *one*
 
-
+#ifdef _WIN32
     std::string inputfile = fname;
     tinyobj::ObjReaderConfig reader_config;
-#ifdef _WIN32
     fs::path currentPath = fs::current_path();
     fs::path path = currentPath / ".." / "src" / "Scene" / "tinyobjloader" / "models";
     std::string pathStr = path.string();
     reader_config.mtl_search_path = pathStr;
 #elif __unix__ || __unix || __linux__ || __APPLE__
-    reader_config = "/home/robert/aulas/4ano/2sem/VI/TP/VI/projeto/src/Scene/tinyobjloader/models"
+    std::string inputfile = "/home/robert/aulas/4ano/2sem/VI/TP/VI/projeto/src/Scene/tinyobjloader/models/cornell_box.obj";
+    tinyobj::ObjReaderConfig reader_config;
+    reader_config.mtl_search_path = "/home/robert/aulas/4ano/2sem/VI/TP/VI/projeto/src/Scene/tinyobjloader/models"; // Path to material files
 #endif
 
     tinyobj::ObjReader reader;
 
     if (!reader.ParseFromFile(inputfile, reader_config)) {
-        if (!reader.Error().empty()) {
-            std::cerr << "TinyObjReader: " << reader.Error();
-        }
-        exit(1);
+    if (!reader.Error().empty()) {
+        std::cerr << "TinyObjReader: " << reader.Error();
+    }
+    exit(1);
     }
 
     if (!reader.Warning().empty()) {
-        std::cout << "TinyObjReader: " << reader.Warning();
+    std::cout << "TinyObjReader: " << reader.Warning();
     }
 
     auto& attrib = reader.GetAttrib();
     auto& shapes = reader.GetShapes();
     auto& materials = reader.GetMaterials();
+
+    // Ou passar por argumento o apontador para uma Mesh à função Load??
+    // Ou receber primitiva e adicionar a mesh à geometria
+    Mesh mesh;
+
+    // Povoar vertices da mesh
+    for (size_t i = 0; i < attrib.vertices.size(); i += 3) {
+        Point vertex;
+        vertex.X = attrib.vertices[i + 0];
+        vertex.Y = attrib.vertices[i + 1];
+        vertex.Z = attrib.vertices[i + 2];
+        mesh.vertices.push_back(vertex);
+        mesh.numVertices++;
+    }
+    // Povoar normals da mesh
+    for (size_t i = 0; i < attrib.normals.size(); i += 3) {
+        Vector normal;
+        normal.X = attrib.normals[i + 0];
+        normal.Y = attrib.normals[i + 1];
+        normal.Z = attrib.normals[i + 2];
+        mesh.normals.push_back(normal);
+        mesh.numNormals++;
+    }
+
+    //IMPRIMIR PARA VERFICAR A ESTRUTURA
+    std::cout << "\nMesh vertices:";
+    for (size_t index = 0; index < mesh.vertices.size(); ++index) {
+        const auto& vertex = mesh.vertices[index];
+        std::cout << "\n  v [" << index << "]: (" << vertex.X << ", " << vertex.Y << ", " << vertex.Z << ")";
+    }
+
+    std::cout << "\nMesh normals:";
+    for (size_t index = 0; index < mesh.normals.size(); ++index) {
+        const auto& normal = mesh.normals[index];
+        std::cout << "\n  vn[" << index << "]: (" << normal.X << ", " << normal.Y << ", " << normal.Z << ")";
+    }
+
+    /* Print texture coordinates
+    for (size_t i = 0; i < attrib.texcoords.size(); i += 2) {
+        std::cout << "\n  vt[" << i / 2 << "]: (" << attrib.texcoords[i + 0] << ", " << attrib.texcoords[i + 1] << ")";
+    }
+    */
+
+    // CONFIRMAR ESTA PARTE DAS FACES... ADICIONAR SHAPE PARA ASSOCIAR UM MATERIAL DIFERENTE A UM CONJ DE FACES???
+    // TODO: Cena das normais, verificar se tem shading normals, senao calcular 
     // Loop over shapes
     for (size_t s = 0; s < shapes.size(); s++) {
-        // Loop over faces(polygon)
+        // Loop over faces
         size_t index_offset = 0;
-        float v1, v2, v3;
-        Primitive p;
-        Geometry g;
-        int materialndx;
         for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
-            size_t fv = size_t(shapes[s].mesh.num_face_vertices[f]);
-            if (fv == 3) {
-                Triangle t;
-            }
-            else {
-                Mesh m;
-            }
+            Face face;
 
-            // Loop over vertices in the face.
+            // Loop over vertices in the face
+            size_t fv = shapes[s].mesh.num_face_vertices[f];
             for (size_t v = 0; v < fv; v++) {
-                // access to vertex
                 tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
-                tinyobj::real_t vx = attrib.vertices[3 * size_t(idx.vertex_index) + 0];
-                tinyobj::real_t vy = attrib.vertices[3 * size_t(idx.vertex_index) + 1];
-                tinyobj::real_t vz = attrib.vertices[3 * size_t(idx.vertex_index) + 2];
-                Point vertice = Point(vx,vy,vz);
-                //points.push_back(vertice);
 
-                // Check if `normal_index` is zero or positive. negative = no normal data
-                Vector normal = Vector(0, 0, 0);
+                // Store vertex index from Mesh class
+                face.vert_ndx[v] = idx.vertex_index;
 
+                // Optional: Store texture coordinate index (if applicable)
+                // Modify according to your structure or requirements
+
+                // Optional: Store normal index from Mesh class (if applicable)
                 if (idx.normal_index >= 0) {
-                    tinyobj::real_t nx = attrib.normals[3 * size_t(idx.normal_index) + 0];
-                    tinyobj::real_t ny = attrib.normals[3 * size_t(idx.normal_index) + 1];
-                    tinyobj::real_t nz = attrib.normals[3 * size_t(idx.normal_index) + 2];
-                    normal = Vector((float)nx, (float)ny, (float)nz);
+                    // Assuming mesh.normals is already populated
+                    face.vert_normals_ndx[v] = idx.normal_index;
                 }
-
-                // Check if `texcoord_index` is zero or positive. negative = no texcoord data
-                if (idx.texcoord_index >= 0) {
-                    tinyobj::real_t tu = attrib.texcoords[2 * size_t(idx.texcoord_index) + 0];
-                    tinyobj::real_t tv = attrib.texcoords[2 * size_t(idx.texcoord_index) + 1];
-                }
-
-                // Optional: vertex colors
-                // tinyobj::real_t red   = attrib.colors[3*size_t(idx.vertex_index)+0];
-                // tinyobj::real_t green = attrib.colors[3*size_t(idx.vertex_index)+1];
-                // tinyobj::real_t blue  = attrib.colors[3*size_t(idx.vertex_index)+
             }
-            p.g = g;
-            p.material_ndx = materialndx;
-            this->prims.push_back(&p);
+
+            // Optional: Calculate and store geometric normal (if needed)
+            // ...
+
+            // Optional: Check if there are per-vertex shading normals
+            // face.hasShadingNormals = (shapes[s].mesh.smooth);
+
+            // Optional: Update bounding box (if needed)
+            // ...
+
+            // Store the face in the mesh
+            mesh.faces.push_back(face);
+            mesh.numFaces++;
 
             index_offset += fv;
-
-            // per-face material
-            shapes[s].mesh.material_ids[f];
         }
     }
 
+    std::cout << "\nMesh faces:";
+    for (const auto& face : mesh.faces) {
+        std::cout << "\n  Face: ";
+        for (size_t v = 0; v < 3; v++) {
+            // Imprimir indice dos vertices da face
+            std::cout << face.vert_ndx[v];
+
+            // Imprimir indices da normal (se tiver)
+            if (v < 3 && face.vert_normals_ndx[v] >= 0) {
+                std::cout << "/" << face.vert_normals_ndx[v];
+            }
+
+            std::cout << " ";
+        }
+    }
+
+    std::cout << "\nmaterials:";
+    // Loop over materials
+    for (size_t m = 0; m < materials.size(); m++) {
+        std::cout << "\n  material[" << m << "]: " << materials[m].name;
+        // Print other material properties as needed
+    }
 
     // your code here
     return true;
