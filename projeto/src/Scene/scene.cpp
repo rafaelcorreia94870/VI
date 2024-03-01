@@ -123,6 +123,12 @@ bool Scene::Load (const std::string &fname) {
         int materialndx;
         for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
             size_t fv = size_t(shapes[s].mesh.num_face_vertices[f]);
+            if (fv == 3) {
+                Triangle t;
+            }
+            else {
+                Mesh m;
+            }
 
             // Loop over vertices in the face.
             for (size_t v = 0; v < fv; v++) {
