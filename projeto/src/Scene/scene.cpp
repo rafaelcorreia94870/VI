@@ -40,7 +40,7 @@ static void PrintInfo (const ObjReader myObj) {
 
     std::cout << "# of shapes    : " << shapes.size() << std::endl;
     std::cout << "# of materials : " << materials.size() << std::endl;
-    
+        
     // Iterate shapes
     auto it_shape = shapes.begin();
     for ( ; it_shape != shapes.end() ; it_shape++) {
