@@ -9,6 +9,7 @@
 #define image_hpp
 
 #include <string>
+#include <cstring>
 
 #ifdef _WIN32
 #include "../utils/RGB.hpp"

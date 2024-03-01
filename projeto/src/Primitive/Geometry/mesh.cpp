@@ -13,7 +13,9 @@
 // // https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
 // Moller Trumbore intersection algorithm
 
-const float MAXFLOAT = std::numeric_limits<float>::max();
+#ifdef _WIN32
+    const float MAXFLOAT = std::numeric_limits<float>::max();
+#endif
 
 bool Mesh::TriangleIntersect (Ray r, Face f, Intersection *isect) {
 

@@ -53,7 +53,7 @@ int main(int argc, const char * argv[]) {
     std::string pathStr = path.string();
     success = scene.Load(pathStr);
     #elif __unix__ || __unix || __linux__ || __APPLE__
-    success = scene.Load("/Users/szxbo/VI-RT/VI-RT/VI-RT/Scene/tinyobjloader/models/cornell_box.obj");
+    success = scene.Load("/home/robert/aulas/4ano/2sem/VI/TP/VI/projeto/src/Scene/tinyobjloader/models/cornell_box.obj");
     #endif
     if (!success) {
         std::cout << "ERROR!! :o\n";
