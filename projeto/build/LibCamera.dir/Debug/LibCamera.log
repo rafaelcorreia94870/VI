@@ -1,8 +1,0 @@
-﻿  1>Building Custom Rule D:/4ano/2sem/vi/projeto/src/CMakeLists.txt
-cl : command line  warning D9002: ignoring unknown option '-g'
-  perspective.cpp
-D:\4ano\2sem\vi\projeto\src\Rays\../utils/vector.hpp(56,21): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\4ano\2sem\vi\projeto\src\Rays\../utils/vector.hpp(55,21): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\4ano\2sem\vi\projeto\src\Rays\../utils/vector.hpp(54,35): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\4ano\2sem\vi\projeto\src\Camera\../Rays/ray.hpp(13,25): warning C4305: 'initializing': truncation from 'double' to 'float'
-  LibCamera.vcxproj -> D:\4ano\2sem\vi\projeto\build\Debug\LibCamera.lib

@@ -1,9 +1,0 @@
-D:/4ano/2sem/vi/PROJECT/VI/projeto/build/CMakeFiles/main.dir
-D:/4ano/2sem/vi/PROJECT/VI/projeto/build/CMakeFiles/LibCamera.dir
-D:/4ano/2sem/vi/PROJECT/VI/projeto/build/CMakeFiles/LibImage.dir
-D:/4ano/2sem/vi/PROJECT/VI/projeto/build/CMakeFiles/LibPrimitive.dir
-D:/4ano/2sem/vi/PROJECT/VI/projeto/build/CMakeFiles/LibRenderer.dir
-D:/4ano/2sem/vi/PROJECT/VI/projeto/build/CMakeFiles/LibScene.dir
-D:/4ano/2sem/vi/PROJECT/VI/projeto/build/CMakeFiles/LibShader.dir
-D:/4ano/2sem/vi/PROJECT/VI/projeto/build/CMakeFiles/ALL_BUILD.dir
-D:/4ano/2sem/vi/PROJECT/VI/projeto/build/CMakeFiles/ZERO_CHECK.dir
