@@ -8,8 +8,16 @@
 #ifndef shader_hpp
 #define shader_hpp
 
+#ifdef _WIN32
 #include "../Scene/scene.hpp"
 #include "../utils/RGB.hpp"
+
+#elif __unix__ || __unix || __linux__ || __APPLE__
+#include "scene.hpp"
+#include "RGB.hpp"
+#else
+#error "Unsupported operating system"
+#endif
 
 class Shader {
 protected:

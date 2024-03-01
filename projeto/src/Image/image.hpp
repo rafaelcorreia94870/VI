@@ -9,7 +9,15 @@
 #define image_hpp
 
 #include <string>
+
+#ifdef _WIN32
 #include "../utils/RGB.hpp"
+
+#elif __unix__ || __unix || __linux__ || __APPLE__
+#include "RGB.hpp"
+#else
+#error "Unsupported operating system"
+#endif
 
 class Image {
 protected:

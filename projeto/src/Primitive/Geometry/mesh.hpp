@@ -9,8 +9,16 @@
 #define mesh_hpp
 
 #include "geometry.hpp"
-#include "../../utils/vector.hpp"
 #include <vector>
+
+#ifdef _WIN32
+#include "../../utils/vector.hpp"
+
+#elif __unix__ || __unix || __linux__ || __APPLE__
+#include "vector.hpp"
+#else
+#error "Unsupported operating system"
+#endif
 
 // partially inspired in pbrt book (3rd ed.), sec 3.6, pag 152
 

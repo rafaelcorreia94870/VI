@@ -9,8 +9,17 @@
 #define geometry_hpp
 
 #include "../BB.hpp"
+
+#ifdef _WIN32
 #include "../../Rays/ray.hpp"
 #include "../../Rays/intersection.hpp"
+
+#elif __unix__ || __unix || __linux__ || __APPLE__
+#include "ray.hpp"
+#include "intersection.hpp"
+#else
+#error "Unsupported operating system"
+#endif
 
 class Geometry {
 public:

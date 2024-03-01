@@ -4,4 +4,4 @@ D:\4ano\2sem\vi\projeto\src\Rays\../utils/vector.hpp(56,21): warning C4244: 'arg
 D:\4ano\2sem\vi\projeto\src\Rays\../utils/vector.hpp(55,21): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
 D:\4ano\2sem\vi\projeto\src\Rays\../utils/vector.hpp(54,35): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
 D:\4ano\2sem\vi\projeto\src\Camera\../Rays/ray.hpp(13,25): warning C4305: 'initializing': truncation from 'double' to 'float'
-  LibCamera.vcxproj -> D:\4ano\2sem\vi\projeto\build\Release\LibCamera.lib
+  LibCamera.vcxproj -> D:\4ano\2sem\vi\PROJECT\VI\projeto\build\Release\LibCamera.lib

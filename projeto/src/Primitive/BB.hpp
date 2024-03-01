@@ -8,8 +8,16 @@
 #ifndef BB_hpp
 #define BB_hpp
 
+#ifdef _WIN32
 #include "../utils/vector.hpp"
 #include "../Rays/ray.hpp"
+
+#elif __unix__ || __unix || __linux__ || __APPLE__
+#include "vector.hpp"
+#include "ray.hpp"
+#else
+#error "Unsupported operating system"
+#endif
 
 typedef struct BB {
 public:

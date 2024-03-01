@@ -1,6 +1,6 @@
 ^D:\4ANO\2SEM\VI\PROJETO\SRC\CMAKELISTS.TXT
 setlocal
-"D:\Program Files\CMake\bin\cmake.exe" -SD:/4ano/2sem/vi/projeto/src -BD:/4ano/2sem/vi/projeto/build --check-stamp-file D:/4ano/2sem/vi/projeto/build/CMakeFiles/generate.stamp
+"D:\Program Files\CMake\bin\cmake.exe" -SD:/4ano/2sem/vi/projeto/src -BD:/4ano/2sem/vi/PROJECT/VI/projeto/build --check-stamp-file D:/4ano/2sem/vi/PROJECT/VI/projeto/build/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone

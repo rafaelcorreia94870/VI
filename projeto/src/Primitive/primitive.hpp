@@ -8,8 +8,16 @@
 #ifndef primitive_hpp
 #define primitive_hpp
 
+#ifdef _WIN32
 #include "Geometry/geometry.hpp"
 #include "BRDF/BRDF.hpp"
+
+#elif __unix__ || __unix || __linux__ || __APPLE__
+#include "geometry.hpp"
+#include "BRDF.hpp"
+#else
+#error "Unsupported operating system"
+#endif
 
 typedef struct Primitive {
     Geometry *g;

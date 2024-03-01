@@ -7,9 +7,16 @@
 
 #ifndef Intersection_hpp
 #define Intersection_hpp
-
+#ifdef _WIN32
 #include "../utils/vector.hpp"
 #include "../Primitive/BRDF/BRDF.hpp"
+#elif __unix__ || __unix || __linux__ || __APPLE__
+#include "vector.hpp"
+#include "BRDF.hpp"
+#else
+#error "Unsupported operating system"
+#endif
+
 
 typedef struct Intersection {
 public:

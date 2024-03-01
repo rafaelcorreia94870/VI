@@ -9,8 +9,16 @@
 #define triangle_hpp
 
 #include "geometry.hpp"
-#include "../../utils/vector.hpp"
 #include <math.h>
+
+#ifdef _WIN32
+#include "../../utils/vector.hpp"
+
+#elif __unix__ || __unix || __linux__ || __APPLE__
+#include "vector.hpp"
+#else
+#error "Unsupported operating system"
+#endif
 
 class Triangle: public Geometry {
 public:

@@ -18,4 +18,4 @@ D:\4ano\2sem\vi\projeto\src\Primitive\../Rays/ray.hpp(13,25): warning C4305: 'in
 D:\4ano\2sem\vi\projeto\src\Primitive\BRDF\../../utils/RGB.hpp(57,37): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
 D:\4ano\2sem\vi\projeto\src\Primitive\Geometry\triangle.cpp(40,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   Generating Code...
-  LibPrimitive.vcxproj -> D:\4ano\2sem\vi\projeto\build\Release\LibPrimitive.lib
+  LibPrimitive.vcxproj -> D:\4ano\2sem\vi\PROJECT\VI\projeto\build\Release\LibPrimitive.lib

@@ -6,4 +6,4 @@ D:\4ano\2sem\vi\projeto\src\Rays\../utils/vector.hpp(54,35): warning C4244: 'arg
 D:\4ano\2sem\vi\projeto\src\Camera\../Rays/ray.hpp(13,25): warning C4305: 'initializing': truncation from 'double' to 'float'
 D:\4ano\2sem\vi\projeto\src\Primitive\BRDF\../../utils/RGB.hpp(57,37): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
 D:\4ano\2sem\vi\projeto\src\Renderer\StandardRenderer.cpp(22,18): warning C4101: 'intersected': unreferenced local variable
-  LibRenderer.vcxproj -> D:\4ano\2sem\vi\projeto\build\Release\LibRenderer.lib
+  LibRenderer.vcxproj -> D:\4ano\2sem\vi\PROJECT\VI\projeto\build\Release\LibRenderer.lib

@@ -9,7 +9,15 @@
 #define perspective_hpp
 
 #include "camera.hpp"
+
+#ifdef _WIN32
 #include "../Rays/ray.hpp"
+
+#elif __unix__ || __unix || __linux__ || __APPLE__
+#include "ray.hpp"
+#else
+#error "Unsupported operating system"
+#endif
 
 class Perspective: public Camera {
     Point Eye, At;

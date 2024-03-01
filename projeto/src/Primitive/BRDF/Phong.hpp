@@ -8,7 +8,15 @@
 #ifndef Phong_hpp
 #define Phong_hpp
 
+#ifdef _WIN32
 #include "../../utils/RGB.hpp"
+
+#elif __unix__ || __unix || __linux__ || __APPLE__
+#include "RGB.hpp"
+#else
+#error "Unsupported operating system"
+#endif
+
 #include "BRDF.hpp"
 
 class Phong: public BRDF {

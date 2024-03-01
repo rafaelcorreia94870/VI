@@ -8,7 +8,14 @@
 #ifndef Ray_hpp
 #define Ray_hpp
 
+#ifdef _WIN32
 #include "../utils/vector.hpp"
+
+#elif __unix__ || __unix || __linux__ || __APPLE__
+#include "vector.hpp"
+#else
+#error "Unsupported operating system"
+#endif
 
 const float EPSILON=1e-3;
 

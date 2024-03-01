@@ -8,8 +8,16 @@
 #ifndef BRDF_hpp
 #define BRDF_hpp
 
+#ifdef _WIN32
 #include "../../utils/RGB.hpp"
 #include "../../utils/vector.hpp"
+
+#elif __unix__ || __unix || __linux__ || __APPLE__
+#include "RGB.hpp"
+#include "vector.hpp"
+#else
+#error "Unsupported operating system"
+#endif
 
 typedef enum {
     SPECULAR_REF=1,

@@ -12,11 +12,23 @@
 #include <string>
 #include <vector>
 
+
+#ifdef _WIN32
 #include "../Primitive/primitive.hpp"
 #include "../Light/light.hpp"
 #include "../Rays/ray.hpp"
 #include "../Rays/intersection.hpp"
 #include "../Primitive/BRDF/BRDF.hpp"
+
+#elif __unix__ || __unix || __linux__ || __APPLE__
+#include "primitive.hpp"
+#include "light.hpp"
+#include "ray.hpp"
+#include "intersection.hpp"
+#include "BRDF.hpp"
+#else
+#error "Unsupported operating system"
+#endif
 
 class Scene {
     std::vector <Primitive *> prims;

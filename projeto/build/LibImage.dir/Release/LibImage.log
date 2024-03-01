@@ -1,4 +1,4 @@
 ﻿  1>Building Custom Rule D:/4ano/2sem/vi/projeto/src/CMakeLists.txt
   ImagePPM.cpp
 D:\4ano\2sem\vi\projeto\src\Image\../utils/RGB.hpp(57,37): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-  LibImage.vcxproj -> D:\4ano\2sem\vi\projeto\build\Release\LibImage.lib
+  LibImage.vcxproj -> D:\4ano\2sem\vi\PROJECT\VI\projeto\build\Release\LibImage.lib

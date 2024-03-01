@@ -8,7 +8,15 @@
 #ifndef camera_hpp
 #define camera_hpp
 
+#ifdef _WIN32
 #include "../Rays/ray.hpp"
+
+#elif __unix__ || __unix || __linux__ || __APPLE__
+#include "ray.hpp"
+#else
+#error "Unsupported operating system"
+#endif
+
 
 // based on pbrt book, sec 6.1, pag. 356
 class Camera {

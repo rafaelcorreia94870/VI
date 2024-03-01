@@ -9,9 +9,19 @@
 #define DistributedShader_hpp
 
 #include "shader.hpp"
+
+#ifdef _WIN32
 #include "../Primitive/BRDF/Phong.hpp"
 #include "../Rays/ray.hpp"
 #include "../Light/AreaLight.hpp"
+
+#elif __unix__ || __unix || __linux__ || __APPLE__
+#include "Phong.hpp"
+#include "ray.hpp"
+#include "AreaLight.hpp"
+#else
+#error "Unsupported operating system"
+#endif
 
 class DistributedShader: public Shader {
     RGB background;

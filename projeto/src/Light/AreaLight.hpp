@@ -10,7 +10,16 @@
 
 #include "light.hpp"
 #include <math.h>
+
+#ifdef _WIN32
 #include "../Primitive/Geometry/triangle.hpp"
+
+
+#elif __unix__ || __unix || __linux__ || __APPLE__
+#include "triangle.hpp"
+#else
+#error "Unsupported operating system"
+#endif
 
 class AreaLight: public Light {
 public:

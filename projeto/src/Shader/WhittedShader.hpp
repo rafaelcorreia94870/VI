@@ -9,8 +9,16 @@
 #define WhittedShader_hpp
 
 #include "shader.hpp"
+#ifdef _WIN32
 #include "../Primitive/BRDF/Phong.hpp"
 #include "../Rays/ray.hpp"
+
+#elif __unix__ || __unix || __linux__ || __APPLE__
+#include "Phong.hpp"
+#include "ray.hpp"
+#else
+#error "Unsupported operating system"
+#endif
 
 class WhittedShader: public Shader {
     RGB background;

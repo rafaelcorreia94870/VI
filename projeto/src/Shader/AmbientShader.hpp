@@ -9,7 +9,14 @@
 #define AmbientShader_hpp
 
 #include "shader.hpp"
+#ifdef _WIN32
 #include "../Primitive/BRDF/Phong.hpp"
+
+#elif __unix__ || __unix || __linux__ || __APPLE__
+#include "Phong.hpp"
+#else
+#error "Unsupported operating system"
+#endif
 
 class AmbientShader: public Shader {
     RGB background;

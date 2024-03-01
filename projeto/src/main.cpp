@@ -6,6 +6,7 @@
 //
 
 #include <iostream>
+#ifdef _WIN32
 #include "Scene/scene.hpp"
 #include "Camera/perspective.hpp"
 #include "Renderer/StandardRenderer.hpp"
@@ -17,11 +18,26 @@
 #include "Light/AmbientLight.hpp"
 #include "Light/PointLight.hpp"
 #include "Light/AreaLight.hpp"
+#include <filesystem>
+namespace fs = std::filesystem;
+#elif __unix__ || __unix || __linux__ || __APPLE__
+#include "scene.hpp"
+#include "perspective.hpp"
+#include "StandardRenderer.hpp"
+#include "ImagePPM.hpp"
+#include "AmbientShader.hpp"
+#include "WhittedShader.hpp"
+#include "DistributedShader.hpp"
+#include "PathTracerShader.hpp"
+#include "AmbientLight.hpp"
+#include "PointLight.hpp"
+#include "AreaLight.hpp"
+#else
+#error "Unsupported operating system"
+#endif
 
 #include <time.h>
-#include <filesystem>
 
-namespace fs = std::filesystem;
 
 int main(int argc, const char * argv[]) {
     Scene scene;
@@ -31,12 +47,14 @@ int main(int argc, const char * argv[]) {
     bool success;
     clock_t start, end;
     double cpu_time_used;
-
+    #ifdef _WIN32
     fs::path currentPath = fs::current_path();
     fs::path path = currentPath /".." / "src" / "Scene" / "tinyobjloader" / "models" / "cornell_box.obj";
     std::string pathStr = path.string();
     success = scene.Load(pathStr);
-
+    #elif __unix__ || __unix || __linux__ || __APPLE__
+    success = scene.Load("/Users/szxbo/VI-RT/VI-RT/VI-RT/Scene/tinyobjloader/models/cornell_box.obj");
+    #endif
     if (!success) {
         std::cout << "ERROR!! :o\n";
         return 1;

@@ -6,7 +6,14 @@
 //
 
 #include "triangle.hpp"
+#ifdef _WIN32
 #include "../BB.hpp"
+
+#elif __unix__ || __unix || __linux__ || __APPLE__
+#include "BB.hpp"
+#else
+#error "Unsupported operating system"
+#endif
 
 
 // https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
