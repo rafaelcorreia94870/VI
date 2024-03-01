@@ -1,16 +1,6 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\projeto",
-    "\\projeto\\src",
-    "\\projeto\\src\\out",
-    "\\projeto\\src\\Primitive",
-    "\\projeto\\src\\Primitive\\BRDF",
-    "\\projeto\\src\\Primitive\\Geometry",
-    "\\projeto\\src\\Rays",
-    "\\projeto\\src\\Renderer",
-    "\\projeto\\src\\Scene"
+    ""
   ],
-  "SelectedNode": "\\projeto\\src\\Scene\\scene.cpp",
   "PreviewInSolutionExplorer": false
 }
