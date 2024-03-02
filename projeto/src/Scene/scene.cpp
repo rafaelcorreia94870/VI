@@ -8,6 +8,7 @@
 #include "scene.hpp"
 
 #define TINYOBJLOADER_IMPLEMENTATION
+#define TINYOBJLOADER_USE_MAPBOX_EARCUT
 
 #ifdef _WIN32
 #include "tinyobjloader/tiny_obj_loader.h"
@@ -74,15 +75,6 @@ static void PrintInfo (const ObjReader myObj) {
  */
 
 bool Scene::Load (const std::string &fname) {
-    ObjReader myObjReader;
-
-    if (!myObjReader.ParseFromFile(fname)) {
-        if (!myObjReader.Error().empty()) { std::cerr << "TinyObjReader: " << myObjReader.Error(); }
-        return false;
-    }
-    
-    //PrintInfo (myObjReader);
-
 
 #ifdef _WIN32
     std::string inputfile = fname;
@@ -110,120 +102,99 @@ bool Scene::Load (const std::string &fname) {
     std::cout << "TinyObjReader: " << reader.Warning();
     }
 
+    //PrintInfo(reader);
+
     auto& attrib = reader.GetAttrib();
     auto& shapes = reader.GetShapes();
     auto& materials = reader.GetMaterials();
 
-    // Ou passar por argumento o apontador para uma Mesh à função Load??
-    // Ou receber primitiva e adicionar a mesh à geometria
-    Mesh mesh;
+    numPrimitives = shapes.size();
+    numBRDFs = materials.size();
 
-    // Povoar vertices da mesh
-    for (size_t i = 0; i < attrib.vertices.size(); i += 3) {
-        Point vertex;
-        vertex.X = attrib.vertices[i + 0];
-        vertex.Y = attrib.vertices[i + 1];
-        vertex.Z = attrib.vertices[i + 2];
-        mesh.vertices.push_back(vertex);
-        mesh.numVertices++;
-    }
-    // Povoar normals da mesh
-    for (size_t i = 0; i < attrib.normals.size(); i += 3) {
-        Vector normal;
-        normal.X = attrib.normals[i + 0];
-        normal.Y = attrib.normals[i + 1];
-        normal.Z = attrib.normals[i + 2];
-        mesh.normals.push_back(normal);
-        mesh.numNormals++;
-    }
-
-    //IMPRIMIR PARA VERFICAR A ESTRUTURA
-    std::cout << "\nMesh vertices:";
-    for (size_t index = 0; index < mesh.vertices.size(); ++index) {
-        const auto& vertex = mesh.vertices[index];
-        std::cout << "\n  v [" << index << "]: (" << vertex.X << ", " << vertex.Y << ", " << vertex.Z << ")";
-    }
-
-    std::cout << "\nMesh normals:";
-    for (size_t index = 0; index < mesh.normals.size(); ++index) {
-        const auto& normal = mesh.normals[index];
-        std::cout << "\n  vn[" << index << "]: (" << normal.X << ", " << normal.Y << ", " << normal.Z << ")";
-    }
-
-    /* Print texture coordinates
-    for (size_t i = 0; i < attrib.texcoords.size(); i += 2) {
-        std::cout << "\n  vt[" << i / 2 << "]: (" << attrib.texcoords[i + 0] << ", " << attrib.texcoords[i + 1] << ")";
-    }
-    */
-
-    // CONFIRMAR ESTA PARTE DAS FACES... ADICIONAR SHAPE PARA ASSOCIAR UM MATERIAL DIFERENTE A UM CONJ DE FACES???
-    // TODO: Cena das normais, verificar se tem shading normals, senao calcular 
     // Loop over shapes
     for (size_t s = 0; s < shapes.size(); s++) {
-        // Loop over faces
+        Primitive p;
         size_t index_offset = 0;
-        for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
-            Face face;
+        Mesh m;
+        m.numFaces = shapes[s].mesh.num_face_vertices.size();
+ 
 
-            // Loop over vertices in the face
-            size_t fv = shapes[s].mesh.num_face_vertices[f];
+        // Loop over faces(polygon)
+        std::cout << "----- [" << shapes[s].name << "] -----\n";
+        for (size_t f = 0; f < m.numFaces; f++) {
+            size_t fv = size_t(shapes[s].mesh.num_face_vertices[f]);
+            std::cout << "\nTriangle " << f+1 << "/" << m.numFaces << "\n";
+            // Loop over vertices in the face.
             for (size_t v = 0; v < fv; v++) {
+                Face face;
+                // access to vertex
                 tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
 
-                // Store vertex index from Mesh class
-                face.vert_ndx[v] = idx.vertex_index;
+                face.vert_ndx[0] = 3 * size_t(idx.vertex_index) + 0;
+                face.vert_ndx[1] = 3 * size_t(idx.vertex_index) + 1;
+                face.vert_ndx[2] = 3 * size_t(idx.vertex_index) + 2;
 
-                // Optional: Store texture coordinate index (if applicable)
-                // Modify according to your structure or requirements
+                Point vert;
+                vert.X = attrib.vertices[face.vert_ndx[0]];
+                vert.Y = attrib.vertices[face.vert_ndx[1]];
+                vert.Z = attrib.vertices[face.vert_ndx[2]];
 
-                // Optional: Store normal index from Mesh class (if applicable)
+                m.vertices.push_back(vert);
+                m.numVertices++;
+
+                std::cout << "  v[" << idx.vertex_index << "]: (" << vert.X << ", " << vert.Y << ", " << vert.Z << ")\n";
+
+                Vector norm;
+                // Check if `normal_index` is zero or positive. negative = no normal data
                 if (idx.normal_index >= 0) {
-                    // Assuming mesh.normals is already populated
-                    face.vert_normals_ndx[v] = idx.normal_index;
+                    face.hasShadingNormals = true;
+
+                    face.vert_normals_ndx[0] = 3 * size_t(idx.normal_index) + 0;
+                    face.vert_normals_ndx[1] = 3 * size_t(idx.normal_index) + 1;
+                    face.vert_normals_ndx[2] = 3 * size_t(idx.normal_index) + 2;
+
+                    norm.X = attrib.normals[face.vert_normals_ndx[0]];
+                    norm.Y = attrib.normals[face.vert_normals_ndx[1]];
+                    norm.Z = attrib.normals[face.vert_normals_ndx[2]];
+               
+                    m.numNormals++;
                 }
+                // CALCULAR NORMAL A PARTIR DOS VERTICES
+                else {
+
+                }
+
+                /* Check if `texcoord_index` is zero or positive.negative = no texcoord data
+                if (idx.texcoord_index >= 0) {
+                    tinyobj::real_t tx = attrib.texcoords[2 * size_t(idx.texcoord_index) + 0];
+                    tinyobj::real_t ty = attrib.texcoords[2 * size_t(idx.texcoord_index) + 1];
+                }
+                */
+
+                m.faces.push_back(face);
             }
-
-            // Optional: Calculate and store geometric normal (if needed)
-            // ...
-
-            // Optional: Check if there are per-vertex shading normals
-            // face.hasShadingNormals = (shapes[s].mesh.smooth);
-
-            // Optional: Update bounding box (if needed)
-            // ...
-
-            // Store the face in the mesh
-            mesh.faces.push_back(face);
-            mesh.numFaces++;
-
             index_offset += fv;
         }
+        // Define the primitive's Geometry as the mesh 
+        p.g = &m;
+        prims.push_back(&p);
+
+        // Define the mesh material (assuming all faces have the same material) as the first face material
+        p.material_ndx = shapes[s].mesh.material_ids[0];
+        std::cout << "\nMaterial: " << p.material_ndx << "\n\n";
     }
 
-    std::cout << "\nMesh faces:";
-    for (const auto& face : mesh.faces) {
-        std::cout << "\n  Face: ";
-        for (size_t v = 0; v < 3; v++) {
-            // Imprimir indice dos vertices da face
-            std::cout << face.vert_ndx[v];
-
-            // Imprimir indices da normal (se tiver)
-            if (v < 3 && face.vert_normals_ndx[v] >= 0) {
-                std::cout << "/" << face.vert_normals_ndx[v];
-            }
-
-            std::cout << " ";
-        }
-    }
-
-    std::cout << "\nmaterials:";
+    // Falta adicionar os materials ao vector BRDF 
     // Loop over materials
-    for (size_t m = 0; m < materials.size(); m++) {
-        std::cout << "\n  material[" << m << "]: " << materials[m].name;
-        // Print other material properties as needed
+    for (size_t i = 0; i < materials.size(); i++) {
+        std::cout << "Material " << i << ":\n";
+        std::cout << "  name: " << materials[i].name << "\n";
+        std::cout << "  ambient: " << materials[i].ambient[0] << ", " << materials[i].ambient[1] << ", " << materials[i].ambient[2] << "\n";
+        std::cout << "  diffuse: " << materials[i].diffuse[0] << ", " << materials[i].diffuse[1] << ", " << materials[i].diffuse[2] << "\n";
+        std::cout << "  specular: " << materials[i].specular[0] << ", " << materials[i].specular[1] << ", " << materials[i].specular[2] << "\n";
+        std::cout << "-----------------\n";
     }
 
-    // your code here
     return true;
 }
 
