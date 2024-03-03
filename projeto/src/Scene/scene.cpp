@@ -31,6 +31,7 @@ namespace fs = std::filesystem;
 #include <iostream>
 #include <set>
 #include <vector>
+#include <unordered_set>
 
 using namespace tinyobj;
 
@@ -117,32 +118,60 @@ bool Scene::Load (const std::string &fname) {
         size_t index_offset = 0;
         Mesh m;
         m.numFaces = shapes[s].mesh.num_face_vertices.size();
- 
+        
+        // Store unique vertices using a set
+        std::vector<Point> unique_vertices;
 
         // Loop over faces(polygon)
         std::cout << "----- [" << shapes[s].name << "] -----\n";
         for (size_t f = 0; f < m.numFaces; f++) {
             size_t fv = size_t(shapes[s].mesh.num_face_vertices[f]);
             std::cout << "\nTriangle " << f+1 << "/" << m.numFaces << "\n";
+
+            Face face;
+            std::vector<Point> face_vertices;   // Accumulator for geometriNnormal (face normal) calculations
             // Loop over vertices in the face.
             for (size_t v = 0; v < fv; v++) {
-                Face face;
-                // access to vertex
+                // Access to vertex
                 tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
 
                 face.vert_ndx[0] = 3 * size_t(idx.vertex_index) + 0;
                 face.vert_ndx[1] = 3 * size_t(idx.vertex_index) + 1;
                 face.vert_ndx[2] = 3 * size_t(idx.vertex_index) + 2;
 
+                // Check if the vertex is already present
+                bool found = false;
+                size_t existing_index = 0;
+                for (size_t i = 0; i < unique_vertices.size(); i++) {
+                    if (unique_vertices[i].X == attrib.vertices[face.vert_ndx[0]] &&
+                        unique_vertices[i].Y == attrib.vertices[face.vert_ndx[1]] &&
+                        unique_vertices[i].Z == attrib.vertices[face.vert_ndx[2]]) {
+                        found = true;
+                        existing_index = i;
+                        break;
+                    }
+                }
+
+                // Store unique vertices and add to face_vertices accumulator for normal calculations
                 Point vert;
-                vert.X = attrib.vertices[face.vert_ndx[0]];
-                vert.Y = attrib.vertices[face.vert_ndx[1]];
-                vert.Z = attrib.vertices[face.vert_ndx[2]];
+                if (!found) { // Unique vertex
+                    vert.X = attrib.vertices[face.vert_ndx[0]];
+                    vert.Y = attrib.vertices[face.vert_ndx[1]];
+                    vert.Z = attrib.vertices[face.vert_ndx[2]];
+                    unique_vertices.push_back(vert);
+                    m.vertices.push_back(vert); // Store the vertex itself
+                    m.numVertices++;
+                }
+                else {
+                    vert.X = unique_vertices[existing_index].X;
+                    vert.Y = unique_vertices[existing_index].Y;
+                    vert.Z = unique_vertices[existing_index].Z;
+                }
+                // Print existing vertices
+                std::cout << "  v[" << idx.vertex_index << "]: ("
+                    << vert.X << ", " << vert.Y << ", " << vert.Z << ")\n";
+                face_vertices.push_back(vert);
 
-                m.vertices.push_back(vert);
-                m.numVertices++;
-
-                std::cout << "  v[" << idx.vertex_index << "]: (" << vert.X << ", " << vert.Y << ", " << vert.Z << ")\n";
 
                 // Check if `normal_index` is zero or positive. negative = no normal data
                 if (idx.normal_index >= 0) {
@@ -172,39 +201,43 @@ bool Scene::Load (const std::string &fname) {
                 }
                 */
 
-                m.faces.push_back(face);
             }
-            index_offset += fv;
-        }
 
-        std::cout << "\nNormals\n";
-
-        // Ta quase mas algo ta errado, calculo estas normais depois de guardar as faces todas
-        // para ter sempre os 3 vertices da face
-        for (size_t f = 0; f < m.numFaces; ++f) {
-            Face face = m.faces[f];
+            // Now that all face vertices are available, calculate and store the normal.
             if (!face.hasShadingNormals) {
-                // Access vertex coordinates using the stored indices
-                Point v1 = m.vertices[face.vert_ndx[0]];
-                Point v2 = m.vertices[face.vert_ndx[1]];
-                Point v3 = m.vertices[face.vert_ndx[2]];
+                // Access vertices from the temporary storage
+                Point v1 = face_vertices[0];
+                Point v2 = face_vertices[1];
+                Point v3 = face_vertices[2];
+
+                std::cout << "\n    v1: (" << v1.X << ", " << v1.Y << ", " << v1.Z << ")\n";
+                std::cout << "    v2: (" << v2.X << ", " << v2.Y << ", " << v2.Z << ")\n";
+                std::cout << "    v3: (" << v3.X << ", " << v3.Y << ", " << v3.Z << ")\n";
 
                 // Edge vector calculation
-                Vector ex = v2.vec2point(v1);  // Edge vector from v1 to v2
-                Vector fx = v3.vec2point(v1);  // Edge vector from v1 to v3
+                Vector ex = v2.vec2point(v1); // Edge vector from v1 to v2
+                Vector fx = v3.vec2point(v1); // Edge vector from v1 to v3
 
                 // Calculate face normal using the cross product
                 face.geoNormal = ex.cross(fx);
 
+
                 // Normalize the face normal
                 face.geoNormal.normalize();
 
-
+                // Store in mesh normals vector 
                 m.normals.push_back(face.geoNormal);
-                m.numNormals++;     //no fim: m.numNormals == m.numVertices / 3
-                std::cout << "  n[" << f << "] (" << face.geoNormal.X << ", " << face.geoNormal.Y << ", " << face.geoNormal.Z << ")\n";
+                m.numNormals++;
+
+                std::cout << "  n[" << f << "]: (" << face.geoNormal.X << ", " << face.geoNormal.Y << ", " << face.geoNormal.Z << ")\n";
             }
+
+            face_vertices.clear();
+            m.faces.push_back(face);
+            index_offset += fv;
         }
+
+        std::cout << "\n  VERTICES UNICOS: " << m.numVertices << "\n";
 
         // Define the primitive's Geometry as the mesh 
         p.g = &m;
