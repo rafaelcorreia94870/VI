@@ -144,7 +144,6 @@ bool Scene::Load (const std::string &fname) {
 
                 std::cout << "  v[" << idx.vertex_index << "]: (" << vert.X << ", " << vert.Y << ", " << vert.Z << ")\n";
 
-                Vector norm;
                 // Check if `normal_index` is zero or positive. negative = no normal data
                 if (idx.normal_index >= 0) {
                     face.hasShadingNormals = true;
@@ -153,15 +152,17 @@ bool Scene::Load (const std::string &fname) {
                     face.vert_normals_ndx[1] = 3 * size_t(idx.normal_index) + 1;
                     face.vert_normals_ndx[2] = 3 * size_t(idx.normal_index) + 2;
 
+                    Vector norm;
                     norm.X = attrib.normals[face.vert_normals_ndx[0]];
                     norm.Y = attrib.normals[face.vert_normals_ndx[1]];
                     norm.Z = attrib.normals[face.vert_normals_ndx[2]];
                
-                    m.numNormals++;
+                    m.normals.push_back(norm);
+                    m.numNormals++; //no fim: m.numNormals == m.numVertices
                 }
-                // CALCULAR NORMAL A PARTIR DOS VERTICES
+                // Calculate face normal with vertices later
                 else {
-
+                    face.hasShadingNormals = false;
                 }
 
                 /* Check if `texcoord_index` is zero or positive.negative = no texcoord data
@@ -175,6 +176,36 @@ bool Scene::Load (const std::string &fname) {
             }
             index_offset += fv;
         }
+
+        std::cout << "\nNormals\n";
+
+        // Ta quase mas algo ta errado, calculo estas normais depois de guardar as faces todas
+        // para ter sempre os 3 vertices da face
+        for (size_t f = 0; f < m.numFaces; ++f) {
+            Face face = m.faces[f];
+            if (!face.hasShadingNormals) {
+                // Access vertex coordinates using the stored indices
+                Point v1 = m.vertices[face.vert_ndx[0]];
+                Point v2 = m.vertices[face.vert_ndx[1]];
+                Point v3 = m.vertices[face.vert_ndx[2]];
+
+                // Edge vector calculation
+                Vector ex = v2.vec2point(v1);  // Edge vector from v1 to v2
+                Vector fx = v3.vec2point(v1);  // Edge vector from v1 to v3
+
+                // Calculate face normal using the cross product
+                face.geoNormal = ex.cross(fx);
+
+                // Normalize the face normal
+                face.geoNormal.normalize();
+
+
+                m.normals.push_back(face.geoNormal);
+                m.numNormals++;     //no fim: m.numNormals == m.numVertices / 3
+                std::cout << "  n[" << f << "] (" << face.geoNormal.X << ", " << face.geoNormal.Y << ", " << face.geoNormal.Z << ")\n";
+            }
+        }
+
         // Define the primitive's Geometry as the mesh 
         p.g = &m;
         prims.push_back(&p);
@@ -183,6 +214,7 @@ bool Scene::Load (const std::string &fname) {
         p.material_ndx = shapes[s].mesh.material_ids[0];
         std::cout << "\nMaterial: " << p.material_ndx << "\n\n";
     }
+
 
     // Falta adicionar os materials ao vector BRDF 
     // Loop over materials
