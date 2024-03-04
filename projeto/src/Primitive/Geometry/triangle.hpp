@@ -38,26 +38,28 @@ public:
         bb.update(v2);
         bb.update(v3);
     }
+    float sideLength(const Point& p1, const Point& p2) const {
+        return sqrt(pow(p2.X - p1.X, 2) + pow(p2.Y - p1.Y, 2) + pow(p2.Z - p1.Z, 2));
+    }
     
     // Heron's formula
     // https://www.mathopenref.com/heronsformula.html
     float area () {
         
-        // ...
-        
-        //const float A = ...
-        const float A = 1.f;
+        const float A = sideLength(this->v1, this->v2);
+        const float B = sideLength(this->v2, this->v3);
+        const float C = sideLength(this->v3, this->v1);
+        float p = (A + B + C) / 2.0f;
+        return sqrt(p * (p - A) * (p - B) * (p - C));
 
-        return A;
     }
     float points_area (Point v1, Point v2, Point v3) {
         
-        // ...
-        
-        //const float A = ...
-        const float A = 1.f;
-
-        return A;
+        const float A = sideLength(v1, v2);
+        const float B = sideLength(v2, v3);
+        const float C = sideLength(v3, v1);
+        float p = (A + B + C) / 2.0f;
+        return sqrt(p * (p - A) * (p - B) * (p - C));
 
     }
 };

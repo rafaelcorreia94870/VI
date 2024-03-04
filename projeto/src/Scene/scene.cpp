@@ -153,6 +153,10 @@ bool Scene::Load (const std::string &fname) {
                 }
 
                 // Store unique vertices and add to face_vertices accumulator for normal calculations
+                //ACHO QUE ISTO TA MAL
+                // PQ MESMO QUE SEJAM VERTICES REPETIDOS, O INDICE QUE VAI SER INDICADO NO FICHEIRO TAMBEM VAI AUMENTAR
+                //TU SO AUMENTAS SE NAO ENCONTRAR, OU USAS A ESTRUTURA DO FICHEIRO
+                //OU TENS QUE CALCULAR SE O INDICE USADO É CORRETO NA TUA ESTRUTURA
                 Point vert;
                 if (!found) { // Unique vertex
                     vert.X = attrib.vertices[face.vert_ndx[0]];
@@ -248,7 +252,7 @@ bool Scene::Load (const std::string &fname) {
         std::cout << "\nMaterial: " << p.material_ndx << "\n\n";
     }
 
-
+    //ESTA PARTE NAO PERCEBI MT BEM
     // Falta adicionar os materials ao vector BRDF 
     // Loop over materials
     for (size_t i = 0; i < materials.size(); i++) {

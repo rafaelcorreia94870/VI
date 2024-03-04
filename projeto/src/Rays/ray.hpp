@@ -26,6 +26,7 @@ public:
     int FaceID;  // ID of the face where the origin lays in
     Vector invDir;  // ray direction reciprocal for intersections
     int pix_x, pix_y;
+    float rayTmin, rayTmax; //Start and End of Ray (to limit calculations)
     Ray () {}
     Ray (Point o, Vector d): o(o),dir(d) {}
     ~Ray() {}

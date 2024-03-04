@@ -13,9 +13,11 @@
 
 #ifdef _WIN32
 #include "../../utils/vector.hpp"
+#include "../BB.hpp"
 
 #elif __unix__ || __unix || __linux__ || __APPLE__
 #include "vector.hpp"
+#include "BB.hpp"
 #else
 #error "Unsupported operating system"
 #endif
