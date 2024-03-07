@@ -1,6 +1,16 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\projeto",
+    "\\projeto\\src",
+    "\\projeto\\src\\3DSortingStruct",
+    "\\projeto\\src\\Light",
+    "\\projeto\\src\\Primitive",
+    "\\projeto\\src\\Rays",
+    "\\projeto\\src\\Renderer",
+    "\\projeto\\src\\Scene",
+    "\\projeto\\src\\Shader"
   ],
+  "SelectedNode": "\\projeto\\src\\main.cpp",
   "PreviewInSolutionExplorer": false
 }

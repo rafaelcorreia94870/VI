@@ -9,6 +9,7 @@
 #define vector_hpp
 
 #include <cmath>
+#include <utility>
 
 class Vector {
 public:
@@ -94,7 +95,14 @@ public:
         vec.Z = X * Rx.Z + Y * Ry.Z + Z * Rz.Z;
         return vec;
     }
+    Vector min(const Vector& v1, const Vector& v2) {
+        return Vector(std::min(v1.X, v2.X), std::min(v1.Y, v2.Y), std::min(v1.Z, v2.Z));
+    }
 
+    // Method to find the maximum component-wise vector
+    Vector max(const Vector& v1, const Vector& v2) {
+        return Vector(std::max(v1.X, v2.X), std::max(v1.Y, v2.Y), std::max(v1.Z, v2.Z));
+    }
 };
 
 class Point {

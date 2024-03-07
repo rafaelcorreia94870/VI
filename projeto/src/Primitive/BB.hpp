@@ -12,14 +12,11 @@
 #include "../utils/vector.hpp"
 #include "../Rays/ray.hpp"
 #include "../Scene/tinyobjloader/tiny_obj_loader.h"
-#include "../Scene/tinyobjloader/examples/viewer/viewer.cc"
-
 #elif __unix__ || __unix || __linux__ || __APPLE__
 #include "vector.hpp"
 #include "ray.hpp"
 //not sure if this path is correct
 #include "tiny_obj_loader.h"
-#include "viewer.cc"
 #else
 #error "Unsupported operating system"
 #endif
@@ -45,6 +42,7 @@ public:
      *
      */
     bool intersect (Ray r) {
+        Point P;
         Vector p0Dir = (r.o).vec2point(this->min);
         Vector p1Dir = (r.o).vec2point(this->max);
         Vector invRayDir = r.invDir;

@@ -25,6 +25,7 @@ protected:
     RGB *imagePlane;
     int W,H;
 public:
+
     Image(): W(0),H(0),imagePlane(NULL) {}
     Image(const int W, const int H): W(W),H(H) {
         imagePlane = new RGB[W*H];
