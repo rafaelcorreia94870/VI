@@ -29,7 +29,7 @@ bool ImagePPM::Save (std::string filename) {
     ToneMap();
 
     // write imageToSave to file
-    if (this->W == 0 || this->H == 0) { fprintf(stderr, "Can't save an empty image\n"); return; }
+    if (this->W == 0 || this->H == 0) { fprintf(stderr, "Can't save an empty image\n"); return false; }
     std::ofstream ofs;
     try {
         ofs.open(filename, std::ios::binary);  //need to spec. binary mode for Windows users 
