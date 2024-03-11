@@ -52,8 +52,10 @@ int main(int argc, const char * argv[]) {
     fs::path path = currentPath /".." / "src" / "Scene" / "tinyobjloader" / "models" / "cornell_box.obj";
     std::string pathStr = path.string();
     success = scene.Load(pathStr);
-    #elif __unix__ || __unix || __linux__ || __APPLE__
+    #elif __unix__ || __unix || __linux__
     success = scene.Load("/home/robert/aulas/4ano/2sem/VI/TP/VI/projeto/src/Scene/tinyobjloader/models/cornell_box.obj");
+    #elif __APPLE__
+    sucess = scene.load("/Users/psantos/VI-RT/VI-RT/VI-RT/Scene/tinyobjloader/models/cornell_box.obj");
     #endif
     if (!success) {
         std::cout << "ERROR!! :o\n";
