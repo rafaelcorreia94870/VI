@@ -3,14 +3,14 @@
     "",
     "\\projeto",
     "\\projeto\\src",
-    "\\projeto\\src\\3DSortingStruct",
-    "\\projeto\\src\\Light",
+    "\\projeto\\src\\Image",
     "\\projeto\\src\\Primitive",
+    "\\projeto\\src\\Primitive\\Geometry",
     "\\projeto\\src\\Rays",
-    "\\projeto\\src\\Renderer",
     "\\projeto\\src\\Scene",
-    "\\projeto\\src\\Shader"
+    "\\projeto\\src\\Shader",
+    "\\projeto\\src\\utils"
   ],
-  "SelectedNode": "\\projeto\\src\\main.cpp",
+  "SelectedNode": "\\projeto\\src\\Rays\\ray.hpp",
   "PreviewInSolutionExplorer": false
 }

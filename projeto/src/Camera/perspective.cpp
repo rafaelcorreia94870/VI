@@ -7,6 +7,29 @@
 
 #include "perspective.hpp"
 
+Perspective::Perspective(const Point Eye, const Point At, const Vector Up, const int W, const int H, const float fovW, const float fovH) : Eye(Eye), At(At), Up(Up), W(W), H(H), fovW(fovW), fovH(fovH) {
+    // compute camera 2 world transform
+    Vector F, R, U;
+    F = (this->Eye.vec2point(At));
+    F.normalize();
+
+    R = F.cross(Up);
+    R.normalize();
+    /*
+    U = R.cross(F);
+    U.normalize();
+    this->Up = U;
+    //n sei se devia tar a atualizar o Up com o U
+    */
+    U = this->Up;
+
+
+    c2w[0][0] = R.X; c2w[0][1] = R.Y; c2w[0][2] = R.Z;
+    c2w[1][0] = U.X; c2w[1][1] = U.Y; c2w[1][2] = U.Z;
+    c2w[2][0] = F.X; c2w[2][1] = F.Y; c2w[2][2] = F.Z;
+
+}
+
 bool Perspective::GenerateRay(const int x, const int y, Ray *r, const float *cam_jitter) {
     Vector result;
     Vector xy1 = {static_cast<float>(x),static_cast<float>(y),1};
