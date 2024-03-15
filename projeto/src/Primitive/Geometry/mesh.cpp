@@ -82,7 +82,12 @@ bool Mesh::TriangleIntersect (Ray r, Face f, Intersection *isect) {
     }
 
     Triangle t = Triangle(v1,v2,v3,n);
-    std::cout << "N X: " << n.X <<" N Y: " << n.Y << "N Z:" << n.Z <<"\n";
+    std::cout 
+    << "  intersect Triangle (" 
+    << f.vert_ndx[0] << ", "
+    << f.vert_ndx[1] << ", "
+    << f.vert_ndx[2] << ")" 
+    << "\n";
 
     return t.intersect(r,isect);
 }
@@ -95,7 +100,6 @@ bool Mesh::intersect (Ray r, Intersection *isect) {
     float min_depth=MAXFLOAT;
 
     // intersect the ray with the mesh BB
-    std::cout << "faces len:" << bb.intersect(r);
     if (!bb.intersect(r)) return false;
     
     // If it intersects then loop through the faces

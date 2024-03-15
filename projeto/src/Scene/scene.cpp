@@ -215,10 +215,6 @@ bool Scene::Load (const std::string &fname) {
                 Point v2 = face_vertices[1];
                 Point v3 = face_vertices[2];
 
-                std::cout << "\n    v1: (" << v1.X << ", " << v1.Y << ", " << v1.Z << ")\n";
-                std::cout << "    v2: (" << v2.X << ", " << v2.Y << ", " << v2.Z << ")\n";
-                std::cout << "    v3: (" << v3.X << ", " << v3.Y << ", " << v3.Z << ")\n";
-
                 // Edge vector calculation
                 Vector ex = v2.vec2point(v1); // Edge vector from v1 to v2
                 Vector fx = v3.vec2point(v1); // Edge vector from v1 to v3
@@ -234,7 +230,7 @@ bool Scene::Load (const std::string &fname) {
                 m->normals.push_back(face->geoNormal);
                 m->numNormals++;
 
-                std::cout << "  n[" << f << "]: (" << face->geoNormal.X << ", " << face->geoNormal.Y << ", " << face->geoNormal.Z << ")\n";
+                std::cout << "      n[" << f << "]: (" << face->geoNormal.X << ", " << face->geoNormal.Y << ", " << face->geoNormal.Z << ")\n";
             }
 
             face_vertices.clear();
@@ -300,7 +296,6 @@ bool Scene::trace (Ray r, Intersection *isect) {
     // iterate over all primitives
     for (auto prim_itr = prims.begin() ; prim_itr != prims.end() ; prim_itr++) {  
         if ((*prim_itr)->g->intersect(r, &curr_isect)) {
-            std::cout << "INTERCEpTEI CRL TA FODA IRMÃO!\n";
             if (!intersection) { // first intersection
                 intersection = true;
                 *isect = curr_isect;

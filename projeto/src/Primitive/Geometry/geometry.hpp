@@ -20,7 +20,6 @@
 #else
 #error "Unsupported operating system"
 #endif
-#include <iostream>
 
 class Geometry {
 public:
@@ -28,7 +27,7 @@ public:
     ~Geometry () {}
     // return True if r intersects this geometric primitive
     // returns data about intersection on isect
-    virtual bool intersect(Ray r, Intersection* isect) { std::cout << "geometry intersect\n"; return false; }
+    virtual bool intersect(Ray r, Intersection* isect) { return false; }
     // geometric primitive bounding box
     BB bb;  // this is min={0.,0.,0.} , max={0.,0.,0.} due to the Point constructor
 };
