@@ -8,6 +8,7 @@
 #include "mesh.hpp"
 #include "triangle.hpp"
 #include <iostream>
+#include "geometry.hpp"
 
 // see pbrt book (3rd ed.), sec 3.6.2, pag 157
 //
@@ -92,6 +93,7 @@ bool Mesh::intersect (Ray r, Intersection *isect) {
     bool intersect = true, intersect_this_face;
     Intersection min_isect, curr_isect;
     float min_depth=MAXFLOAT;
+
     // intersect the ray with the mesh BB
     std::cout << "faces len:" << bb.intersect(r);
     if (!bb.intersect(r)) return false;

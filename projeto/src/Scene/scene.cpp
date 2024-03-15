@@ -118,36 +118,36 @@ bool Scene::Load (const std::string &fname) {
 
     // Loop over shapes
     for (size_t s = 0; s < shapes.size(); s++) {
-        Primitive p;
+        Primitive *p = new Primitive;
         size_t index_offset = 0;
-        Mesh m;
-        m.numFaces = shapes[s].mesh.num_face_vertices.size();
+        Mesh *m = new Mesh;
+        m->numFaces = shapes[s].mesh.num_face_vertices.size();
         
 
         // Loop over faces(polygon)
         std::cout << "----- [" << shapes[s].name << "] -----\n";
-        for (size_t f = 0; f < m.numFaces; f++) {
+        for (size_t f = 0; f < m->numFaces; f++) {
             size_t fv = size_t(shapes[s].mesh.num_face_vertices[f]);
-            std::cout << "\nTriangle " << f+1 << "/" << m.numFaces << "\n";
+            std::cout << "\nTriangle " << f+1 << "/" << m->numFaces << "\n";
 
-            Face face;
+            Face *face = new Face;
             std::vector<Point> face_vertices;   // Accumulator for geometriNnormal (face normal) calculations
-            // Loop over vertices in the face.
+            // Loop over vertices in the face->
             for (size_t v = 0; v < fv; v++) {
                 // Access to vertex
                 tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
 
-                face.vert_ndx[0] = 3 * size_t(idx.vertex_index) + 0;
-                face.vert_ndx[1] = 3 * size_t(idx.vertex_index) + 1;
-                face.vert_ndx[2] = 3 * size_t(idx.vertex_index) + 2;
+                face->vert_ndx[0] = 3 * size_t(idx.vertex_index) + 0;
+                face->vert_ndx[1] = 3 * size_t(idx.vertex_index) + 1;
+                face->vert_ndx[2] = 3 * size_t(idx.vertex_index) + 2;
 
                 // Check if the vertex is already present
                 bool found = false;
                 size_t existing_index = 0;
                 for (size_t i = 0; i < unique_vertices.size(); i++) {
-                    if (unique_vertices[i].X == attrib.vertices[face.vert_ndx[0]] &&
-                        unique_vertices[i].Y == attrib.vertices[face.vert_ndx[1]] &&
-                        unique_vertices[i].Z == attrib.vertices[face.vert_ndx[2]]) {
+                    if (unique_vertices[i].X == attrib.vertices[face->vert_ndx[0]] &&
+                        unique_vertices[i].Y == attrib.vertices[face->vert_ndx[1]] &&
+                        unique_vertices[i].Z == attrib.vertices[face->vert_ndx[2]]) {
                         found = true;
                         existing_index = i;
                         break;
@@ -157,12 +157,12 @@ bool Scene::Load (const std::string &fname) {
                 // Store unique vertices and add to face_vertices accumulator for normal calculations
                 Point vert;
                 if (!found) { // Unique vertex
-                    vert.X = attrib.vertices[face.vert_ndx[0]];
-                    vert.Y = attrib.vertices[face.vert_ndx[1]];
-                    vert.Z = attrib.vertices[face.vert_ndx[2]];
+                    vert.X = attrib.vertices[face->vert_ndx[0]];
+                    vert.Y = attrib.vertices[face->vert_ndx[1]];
+                    vert.Z = attrib.vertices[face->vert_ndx[2]];
                     unique_vertices.push_back(vert);
-                    m.vertices.push_back(vert); // Store the vertex itself
-                    m.numVertices++;
+                    m->vertices.push_back(vert); // Store the vertex itself
+                    m->numVertices++;
                     unicos++;
                 }
                 else {
@@ -180,23 +180,23 @@ bool Scene::Load (const std::string &fname) {
 
                 // Check if `normal_index` is zero or positive. negative = no normal data
                 if (idx.normal_index >= 0) {
-                    face.hasShadingNormals = true;
+                    face->hasShadingNormals = true;
 
-                    face.vert_normals_ndx[0] = 3 * size_t(idx.normal_index) + 0;
-                    face.vert_normals_ndx[1] = 3 * size_t(idx.normal_index) + 1;
-                    face.vert_normals_ndx[2] = 3 * size_t(idx.normal_index) + 2;
+                    face->vert_normals_ndx[0] = 3 * size_t(idx.normal_index) + 0;
+                    face->vert_normals_ndx[1] = 3 * size_t(idx.normal_index) + 1;
+                    face->vert_normals_ndx[2] = 3 * size_t(idx.normal_index) + 2;
 
                     Vector norm;
-                    norm.X = attrib.normals[face.vert_normals_ndx[0]];
-                    norm.Y = attrib.normals[face.vert_normals_ndx[1]];
-                    norm.Z = attrib.normals[face.vert_normals_ndx[2]];
+                    norm.X = attrib.normals[face->vert_normals_ndx[0]];
+                    norm.Y = attrib.normals[face->vert_normals_ndx[1]];
+                    norm.Z = attrib.normals[face->vert_normals_ndx[2]];
                
-                    m.normals.push_back(norm);
-                    m.numNormals++; //no fim: m.numNormals == m.numVertices
+                    m->normals.push_back(norm);
+                    m->numNormals++; //no fim: m->numNormals == m->numVertices
                 }
                 // Calculate face normal with vertices later
                 else {
-                    face.hasShadingNormals = false;
+                    face->hasShadingNormals = false;
                 }
 
                 /* Check if `texcoord_index` is zero or positive.negative = no texcoord data
@@ -209,7 +209,7 @@ bool Scene::Load (const std::string &fname) {
             }
 
             // Now that all face vertices are available, calculate and store the normal.
-            if (!face.hasShadingNormals) {
+            if (!face->hasShadingNormals) {
                 // Access vertices from the temporary storage
                 Point v1 = face_vertices[0];
                 Point v2 = face_vertices[1];
@@ -224,33 +224,33 @@ bool Scene::Load (const std::string &fname) {
                 Vector fx = v3.vec2point(v1); // Edge vector from v1 to v3
 
                 // Calculate face normal using the cross product
-                face.geoNormal = ex.cross(fx);
+                face->geoNormal = ex.cross(fx);
 
 
                 // Normalize the face normal
-                face.geoNormal.normalize();
+                face->geoNormal.normalize();
 
                 // Store in mesh normals vector 
-                m.normals.push_back(face.geoNormal);
-                m.numNormals++;
+                m->normals.push_back(face->geoNormal);
+                m->numNormals++;
 
-                std::cout << "  n[" << f << "]: (" << face.geoNormal.X << ", " << face.geoNormal.Y << ", " << face.geoNormal.Z << ")\n";
+                std::cout << "  n[" << f << "]: (" << face->geoNormal.X << ", " << face->geoNormal.Y << ", " << face->geoNormal.Z << ")\n";
             }
 
             face_vertices.clear();
-            m.faces.push_back(face);
+            m->faces.push_back(*face);
             index_offset += fv;
         }
 
-        std::cout << "\n  VERTICES UNICOS: " << m.numVertices << "\n";
+        std::cout << "\n  VERTICES UNICOS: " << m->numVertices << "\n";
 
         // Define the primitive's Geometry as the mesh 
-        p.g = &m;
-        prims.push_back(&p);
+        p->g = m;
+        prims.push_back(p);
 
         // Define the mesh material (assuming all faces have the same material) as the first face material
-        p.material_ndx = shapes[s].mesh.material_ids[0];
-        std::cout << "\nMaterial: " << p.material_ndx << "\n\n";
+        p->material_ndx = shapes[s].mesh.material_ids[0];
+        std::cout << "\nMaterial: " << p->material_ndx << "\n\n";
     }
 
     std::cout << "NÚMERO DE VÉRTICES UNICOS: " << unicos << "\n";
@@ -296,10 +296,11 @@ bool Scene::trace (Ray r, Intersection *isect) {
         std::cout << "num primitivas é 0 \n";
         return false;
     }
-    
+
     // iterate over all primitives
-    for (auto prim_itr = prims.begin() ; prim_itr != prims.end() ; prim_itr++) {
+    for (auto prim_itr = prims.begin() ; prim_itr != prims.end() ; prim_itr++) {  
         if ((*prim_itr)->g->intersect(r, &curr_isect)) {
+            std::cout << "INTERCEpTEI CRL TA FODA IRMÃO!\n";
             if (!intersection) { // first intersection
                 intersection = true;
                 *isect = curr_isect;

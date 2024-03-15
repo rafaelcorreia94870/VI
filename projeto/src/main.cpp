@@ -60,15 +60,15 @@ int main(int argc, const char * argv[]) {
     if (!success) {
         std::cout << "ERROR!! :o\n";
         return 1;
-    }
-    std::cout << "Scene Load: SUCCESS!! :-)\n";
-    scene.printSummary();
-    std::cout << std::endl;
-    
+    }    
     // add an ambient light to the scene
     AmbientLight ambient(RGB(0.9,0.9,0.9));
     scene.lights.push_back(&ambient);
     scene.numLights++;
+
+    std::cout << "Scene Load: SUCCESS!! :-)\n";
+    scene.printSummary();
+    std::cout << std::endl;
 
     // Image resolution
     const int W= 1024;
