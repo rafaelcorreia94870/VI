@@ -64,15 +64,14 @@ bool Mesh::TriangleIntersect (Ray r, Face f, Intersection *isect) {
     
     Point v1, v2, v3;
     Vector n;
-    v1 = vertices[f.vert_ndx[0]];
-    v2 = vertices[f.vert_ndx[1]];
-    v3 = vertices[f.vert_ndx[2]];
 
     if (!f.hasShadingNormals) {
+        //std::cout << "  No Shading Normals\n";
         n = f.geoNormal;
     }
     else
     {
+        //std::cout << "  Shading Normals\n";
         Vector n1 = normals[f.vert_normals_ndx[0]];
         Vector n2 = normals[f.vert_normals_ndx[1]];
         Vector n3 = normals[f.vert_normals_ndx[2]];
@@ -82,18 +81,18 @@ bool Mesh::TriangleIntersect (Ray r, Face f, Intersection *isect) {
     }
 
     Triangle t = Triangle(v1,v2,v3,n);
-    std::cout 
+    /*::cout
     << "  intersect Triangle (" 
     << f.vert_ndx[0] << ", "
     << f.vert_ndx[1] << ", "
     << f.vert_ndx[2] << ")" 
     << "\n";
-
+    */
     return t.intersect(r,isect);
 }
 
 bool Mesh::intersect (Ray r, Intersection *isect) {
-    std::cout << "intersect Mesh\n";
+    //std::cout << "intersect Mesh\n";
 
     bool intersect = true, intersect_this_face;
     Intersection min_isect, curr_isect;

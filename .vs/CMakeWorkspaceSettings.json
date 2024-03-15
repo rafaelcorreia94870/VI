@@ -1,4 +1,3 @@
 {
-  "enableCMake": true,
-  "sourceDirectory": "projeto\\src"
+  "enableCMake": false
 }

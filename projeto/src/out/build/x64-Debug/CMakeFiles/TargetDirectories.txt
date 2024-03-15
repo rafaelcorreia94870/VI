@@ -1,9 +1,3 @@
-D:/rob/code/aulas/VI/projeto/src/out/build/x64-Debug/CMakeFiles/main.dir
-D:/rob/code/aulas/VI/projeto/src/out/build/x64-Debug/CMakeFiles/LibCamera.dir
-D:/rob/code/aulas/VI/projeto/src/out/build/x64-Debug/CMakeFiles/LibImage.dir
-D:/rob/code/aulas/VI/projeto/src/out/build/x64-Debug/CMakeFiles/LibPrimitive.dir
-D:/rob/code/aulas/VI/projeto/src/out/build/x64-Debug/CMakeFiles/LibRenderer.dir
-D:/rob/code/aulas/VI/projeto/src/out/build/x64-Debug/CMakeFiles/LibScene.dir
-D:/rob/code/aulas/VI/projeto/src/out/build/x64-Debug/CMakeFiles/LibShader.dir
-D:/rob/code/aulas/VI/projeto/src/out/build/x64-Debug/CMakeFiles/edit_cache.dir
-D:/rob/code/aulas/VI/projeto/src/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
+C:/4ano/VI/projeto/src/out/build/x64-Debug/CMakeFiles/VI-RT.dir
+C:/4ano/VI/projeto/src/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+C:/4ano/VI/projeto/src/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir

@@ -62,7 +62,7 @@ int main(int argc, const char * argv[]) {
         return 1;
     }    
     // add an ambient light to the scene
-    AmbientLight ambient(RGB(0.9,0.9,0.9));
+    AmbientLight ambient(RGB(0.9f,0.9f,0.9f));
     scene.lights.push_back(&ambient);
     scene.numLights++;
 
@@ -86,7 +86,7 @@ int main(int argc, const char * argv[]) {
     //cam->PrintInfo();
     
     // create the shader
-    RGB background(0.05, 0.05, 0.55);
+    RGB background(0.05f, 0.05f, 0.55f);
     shd = new AmbientShader(&scene, background);
     // declare the renderer
     int spp=1;     // samples per pixel

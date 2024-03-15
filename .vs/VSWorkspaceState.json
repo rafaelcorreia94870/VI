@@ -3,14 +3,8 @@
     "",
     "\\projeto",
     "\\projeto\\src",
-    "\\projeto\\src\\Image",
-    "\\projeto\\src\\Primitive",
-    "\\projeto\\src\\Primitive\\Geometry",
-    "\\projeto\\src\\Rays",
-    "\\projeto\\src\\Scene",
-    "\\projeto\\src\\Shader",
-    "\\projeto\\src\\utils"
+    "\\projeto\\src\\Primitive"
   ],
-  "SelectedNode": "\\projeto\\src\\Scene\\scene.cpp",
+  "SelectedNode": "\\projeto\\MyImage.ppm",
   "PreviewInSolutionExplorer": false
 }
