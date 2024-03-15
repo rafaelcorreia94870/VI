@@ -44,7 +44,7 @@ public:
     int numNormals;
     std::vector<Vector> normals;
 
-    virtual bool intersect (Ray r, Intersection *isect);
+    bool intersect (Ray r, Intersection *isect);
     
     Mesh(): numFaces(0), numVertices(0), numNormals(0) {}
 };
