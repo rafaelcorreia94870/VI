@@ -112,6 +112,10 @@ bool Scene::Load (const std::string &fname) {
     numPrimitives = shapes.size();
     numBRDFs = materials.size();
 
+    int repetidos = 0, unicos = 0;
+    // Store unique vertices using a set
+    std::vector<Point> unique_vertices;
+
     // Loop over shapes
     for (size_t s = 0; s < shapes.size(); s++) {
         Primitive p;
@@ -119,8 +123,6 @@ bool Scene::Load (const std::string &fname) {
         Mesh m;
         m.numFaces = shapes[s].mesh.num_face_vertices.size();
         
-        // Store unique vertices using a set
-        std::vector<Point> unique_vertices;
 
         // Loop over faces(polygon)
         std::cout << "----- [" << shapes[s].name << "] -----\n";
@@ -153,10 +155,6 @@ bool Scene::Load (const std::string &fname) {
                 }
 
                 // Store unique vertices and add to face_vertices accumulator for normal calculations
-                //ACHO QUE ISTO TA MAL
-                // PQ MESMO QUE SEJAM VERTICES REPETIDOS, O INDICE QUE VAI SER INDICADO NO FICHEIRO TAMBEM VAI AUMENTAR
-                //TU SO AUMENTAS SE NAO ENCONTRAR, OU USAS A ESTRUTURA DO FICHEIRO
-                //OU TENS QUE CALCULAR SE O INDICE USADO É CORRETO NA TUA ESTRUTURA
                 Point vert;
                 if (!found) { // Unique vertex
                     vert.X = attrib.vertices[face.vert_ndx[0]];
@@ -165,8 +163,11 @@ bool Scene::Load (const std::string &fname) {
                     unique_vertices.push_back(vert);
                     m.vertices.push_back(vert); // Store the vertex itself
                     m.numVertices++;
+                    unicos++;
                 }
                 else {
+                    repetidos++; //debug
+
                     vert.X = unique_vertices[existing_index].X;
                     vert.Y = unique_vertices[existing_index].Y;
                     vert.Z = unique_vertices[existing_index].Z;
@@ -251,6 +252,10 @@ bool Scene::Load (const std::string &fname) {
         p.material_ndx = shapes[s].mesh.material_ids[0];
         std::cout << "\nMaterial: " << p.material_ndx << "\n\n";
     }
+
+    std::cout << "NÚMERO DE VÉRTICES UNICOS: " << unicos << "\n";
+    std::cout << "NÚMERO DE VÉRTICES REPETIDOS: " << repetidos << "\n";
+    
 
     // Loop over materials and add them to the BRDFs vector
     for (size_t i = 0; i < materials.size(); i++) {
