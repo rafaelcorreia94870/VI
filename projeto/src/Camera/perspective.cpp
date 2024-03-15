@@ -42,6 +42,9 @@ bool Perspective::GenerateRay(const int x, const int y, Ray *r, const float *cam
 
     r->dir = result;
 
+    r->pix_x = x;
+    r->pix_y = y;
+
 
     r->o = this->Eye;
     return true;
