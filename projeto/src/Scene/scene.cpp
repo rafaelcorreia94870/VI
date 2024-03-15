@@ -252,16 +252,32 @@ bool Scene::Load (const std::string &fname) {
         std::cout << "\nMaterial: " << p.material_ndx << "\n\n";
     }
 
-    //ESTA PARTE NAO PERCEBI MT BEM
-    // Falta adicionar os materials ao vector BRDF 
-    // Loop over materials
+    // Loop over materials and add them to the BRDFs vector
     for (size_t i = 0; i < materials.size(); i++) {
-        std::cout << "Material " << i << ":\n";
-        std::cout << "  name: " << materials[i].name << "\n";
-        std::cout << "  ambient: " << materials[i].ambient[0] << ", " << materials[i].ambient[1] << ", " << materials[i].ambient[2] << "\n";
-        std::cout << "  diffuse: " << materials[i].diffuse[0] << ", " << materials[i].diffuse[1] << ", " << materials[i].diffuse[2] << "\n";
-        std::cout << "  specular: " << materials[i].specular[0] << ", " << materials[i].specular[1] << ", " << materials[i].specular[2] << "\n";
-        std::cout << "-----------------\n";
+        Phong *material = new Phong;
+        RGB Ka, Kd, Ks, Kt; float Ns;
+
+        Ka.R = materials[i].ambient[0];
+        Ka.G = materials[i].ambient[1];
+        Ka.B = materials[i].ambient[2];
+
+        Kd.R = materials[i].diffuse[0];
+        Kd.G = materials[i].diffuse[1];
+        Kd.B = materials[i].diffuse[2];
+
+        Ks.R = materials[i].specular[0];
+        Ks.G = materials[i].specular[1];
+        Ks.B = materials[i].specular[2];
+
+        Ns = materials[i].shininess;    // defaut = 1, if not defined in .mtl file
+        
+        // Assign mtl values to created BRDF
+        material->Ka = Ka;
+        material->Kd = Kd;
+        material->Ks = Ks;
+        material->Ns = Ns;
+        
+        BRDFs.push_back(material);
     }
 
     return true;
