@@ -27,7 +27,7 @@ public:
     Vector edge1, edge2;
     BB bb;      // face bounding box
                 // this is min={0.,0.,0.} , max={0.,0.,0.} due to the Point constructor
-    bool intersect (Ray r, Intersection *isect);
+    virtual bool intersect (Ray r, Intersection *isect);
     bool isInside(Point p);
     
     Triangle(Point _v1, Point _v2, Point _v3, Vector _normal): v1(_v1), v2(_v2), v3(_v3), normal(_normal) {

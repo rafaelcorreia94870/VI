@@ -6,6 +6,8 @@
 //
 
 #include "mesh.hpp"
+#include "triangle.hpp"
+#include <iostream>
 
 // see pbrt book (3rd ed.), sec 3.6.2, pag 157
 //
@@ -18,16 +20,80 @@
 #endif
 
 bool Mesh::TriangleIntersect (Ray r, Face f, Intersection *isect) {
+    /*
+    Point v1, v2, v3;
+    Vector n;
+    v1 = vertices[f.vert_ndx[0]];
+    v2 = vertices[f.vert_ndx[1]];
+    v3 = vertices[f.vert_ndx[2]];
+    constexpr float epsilon = std::numeric_limits<float>::epsilon();
 
+    Vector edge1 = v1.vec2point(v2);
+    Vector edge2 = v1.vec2point(v3);
+    Vector ray_cross_e2 = r.dir.cross(edge2);
+    float det = edge1.dot(ray_cross_e2);
 
-    return false;
+    if (det > -epsilon && det < epsilon)
+        return false;    // This ray is parallel to this triangle.
+
+    float inv_det = 1.0 / det;
+    Vector s = v1.vec2point(r.o);
+    float u = inv_det * s.dot(ray_cross_e2);
+
+    if (u < 0 || u > 1)
+        return false;
+
+    Vector s_cross_e1 = s.cross(edge1);
+    float v = inv_det * r.dir.dot(s_cross_e1);
+
+    if (v < 0 || u + v > 1)
+        return false;
+
+    // At this stage we can compute t to find out where the intersection point is on the line.
+    float t = inv_det * edge2.dot(s_cross_e1);
+
+    if (t > epsilon) // ray intersection
+    {
+        isect->p = (r.o).operator+(r.dir).operator*(t);
+        return true;
+    }
+    else // This means that there is a line intersection but not a ray intersection.
+        return false;
+        */
+    
+    Point v1, v2, v3;
+    Vector n;
+    v1 = vertices[f.vert_ndx[0]];
+    v2 = vertices[f.vert_ndx[1]];
+    v3 = vertices[f.vert_ndx[2]];
+
+    if (!f.hasShadingNormals) {
+        n = f.geoNormal;
+    }
+    else
+    {
+        Vector n1 = normals[f.vert_normals_ndx[0]];
+        Vector n2 = normals[f.vert_normals_ndx[1]];
+        Vector n3 = normals[f.vert_normals_ndx[2]];
+        n = n1 + n2 + n3;
+        n.normalize();
+
+    }
+
+    Triangle t = Triangle(v1,v2,v3,n);
+    std::cout << "N X: " << n.X <<" N Y: " << n.Y << "N Z:" << n.Z <<"\n";
+
+    return t.intersect(r,isect);
 }
 
 bool Mesh::intersect (Ray r, Intersection *isect) {
+    std::cout << "intersect Mesh\n";
+
     bool intersect = true, intersect_this_face;
     Intersection min_isect, curr_isect;
     float min_depth=MAXFLOAT;
     // intersect the ray with the mesh BB
+    std::cout << "faces len:" << bb.intersect(r);
     if (!bb.intersect(r)) return false;
     
     // If it intersects then loop through the faces

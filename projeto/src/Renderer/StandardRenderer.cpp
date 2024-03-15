@@ -34,7 +34,9 @@ void StandardRenderer::Render () {
             color = shd->shade(intersected, isect, 0);
             
             // write the result into the image frame buffer (image)
-            img->set(x,y,color);
+            success = img->set(x,y,color);
+            if(!success)std::cout << "Didnt give a color: " << success << "\n";
+
             
         } // loop over columns
     }   // loop over rows

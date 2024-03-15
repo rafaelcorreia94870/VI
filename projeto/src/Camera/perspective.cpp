@@ -6,7 +6,14 @@
 //
 
 #include "perspective.hpp"
+#include <iostream>
 
+
+void Perspective::PrintInfo() {
+    std::cout <<"Eye X:" << this->Eye.X << " Eye Y:" << this->Eye.Y << " Eye Z:" << this->Eye.Z <<
+        "\nAt X : " << this->At.X << " At Y :" << this->At.Y << " At Z : " << this->At.Z <<
+        this->W << this->H << this-> fovW << this-> fovH;
+}
 Perspective::Perspective(const Point Eye, const Point At, const Vector Up, const int W, const int H, const float fovW, const float fovH) : Eye(Eye), At(At), Up(Up), W(W), H(H), fovW(fovW), fovH(fovH) {
     // compute camera 2 world transform
     Vector F, R, U;

@@ -14,13 +14,14 @@
 #else
 #error "Unsupported operating system"
 #endif
+#include <iostream>
 
 
 // https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
 // Moller Trumbore intersection algorithm
 bool Triangle::intersect(Ray r, Intersection *isect) {
 
-    
+    std::cout << "intersect Triangle\n";
     if (!bb.intersect(r)) {
         return false;
     }

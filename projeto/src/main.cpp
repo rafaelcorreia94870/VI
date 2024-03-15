@@ -83,6 +83,7 @@ int main(int argc, const char * argv[]) {
     const float fovH = fovW * (float)H/(float)W;  // in degrees
     const float fovWrad = fovW*3.14f/180.f, fovHrad = fovH*3.14f/180.f;    // to radians
     cam = new Perspective(Eye, At, Up, W, H, fovWrad, fovHrad);
+    //cam->PrintInfo();
     
     // create the shader
     RGB background(0.05, 0.05, 0.55);
