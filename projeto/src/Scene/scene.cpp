@@ -126,6 +126,7 @@ bool Scene::Load (const std::string &fname) {
 
         // Loop over faces(polygon)
         std::cout << "----- [" << shapes[s].name << "] -----\n";
+        BB bb;
         for (size_t f = 0; f < m->numFaces; f++) {
             size_t fv = size_t(shapes[s].mesh.num_face_vertices[f]);
             std::cout << "\nTriangle " << f+1 << "/" << m->numFaces << "\n";
@@ -176,7 +177,7 @@ bool Scene::Load (const std::string &fname) {
                 std::cout << "  v[" << idx.vertex_index << "]: ("
                     << vert.X << ", " << vert.Y << ", " << vert.Z << ")\n";
                 face_vertices.push_back(vert);
-
+                bb.update(vert);
 
                 // Check if `normal_index` is zero or positive. negative = no normal data
                 if (idx.normal_index >= 0) {
@@ -241,6 +242,7 @@ bool Scene::Load (const std::string &fname) {
         std::cout << "\n  VERTICES UNICOS: " << m->numVertices << "\n";
 
         // Define the primitive's Geometry as the mesh 
+        m->bb = bb;
         p->g = m;
         prims.push_back(p);
 

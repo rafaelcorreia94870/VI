@@ -14,6 +14,7 @@
 #else
 #error "Unsupported operating system"
 #endif
+#include <iostream>
 
 
 // https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm

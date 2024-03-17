@@ -71,8 +71,8 @@ int main(int argc, const char * argv[]) {
     std::cout << std::endl;
 
     // Image resolution
-    const int W= 1024;
-    const int H= 1024;
+    const int W = 24;
+    const int H= 24;
     
     img = new ImagePPM(W,H);
     

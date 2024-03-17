@@ -48,7 +48,7 @@ bool Perspective::GenerateRay(const int x, const int y, Ray *r, const float *cam
     result.Z = RUF[2].dot(xy1);
 
     r->dir = result;
-
+    r->invDir = result.inv();
     r->pix_x = x;
     r->pix_y = y;
 

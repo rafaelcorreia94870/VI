@@ -27,6 +27,8 @@ public:
     Vector operator *(const float f) const { return {f*X, f*Y, f*Z};}
     Vector operator *(const double f) const { return {(float)(f*X), (float)(f*Y), (float)(f*Z)};}
     Vector operator /(const float f) const { return {X/f, Y/f, Z/f};}
+    Vector inv() const { return { 1/X , 1/Y, 1 / Z }; }
+
     friend Vector operator*(const float f, const Vector& p) {
         return p*f;
     }
@@ -111,6 +113,7 @@ public:
     float X,Y,Z;
     Point ():X(0.),Y(0.),Z(0.){}
     Point (float x, float y, float z):X(x),Y(y),Z(z){}
+    Point(const Point &p) :X(p.X), Y(p.Y), Z(p.Z) {}
     ~Point(){}
     Point operator -(const Point &p) const { return {X-p.X, Y-p.Y, Z-p.Z};}
     Point operator +(const Point &p) const { return {X+p.X, Y+p.Y, Z+p.Z};}

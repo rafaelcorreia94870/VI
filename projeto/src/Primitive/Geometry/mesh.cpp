@@ -92,15 +92,18 @@ bool Mesh::TriangleIntersect (Ray r, Face f, Intersection *isect) {
 }
 
 bool Mesh::intersect (Ray r, Intersection *isect) {
-    //std::cout << "intersect Mesh\n";
 
     bool intersect = true, intersect_this_face;
     Intersection min_isect, curr_isect;
     float min_depth=MAXFLOAT;
 
     // intersect the ray with the mesh BB
-    if (!bb.intersect(r)) return false;
-    
+    if (!bb.intersect(r)) {
+        std::cout << "BB intersect failed\n";
+        return false;
+    }
+    std::cout << "BB intersect sucess\n";
+
     // If it intersects then loop through the faces
     intersect = false;
     for (auto face_it=faces.begin() ; face_it != faces.end() ; face_it++) {
@@ -113,6 +116,7 @@ bool Mesh::intersect (Ray r, Intersection *isect) {
             min_isect = curr_isect;
         }
     }
-    
+    //std::cout << intersect <<"\n";
+
     return intersect;
 }

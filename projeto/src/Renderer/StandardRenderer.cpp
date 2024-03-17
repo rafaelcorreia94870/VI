@@ -16,7 +16,10 @@ void StandardRenderer::Render () {
     
     // main rendering loop: get primary rays from the camera until done
     for (y=0 ; y< H ; y++) {  // loop over rows
+        //std::cout << "row" << y << "\n";
         for (x=0 ; x< W ; x++) { // loop over columns
+            //std::cout << "   column" << x << "\n";
+
             Ray primary;
             Intersection isect;
             bool intersected;
@@ -32,6 +35,7 @@ void StandardRenderer::Render () {
             
             // shade this intersection (shader) - remember: depth=0
             color = shd->shade(intersected, isect, 0);
+            std::cout << "Color: " << color.R <<" " << color.G << " " << color.B << "\n";
             
             // write the result into the image frame buffer (image)
             success = img->set(x,y,color);
