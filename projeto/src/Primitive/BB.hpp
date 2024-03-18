@@ -65,12 +65,12 @@ public:
         Vector tUpper = p1Dir.cross(invRayDir);
     
         // The four t-intervals (for x-/y-/z-slabs, and ray p(t))
-        float tMins[4] = { fmin(tLower.X, tUpper.X), fmin(tLower.Y, tUpper.Y), fmin(tLower.Z, tUpper.Z), };
-        float tMaxes[4] = { fmax(tLower.X, tUpper.X), fmax(tLower.Y, tUpper.Y), fmax(tLower.Z, tUpper.Z) };
+        float tMins[4] = { fmin(tLower.X, tUpper.X), fmin(tLower.Y, tUpper.Y), fmin(tLower.Z, tUpper.Z), r.rayTmin};
+        float tMaxes[4] = { fmax(tLower.X, tUpper.X), fmax(tLower.Y, tUpper.Y), fmax(tLower.Z, tUpper.Z), r.rayTmax};
         // Easy to remember: ``max of mins, and min of maxes''
-        float tBoxMin = fmax(fmax(tMins[0], tMins[1]), tMins[2]);
-        float tBoxMax = fmin(fmin(tMaxes[0], tMaxes[1]), tMaxes[2]);
-        std::cout << "tBoxMin: " << tBoxMin << " tBoxMax:" << tBoxMax << "\n";
+        float tBoxMin = fmax(fmax(tMins[0], tMins[1]), fmax(tMins[2],tMins[3]));
+        float tBoxMax = fmin(fmin(tMaxes[0], tMaxes[1]), fmin(tMaxes[2],tMaxes[3]));
+        //std::cout << "tBoxMin: " << tBoxMin << " tBoxMax:" << tBoxMax << "\n";
         return tBoxMin <= tBoxMax;
     }
 } BB;

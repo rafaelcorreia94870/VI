@@ -99,7 +99,6 @@ bool Mesh::intersect (Ray r, Intersection *isect) {
 
     // intersect the ray with the mesh BB
     if (!bb.intersect(r)) {
-        std::cout << "BB intersect failed\n";
         return false;
     }
     std::cout << "BB intersect sucess\n";

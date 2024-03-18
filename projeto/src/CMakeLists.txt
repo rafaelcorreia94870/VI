@@ -56,9 +56,17 @@ set(SOURCES
     Shader/PathTracerShader.cpp
     Shader/WhittedShader.cpp
 )
+# Group source and header files by folder for Visual Studio
+foreach(file ${SOURCES} ${HEADERS})
+    get_filename_component(file_path "${file}" PATH)
+    string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}" "" file_path_group "${file_path}")
+    string(REPLACE "/" "\\" file_path_group "${file_path_group}")
+    source_group("${file_path_group}" FILES "${file}")
+endforeach()
+
 
 # Add executable
-add_executable(VI-RT ${SOURCES})
+add_executable(VI-RT ${SOURCES} ${HEADERS})
 
 # Add include directories for the target
 target_include_directories(VI-RT PUBLIC

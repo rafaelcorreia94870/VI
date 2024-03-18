@@ -243,6 +243,9 @@ bool Scene::Load (const std::string &fname) {
 
         // Define the primitive's Geometry as the mesh 
         m->bb = bb;
+        std::cout << "Bounding BOX MAX:\n\tX: " << m->bb.max.X << " Y: " << m->bb.max.Y << " Z: " << m->bb.max.Z <<"\n";
+        std::cout << "Bounding BOX MIN:\n\tX: " << m->bb.min.X << " Y: " << m->bb.min.Y << " Z: " << m->bb.min.Z << "\n";
+
         p->g = m;
         prims.push_back(p);
 

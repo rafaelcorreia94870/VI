@@ -27,7 +27,7 @@ void StandardRenderer::Render () {
           
             // Generate Ray (camera)
             bool success = cam->GenerateRay(x, y, &primary);
-            //if(!success)std::cout << "Cam generated a Ray: " << success << "\n";
+            if(!success)std::cout << "Cam generated a Ray: " << success << "\n";
             
             // trace ray (scene)
             intersected = scene->trace(primary, &isect);

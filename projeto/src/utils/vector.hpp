@@ -27,7 +27,6 @@ public:
     Vector operator *(const float f) const { return {f*X, f*Y, f*Z};}
     Vector operator *(const double f) const { return {(float)(f*X), (float)(f*Y), (float)(f*Z)};}
     Vector operator /(const float f) const { return {X/f, Y/f, Z/f};}
-    Vector inv() const { return { 1/X , 1/Y, 1 / Z }; }
 
     friend Vector operator*(const float f, const Vector& p) {
         return p*f;
@@ -35,6 +34,7 @@ public:
     friend Vector operator*(const double f, const Vector& p) {
         return p*f;
     }
+    Vector inv() const {return { 1/X , 1/Y, 1/Z}; }
     // note that methods declared within the class are inline by default
     inline float norm () {
         return sqrtf(X*X+Y*Y+Z*Z); //tinha std::sqrtf
