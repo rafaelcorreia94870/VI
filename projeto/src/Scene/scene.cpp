@@ -298,13 +298,10 @@ bool Scene::trace (Ray r, Intersection *isect) {
     Intersection curr_isect;
     bool intersection = false;    
     
-    if (numPrimitives == 0) {
-        std::cout << "num primitivas é 0 \n";
-        return false;
-    }
-
+    if (numPrimitives==0) return false;
+    
     // iterate over all primitives
-    for (auto prim_itr = prims.begin() ; prim_itr != prims.end() ; prim_itr++) {  
+    for (auto prim_itr = prims.begin() ; prim_itr != prims.end() ; prim_itr++) {
         if ((*prim_itr)->g->intersect(r, &curr_isect)) {
             if (!intersection) { // first intersection
                 intersection = true;
@@ -317,6 +314,7 @@ bool Scene::trace (Ray r, Intersection *isect) {
             }
         }
     }
+    // print if intersection
     return intersection;
 }
 

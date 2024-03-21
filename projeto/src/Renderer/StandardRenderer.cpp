@@ -9,17 +9,14 @@
 
 void StandardRenderer::Render () {
     int W=0,H=0;  // resolution não percebo se e suposto tar a 0 ou meter aqui o valor que ta na main
-    int x,y;
 
     // get resolution from the camera
     cam->getResolution(&W, &H);
     std::cout << "Resolution: " << W << "x" << H << "\n";
     
     // main rendering loop: get primary rays from the camera until done
-    for (y=0 ; y< H ; y++) {  // loop over rows
-        //std::cout << "row" << y << "\n";
-        for (x=0 ; x< W ; x++) { // loop over columns
-            //std::cout << "   column" << x << "\n";
+    for (int y=0 ; y< H ; y++) {  // loop over rows
+        for (int x=0 ; x< W ; x++) { // loop over columns
 
             Ray primary;
             Intersection isect;
@@ -28,18 +25,19 @@ void StandardRenderer::Render () {
           
             // Generate Ray (camera)
             bool success = cam->GenerateRay(x, y, &primary);
-            if(!success)std::cout << "Cam generated a Ray: " << success << "\n";
-            
+
             // trace ray (scene)
-            intersected = scene->trace(primary, &isect);
-            //if (intersected)std::cout << "Ray intersected scene : " << intersected << "\n";
-            
+            if (success) {
+                intersected = scene->trace(primary, &isect);
+                printf("Intersected: %d\n", intersected);
+            } else {
+                intersected = false;
+            }
             // shade this intersection (shader) - remember: depth=0
             color = shd->shade(intersected, isect, 0);
-            //std::cout << "Color: " << color.R <<" " << color.G << " " << color.B << "\n";
             
             // write the result into the image frame buffer (image)
-            success = img->set(x,y,color);
+            img->set(x,y,color);
             if(!success)std::cout << "Didnt give a color: " << success << "\n";
 
             

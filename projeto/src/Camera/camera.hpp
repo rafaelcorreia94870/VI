@@ -25,7 +25,7 @@ class Camera {
 public:
     Camera () {}
     ~Camera() {}
-    virtual bool GenerateRay(const int x, const int y, Ray* r, const float* cam_jitter = NULL) { std::cout << "nao devia tar aqui"; return false; };
+    virtual bool GenerateRay(const int x, const int y, Ray* r, const float* cam_jitter = NULL) { return false; };
     virtual void getResolution (int *_W, int *_H) {
         *_W=0; *_H=0;
     }

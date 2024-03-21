@@ -80,11 +80,17 @@ int main(int argc, const char* argv[]) {
     /*
     const Point Eye ={ 280,275, -330 }, At={280,265, 0};
     */
-    const Point Eye = { 0,125,-100 }, At = { 0, 125, 0 };
+    const Point Eye = { 0,125,-10000 }, At = { 0, 125, 0 };
     const Vector Up={0,1,0};
     const float fovW = 90.f;
     const float fovH = fovW * (float)H/(float)W;  // in degrees
-    const float fovWrad = fovW*3.14f/180.f, fovHrad = fovH*3.14f/180.f;    // to radians
+
+    printf("fovW: %f\n", fovW);
+    printf("fovH: %f\n", fovH);
+
+    const float fovWrad = fovW*0.0174533f, fovHrad = fovH*0.0174533f;    // to radians
+    printf("fovWrad: %f\n", fovWrad);
+    printf("fovHrad: %f\n\n\n", fovHrad);
     cam = new Perspective(Eye, At, Up, W, H, fovWrad, fovHrad);
     //cam->PrintInfo();
     

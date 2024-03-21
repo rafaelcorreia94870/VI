@@ -35,6 +35,7 @@ bool Triangle::intersect(Ray r, Intersection *isect) {
     }
 
     if (!bb.intersect(r)) {
+        std::cout << "BB intersect failed\n";
         return false;
     }
 
@@ -55,7 +56,7 @@ bool Triangle::intersect(Ray r, Intersection *isect) {
     Vector h, s, q;
     float a,ff,u,v;
 
-    h = r.dir.cross(edge2);
+    h = r.dir.cross(this->edge2);
     a = edge1.dot(h);
     ff = 1.0/a;
     s = v1.vec2point(r.o);
@@ -63,13 +64,14 @@ bool Triangle::intersect(Ray r, Intersection *isect) {
     if (u < 0.0 || u > 1.0) {
         return false;
     }
-    q = s.cross(edge1);
+    q = s.cross(this->edge1);
     v = ff * r.dir.dot(q);
     if (v < 0.0 || u + v > 1.0) {
         return false;
     }
     // At this stage we can compute t to find out where the intersection point is on the line.
-    float t = ff * edge2.dot(q);
+    float t = ff * this->edge2.dot(q);
+    
     if (t > EPSILON) // ray intersection
     {
         Point pHit = r.o + t* r.dir;
@@ -85,10 +87,11 @@ bool Triangle::intersect(Ray r, Intersection *isect) {
         isect->wo = wo;
         isect->depth = t;
         isect->FaceID = -1;
+        
         isect->pix_x = r.pix_x;
         isect->pix_y = r.pix_y;
 
-        
+        printf("Intersection at %f %f %f\n", pHit.X, pHit.Y, pHit.Z);
 
         return true;
     }
