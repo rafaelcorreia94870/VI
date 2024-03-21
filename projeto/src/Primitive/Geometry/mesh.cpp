@@ -21,48 +21,23 @@
 #endif
 
 bool Mesh::TriangleIntersect (Ray r, Face f, Intersection *isect) {
-    /*
-    Point v1, v2, v3;
-    Vector n;
-    v1 = vertices[f.vert_ndx[0]];
-    v2 = vertices[f.vert_ndx[1]];
-    v3 = vertices[f.vert_ndx[2]];
-    constexpr float epsilon = std::numeric_limits<float>::epsilon();
 
-    Vector edge1 = v1.vec2point(v2);
-    Vector edge2 = v1.vec2point(v3);
-    Vector ray_cross_e2 = r.dir.cross(edge2);
-    float det = edge1.dot(ray_cross_e2);
-
-    if (det > -epsilon && det < epsilon)
-        return false;    // This ray is parallel to this triangle.
-
-    float inv_det = 1.0 / det;
-    Vector s = v1.vec2point(r.o);
-    float u = inv_det * s.dot(ray_cross_e2);
-
-    if (u < 0 || u > 1)
-        return false;
-
-    Vector s_cross_e1 = s.cross(edge1);
-    float v = inv_det * r.dir.dot(s_cross_e1);
-
-    if (v < 0 || u + v > 1)
-        return false;
-
-    // At this stage we can compute t to find out where the intersection point is on the line.
-    float t = inv_det * edge2.dot(s_cross_e1);
-
-    if (t > epsilon) // ray intersection
-    {
-        isect->p = (r.o).operator+(r.dir).operator*(t);
-        return true;
-    }
-    else // This means that there is a line intersection but not a ray intersection.
-        return false;
-        */
     
-    Point v1, v2, v3;
+    
+
+    // check the face vertex indices for pix.x=63 and pix.y=63
+    if (r.pix_x == 63 && r.pix_y == 63){
+        // print vertices
+        for (int i = 0; i < vertices.size(); i++){
+            std::cout << vertices[i].X << " " << vertices[i].Y << " " << vertices[i].Z << "\n";
+        }
+        std::cout << "  Face: " << f.vert_ndx[0] << " " << f.vert_ndx[1] << " " << f.vert_ndx[2] << "\n";
+    }
+    
+
+    Point v1 = vertices[f.vert_ndx[0]];
+    Point v2 = vertices[f.vert_ndx[1]];
+    Point v3 = vertices[f.vert_ndx[2]];
     Vector n;
 
     if (!f.hasShadingNormals) {
@@ -81,13 +56,7 @@ bool Mesh::TriangleIntersect (Ray r, Face f, Intersection *isect) {
     }
 
     Triangle t = Triangle(v1,v2,v3,n);
-    /*::cout
-    << "  intersect Triangle (" 
-    << f.vert_ndx[0] << ", "
-    << f.vert_ndx[1] << ", "
-    << f.vert_ndx[2] << ")" 
-    << "\n";
-    */
+    
     return t.intersect(r,isect);
 }
 
@@ -98,7 +67,7 @@ bool Mesh::intersect (Ray r, Intersection *isect) {
         std::cout << "R invDir: " << r.invDir.X << " " << r.invDir.Y << " " << r.invDir.Z << "\n";
         std::cout << "R Dir: " << r.dir.X << " " << r.dir.Y << " " << r.dir.Z << "\n";
         std::cout << "R BB MAX: " << this->bb.max.X << " " << this->bb.max.Y << " " << this->bb.max.Z << "\n";
-        std::cout << "R BB MIN: " << this->bb.min.X << " " << this->bb.min.Y << " " << this->bb.min.Z << "\n";
+        std::cout << "R BB MIN: " << this->bb.min.X << " " << this->bb.min.Y << " " << this->bb.min.Z << "\n\n\n";
 
     }
 
@@ -110,7 +79,7 @@ bool Mesh::intersect (Ray r, Intersection *isect) {
     if (!bb.intersect(r)) {
         return false;
     }
-    std::cout << "BB intersect sucess\n";
+    //std::cout << "BB intersect sucess\n";
 
     // If it intersects then loop through the faces
     intersect = false;

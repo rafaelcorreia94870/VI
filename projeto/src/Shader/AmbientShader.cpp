@@ -9,7 +9,13 @@
 
 RGB AmbientShader::shade(bool intersected, Intersection isect, int depth) {
     RGB color(0.,0.,0.);
-    
+        
+    std::cout << isect.pix_x << " " << isect.pix_y << "\n";
+
+    // for pixel 63,63 print isect.Le
+    if (isect.pix_x == 63 && isect.pix_y == 63){
+        std::cout << "Le: " << isect.Le.R << " " << isect.Le.G << " " << isect.Le.B << "\n";
+    }
     // if no intersection, return background
     if (!intersected) {
         return (background);
@@ -18,7 +24,6 @@ RGB AmbientShader::shade(bool intersected, Intersection isect, int depth) {
         return isect.Le;
     }
     
-
     
     // verify whether the intersected object has an ambient component
     Phong *f = (Phong *)isect.f;

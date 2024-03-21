@@ -28,6 +28,10 @@ bool Triangle::intersect(Ray r, Intersection *isect) {
         std::cout << "R BB MAX: " << this->bb.max.X << " " << this->bb.max.Y << " " << this->bb.max.Z << "\n";
         std::cout << "R BB MIN: " << this->bb.min.X << " " << this->bb.min.Y << " " << this->bb.min.Z << "\n";
 
+        std::cout << "V1 (" << this->v1.X << ", " << this->v1.Y << ", " << this->v1.Z << ")\n";
+        std::cout << "V2 (" << this->v2.X << ", " << this->v2.Y << ", " << this->v2.Z << ")\n";
+        std::cout << "V3 (" << this->v3.X << ", " << this->v3.Y << ", " << this->v3.Z << ")\n";
+
     }
 
     if (!bb.intersect(r)) {
@@ -81,6 +85,10 @@ bool Triangle::intersect(Ray r, Intersection *isect) {
         isect->wo = wo;
         isect->depth = t;
         isect->FaceID = -1;
+        isect->pix_x = r.pix_x;
+        isect->pix_y = r.pix_y;
+
+        
 
         return true;
     }

@@ -13,6 +13,7 @@ void StandardRenderer::Render () {
 
     // get resolution from the camera
     cam->getResolution(&W, &H);
+    std::cout << "Resolution: " << W << "x" << H << "\n";
     
     // main rendering loop: get primary rays from the camera until done
     for (y=0 ; y< H ; y++) {  // loop over rows

@@ -24,6 +24,7 @@ public:
     }
     Vector operator -(const Vector &p) const { return {X-p.X, Y-p.Y, Z-p.Z};}
     Vector operator +(const Vector &p) const { return {X+p.X, Y+p.Y, Z+p.Z};}
+    Vector operator *(const Vector &p) const { return {X*p.X, Y*p.Y, Z*p.Z};}
     Vector operator *(const float f) const { return {f*X, f*Y, f*Z};}
     Vector operator *(const double f) const { return {(float)(f*X), (float)(f*Y), (float)(f*Z)};}
     Vector operator /(const float f) const { return {X/f, Y/f, Z/f};}

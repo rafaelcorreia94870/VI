@@ -85,7 +85,7 @@ bool Scene::Load (const std::string &fname) {
     std::string pathStr = path.string();
     reader_config.mtl_search_path = pathStr;
 #elif __unix__ || __unix || __linux__ || __APPLE__
-    std::string inputfile = "/home/robert/aulas/4ano/2sem/VI/TP/VI/projeto/src/Scene/tinyobjloader/models/cornell_box.obj";
+    std::string inputfile = "/home/robert/aulas/4ano/2sem/VI/TP/VI/projeto/src/Scene/tinyobjloader/models/triangle.obj";
     tinyobj::ObjReaderConfig reader_config;
     reader_config.mtl_search_path = "/home/robert/aulas/4ano/2sem/VI/TP/VI/projeto/src/Scene/tinyobjloader/models"; // Path to material files
 #endif
@@ -138,17 +138,13 @@ bool Scene::Load (const std::string &fname) {
                 // Access to vertex
                 tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
 
-                face->vert_ndx[0] = 3 * size_t(idx.vertex_index) + 0;
-                face->vert_ndx[1] = 3 * size_t(idx.vertex_index) + 1;
-                face->vert_ndx[2] = 3 * size_t(idx.vertex_index) + 2;
-
                 // Check if the vertex is already present
                 bool found = false;
                 size_t existing_index = 0;
                 for (size_t i = 0; i < unique_vertices.size(); i++) {
-                    if (unique_vertices[i].X == attrib.vertices[face->vert_ndx[0]] &&
-                        unique_vertices[i].Y == attrib.vertices[face->vert_ndx[1]] &&
-                        unique_vertices[i].Z == attrib.vertices[face->vert_ndx[2]]) {
+                    if (attrib.vertices[3 * size_t(idx.vertex_index) + 0] == unique_vertices[i].X &&
+                        attrib.vertices[3 * size_t(idx.vertex_index) + 1] == unique_vertices[i].Y &&
+                        attrib.vertices[3 * size_t(idx.vertex_index) + 2] == unique_vertices[i].Z) {
                         found = true;
                         existing_index = i;
                         break;
@@ -158,21 +154,26 @@ bool Scene::Load (const std::string &fname) {
                 // Store unique vertices and add to face_vertices accumulator for normal calculations
                 Point vert;
                 if (!found) { // Unique vertex
-                    vert.X = attrib.vertices[face->vert_ndx[0]];
-                    vert.Y = attrib.vertices[face->vert_ndx[1]];
-                    vert.Z = attrib.vertices[face->vert_ndx[2]];
+                    vert.X = attrib.vertices[3 * size_t(idx.vertex_index) + 0];
+                    vert.Y = attrib.vertices[3 * size_t(idx.vertex_index) + 1];
+                    vert.Z = attrib.vertices[3 * size_t(idx.vertex_index) + 2];
+                    // Store the index of the unique vertex
+                    face->vert_ndx[v] = unique_vertices.size();
                     unique_vertices.push_back(vert);
-                    m->vertices.push_back(vert); // Store the vertex itself
-                    m->numVertices++;
-                    unicos++;
-                }
-                else {
-                    repetidos++; //debug
 
+                    unicos++; //debug
+                }
+                // If the vertex is not unique, store the index of the existing vertex
+                else {
                     vert.X = unique_vertices[existing_index].X;
                     vert.Y = unique_vertices[existing_index].Y;
                     vert.Z = unique_vertices[existing_index].Z;
+                    // Store the index of the existing vertex
+                    face->vert_ndx[v] = existing_index;
+
+                    repetidos++; //debug
                 }
+
                 // Print existing vertices
                 std::cout << "  v[" << idx.vertex_index << "]: ("
                     << vert.X << ", " << vert.Y << ", " << vert.Z << ")\n";
@@ -238,6 +239,10 @@ bool Scene::Load (const std::string &fname) {
             m->faces.push_back(*face);
             index_offset += fv;
         }
+
+        // Store unique vertices in the mesh
+        m->vertices = unique_vertices;
+        m->numVertices = unique_vertices.size();
 
         std::cout << "\n  VERTICES UNICOS: " << m->numVertices << "\n";
 

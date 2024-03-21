@@ -61,8 +61,8 @@ public:
 
         Vector invRayDir = r.invDir;
         //std::cout << invRayDir.X << invRayDir.Y << invRayDir.Z <<"\n";
-        Vector tLower = p0Dir.cross(invRayDir);
-        Vector tUpper = p1Dir.cross(invRayDir);
+        Vector tLower = p0Dir * invRayDir;
+        Vector tUpper = p1Dir * invRayDir;
     
         // The four t-intervals (for x-/y-/z-slabs, and ray p(t))
         float tMins[4] = { fmin(tLower.X, tUpper.X), fmin(tLower.Y, tUpper.Y), fmin(tLower.Z, tUpper.Z), r.rayTmin};
