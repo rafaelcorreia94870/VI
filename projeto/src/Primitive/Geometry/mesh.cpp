@@ -92,6 +92,15 @@ bool Mesh::TriangleIntersect (Ray r, Face f, Intersection *isect) {
 }
 
 bool Mesh::intersect (Ray r, Intersection *isect) {
+    if (r.pix_x == 63 && r.pix_y == 63) {
+        std::cout << "R DIR: " << r.dir.X << " " << r.dir.Y << " " << r.dir.Z << "\n";
+        std::cout << "R Origin: " << r.o.X << " " << r.o.Y << " " << r.o.Z << "\n";
+        std::cout << "R invDir: " << r.invDir.X << " " << r.invDir.Y << " " << r.invDir.Z << "\n";
+        std::cout << "R Dir: " << r.dir.X << " " << r.dir.Y << " " << r.dir.Z << "\n";
+        std::cout << "R BB MAX: " << this->bb.max.X << " " << this->bb.max.Y << " " << this->bb.max.Z << "\n";
+        std::cout << "R BB MIN: " << this->bb.min.X << " " << this->bb.min.Y << " " << this->bb.min.Z << "\n";
+
+    }
 
     bool intersect = true, intersect_this_face;
     Intersection min_isect, curr_isect;

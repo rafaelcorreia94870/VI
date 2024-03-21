@@ -35,7 +35,7 @@ void StandardRenderer::Render () {
             
             // shade this intersection (shader) - remember: depth=0
             color = shd->shade(intersected, isect, 0);
-            std::cout << "Color: " << color.R <<" " << color.G << " " << color.B << "\n";
+            //std::cout << "Color: " << color.R <<" " << color.G << " " << color.B << "\n";
             
             // write the result into the image frame buffer (image)
             success = img->set(x,y,color);

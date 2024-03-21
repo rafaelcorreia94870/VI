@@ -39,30 +39,30 @@ namespace fs = std::filesystem;
 #include <time.h>
 
 
-int main(int argc, const char * argv[]) {
+int main(int argc, const char* argv[]) {
     Scene scene;
-    Perspective *cam; // Camera
-    ImagePPM *img;    // Image
-    Shader *shd;
+    Perspective* cam; // Camera
+    ImagePPM* img;    // Image
+    Shader* shd;
     bool success;
     clock_t start, end;
     double cpu_time_used;
-    #ifdef _WIN32
+#ifdef _WIN32
     fs::path currentPath = fs::current_path();
-    fs::path path = currentPath /".." / "src" / "Scene" / "tinyobjloader" / "models" / "cornell_box.obj";
+    fs::path path = currentPath / ".." / "src" / "Scene" / "tinyobjloader" / "models" / "test.obj";
     std::string pathStr = path.string();
     success = scene.Load(pathStr);
-    #elif __unix__ || __unix || __linux__
+#elif __unix__ || __unix || __linux__
     success = scene.Load("/home/robert/aulas/4ano/2sem/VI/TP/VI/projeto/src/Scene/tinyobjloader/models/cornell_box.obj");
-    #elif __APPLE__
+#elif __APPLE__
     sucess = scene.load("/Users/psantos/VI-RT/VI-RT/VI-RT/Scene/tinyobjloader/models/cornell_box.obj");
-    #endif
+#endif
     if (!success) {
         std::cout << "ERROR!! :o\n";
         return 1;
-    }    
+    }
     // add an ambient light to the scene
-    AmbientLight ambient(RGB(0.9f,0.9f,0.9f));
+    AmbientLight ambient(RGB(0.9f, 0.9f, 0.9f));
     scene.lights.push_back(&ambient);
     scene.numLights++;
 
@@ -71,13 +71,16 @@ int main(int argc, const char * argv[]) {
     std::cout << std::endl;
 
     // Image resolution
-    const int W = 24;
-    const int H= 24;
-    
-    img = new ImagePPM(W,H);
-    
+    const int W = 127;
+    const int H = 127;
+
+    img = new ImagePPM(W, H);
+
     // Camera parameters
+    /*
     const Point Eye ={ 280,275, -330 }, At={280,265, 0};
+    */
+    const Point Eye = { 0,125,-100 }, At = { 0, 125, 0 };
     const Vector Up={0,1,0};
     const float fovW = 90.f;
     const float fovH = fovW * (float)H/(float)W;  // in degrees
