@@ -49,13 +49,13 @@ int main(int argc, const char* argv[]) {
     double cpu_time_used;
 #ifdef _WIN32
     fs::path currentPath = fs::current_path();
-    fs::path path = currentPath / ".." / "src" / "Scene" / "tinyobjloader" / "models" / "test.obj";
+    fs::path path = currentPath / ".." / "src" / "Scene" / "tinyobjloader" / "models" / "triangle.obj";
     std::string pathStr = path.string();
     success = scene.Load(pathStr);
 #elif __unix__ || __unix || __linux__
     success = scene.Load("/home/robert/aulas/4ano/2sem/VI/TP/VI/projeto/src/Scene/tinyobjloader/models/triangle.obj");
 #elif __APPLE__
-    sucess = scene.load("/Users/psantos/VI-RT/VI-RT/VI-RT/Scene/tinyobjloader/models/cornell_box.obj");
+    sucess = scene.load("/Users/psantos/VI-RT/VI-RT/VI-RT/Scene/tinyobjloader/models/triangle.obj");
 #endif
     if (!success) {
         std::cout << "ERROR!! :o\n";
