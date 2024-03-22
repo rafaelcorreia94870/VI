@@ -41,7 +41,6 @@ bool Mesh::TriangleIntersect (Ray r, Face f, Intersection *isect) {
         n.normalize();
 
     }
-
     Triangle t = Triangle(v1,v2,v3,n);
 
     return t.intersect(r,isect);
@@ -62,7 +61,6 @@ bool Mesh::intersect (Ray r, Intersection *isect) {
     intersect = false;
     for (auto face_it=faces.begin() ; face_it != faces.end() ; face_it++) {
         intersect_this_face = TriangleIntersect(r, *face_it, &curr_isect);
-        printf("Intersect this face: %d\n", intersect_this_face);
          
         if (!intersect_this_face) continue;
         intersect = true;

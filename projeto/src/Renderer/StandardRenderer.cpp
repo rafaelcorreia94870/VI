@@ -25,14 +25,10 @@ void StandardRenderer::Render () {
           
             // Generate Ray (camera)
             bool success = cam->GenerateRay(x, y, &primary);
+            // print bullshit
 
             // trace ray (scene)
-            if (success) {
-                intersected = scene->trace(primary, &isect);
-                printf("Intersected: %d\n", intersected);
-            } else {
-                intersected = false;
-            }
+            if(success) intersected = scene->trace(primary, &isect);
             // shade this intersection (shader) - remember: depth=0
             color = shd->shade(intersected, isect, 0);
             

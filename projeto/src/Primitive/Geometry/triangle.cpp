@@ -62,11 +62,15 @@ bool Triangle::intersect(Ray r, Intersection *isect) {
     s = v1.vec2point(r.o);
     u = ff * s.dot(h);
     if (u < 0.0 || u > 1.0) {
+        printf("NADA\n");
+
         return false;
     }
     q = s.cross(this->edge1);
     v = ff * r.dir.dot(q);
     if (v < 0.0 || u + v > 1.0) {
+        printf("NADA\n");
+
         return false;
     }
     // At this stage we can compute t to find out where the intersection point is on the line.

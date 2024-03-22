@@ -13,6 +13,7 @@ RGB AmbientShader::shade(bool intersected, Intersection isect, int depth) {
     
     // if no intersection, return background
     if (!intersected) {
+        printf("No color!\n\n");
         return (background);
     }
     if (isect.isLight) { // intersection with a light source
@@ -24,13 +25,13 @@ RGB AmbientShader::shade(bool intersected, Intersection isect, int depth) {
     Phong *f = (Phong *)isect.f;
     if (f->Ka.isZero()) return color;
     RGB Ka = f->Ka;
-    
     // ambient shade
     // Loop over scene's light sources and process Ambient Lights
     for (auto light_itr = scene->lights.begin() ; light_itr != scene->lights.end() ; light_itr++) {
         
         if ((*light_itr)->type == AMBIENT_LIGHT) {  // is it an ambient light ?
             color += Ka * (*light_itr)->L();
+            printf("COLOR: (%f, %f, %f)\n\n", color.R, color.G, color.B);
             continue;
         }
     }
