@@ -4,7 +4,6 @@
 //
 //  Created by Luis Paulo Santos on 30/01/2023.
 //
-
 #include <iostream>
 #ifdef _WIN32
 #include "Scene/scene.hpp"
@@ -47,16 +46,29 @@ int main(int argc, const char* argv[]) {
     bool success;
     clock_t start, end;
     double cpu_time_used;
-#ifdef _WIN32
-    fs::path currentPath = fs::current_path();
-    fs::path path = currentPath / ".." / "src" / "Scene" / "tinyobjloader" / "models" / "triangle.obj";
+
+    std::string relativePath = "..\\src\\Scene\\tinyobjloader\\models\\";
+
+    // Prompt the user to enter the filename
+    std::cout << "Please enter the name of the OBJ file: ";
+    std::string userInput;
+    std::getline(std::cin, userInput);
+
+    // Concatenate the relative path and user input to form the complete file path
+    std::string fullPath = fs::current_path().string() + "\\" + relativePath + userInput;
+
+    // Convert the file path to a filesystem path
+    fs::path path(fullPath);
+
+    // Check if the file exists
+    if (!fs::exists(path)) {
+        std::cerr << "Error: File does not exist." << std::endl;
+        return 1;
+    }
+
+    // Load the scene using the provided file path
     std::string pathStr = path.string();
     success = scene.Load(pathStr);
-#elif __unix__ || __unix || __linux__
-    success = scene.Load("/home/robert/aulas/4ano/2sem/VI/TP/VI/projeto/src/Scene/tinyobjloader/models/cornell_box.obj");
-#elif __APPLE__
-    sucess = scene.load("/Users/psantos/VI-RT/VI-RT/VI-RT/Scene/tinyobjloader/models/triangle.obj");
-#endif
     if (!success) {
         std::cout << "ERROR!! :o\n";
         return 1;
