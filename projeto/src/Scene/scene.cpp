@@ -277,6 +277,10 @@ bool Scene::Load (const std::string &fname) {
         Ks.G = materials[i].specular[1];
         Ks.B = materials[i].specular[2];
 
+        Kt.R = materials[i].transmittance[0];
+        Kt.G = materials[i].transmittance[1];
+        Kt.B = materials[i].transmittance[2];
+
         Ns = materials[i].shininess;    // defaut = 1, if not defined in .mtl file
         
         // Assign mtl values to created BRDF
