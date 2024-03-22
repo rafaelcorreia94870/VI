@@ -47,16 +47,54 @@ int main(int argc, const char* argv[]) {
     clock_t start, end;
     double cpu_time_used;
 
+    // Image resolution
+    int W = 1024;
+    int H = 1024;
+    //Camera options
+    Point Eye ={ 280,275, -330 }, At={280,265, 0};
+    float fovW = 90.f;
+
+#ifdef _WIN32
+
+    // Get custom values from the user
+    std::cout << "Enter Eye point (X Y Z), or press Enter to use default (" << Eye.X << " " << Eye.Y << " " << Eye.Z << "): ";
+    std::string input;
+    std::getline(std::cin, input);
+    if (!input.empty()) {
+        std::istringstream iss(input);
+        float x, y, z;
+        iss >> Eye.X >> Eye.Y >> Eye.Z;
+    }
+
+    std::cout << "Enter At point (X Y Z), or press Enter to use default (" << At.X << " " << At.Y << " " << At.Z << "): ";
+    std::getline(std::cin, input);
+    if (!input.empty()) {
+        std::istringstream iss(input);
+        iss >> At.X >> At.Y >> At.Z;
+    }
+
+    std::cout << "Enter Resolution (W H fov), or press Enter to use default (" << W << " " << H << " " << fovW <<"): ";
+    std::getline(std::cin, input);
+    if (!input.empty()) {
+        std::istringstream iss(input);
+        iss >> W >> H >> fovW;
+    }
+
+    // Specify the relative directory path
     std::string relativePath = "..\\src\\Scene\\tinyobjloader\\models\\";
 
     // Prompt the user to enter the filename
-    std::cout << "Please enter the name of the OBJ file: ";
+    std::cout << "Please enter the name of the OBJ file (default: cornell_box): ";
     std::string userInput;
     std::getline(std::cin, userInput);
 
-    // Concatenate the relative path and user input to form the complete file path
-    std::string fullPath = fs::current_path().string() + "\\" + relativePath + userInput;
+    // Set default value if userInput is empty
+    if (userInput.empty()) {
+        userInput = "cornell_box";
+    }
 
+    // Concatenate the relative path and user input to form the complete file path
+    std::string fullPath = fs::current_path().string() + "\\" + relativePath + userInput + ".obj";
     // Convert the file path to a filesystem path
     fs::path path(fullPath);
 
@@ -69,6 +107,12 @@ int main(int argc, const char* argv[]) {
     // Load the scene using the provided file path
     std::string pathStr = path.string();
     success = scene.Load(pathStr);
+
+#elif __unix__ || __unix || __linux__
+    success = scene.Load("/home/robert/aulas/4ano/2sem/VI/TP/VI/projeto/src/Scene/tinyobjloader/models/cornell_box.obj");
+#elif __APPLE__
+    sucess = scene.load("/Users/psantos/VI-RT/VI-RT/VI-RT/Scene/tinyobjloader/models/triangle.obj");
+#endif
     if (!success) {
         std::cout << "ERROR!! :o\n";
         return 1;
@@ -79,23 +123,18 @@ int main(int argc, const char* argv[]) {
     scene.numLights++;
 
 
+
     std::cout << "Scene Load: SUCCESS!! :-)\n";
     scene.printSummary();
     std::cout << std::endl;
 
-    // Image resolution
-    const int W = 1024;
-    const int H = 1024;
-
     img = new ImagePPM(W, H);
 
     // Camera parameters
-    const Point Eye ={ 280,275, -330 }, At={280,265, 0};
     /*
     const Point Eye = { 0,125,-100 }, At = { 0, 125, 0 };
     */
     const Vector Up={0,1,0};
-    const float fovW = 90.f;
     const float fovH = fovW * (float)H/(float)W;  // in degrees
 
     const float fovWrad = fovW*0.0174533f, fovHrad = fovH*0.0174533f;    // to radians
