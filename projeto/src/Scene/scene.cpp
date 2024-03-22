@@ -77,19 +77,17 @@ static void PrintInfo (const ObjReader myObj) {
 
 bool Scene::Load (const std::string &fname) {
 
-#ifdef _WIN32
-    std::string inputfile = fname;
     tinyobj::ObjReaderConfig reader_config;
+#ifdef _WIN32
     fs::path currentPath = fs::current_path();
     fs::path path = currentPath / ".." / "src" / "Scene" / "tinyobjloader" / "models";
     std::string pathStr = path.string();
     reader_config.mtl_search_path = pathStr;
 #elif __unix__ || __unix || __linux__ || __APPLE__
-    std::string inputfile = "/home/robert/aulas/4ano/2sem/VI/TP/VI/projeto/src/Scene/tinyobjloader/models/cornell_box.obj";
-    tinyobj::ObjReaderConfig reader_config;
-    reader_config.mtl_search_path = "/home/robert/aulas/4ano/2sem/VI/TP/VI/projeto/src/Scene/tinyobjloader/models"; // Path to material files
+    reader_config.mtl_search_path = "src/Scene/tinyobjloader/models/"; // Path to material files
 #endif
 
+    std::string inputfile = fname;
     tinyobj::ObjReader reader;
 
     if (!reader.ParseFromFile(inputfile, reader_config)) {

@@ -17,8 +17,6 @@
 #include "Light/AmbientLight.hpp"
 #include "Light/PointLight.hpp"
 #include "Light/AreaLight.hpp"
-#include <filesystem>
-namespace fs = std::filesystem;
 #elif __unix__ || __unix || __linux__ || __APPLE__
 #include "scene.hpp"
 #include "perspective.hpp"
@@ -34,7 +32,8 @@ namespace fs = std::filesystem;
 #else
 #error "Unsupported operating system"
 #endif
-
+#include <filesystem>
+namespace fs = std::filesystem;
 #include <time.h>
 
 
@@ -54,7 +53,6 @@ int main(int argc, const char* argv[]) {
     Point Eye ={ 280,275, -330 }, At={280,265, 0};
     float fovW = 90.f;
 
-#ifdef _WIN32
 
     // Get custom values from the user
     std::cout << "Enter Eye point (X Y Z), or press Enter to use default (" << Eye.X << " " << Eye.Y << " " << Eye.Z << "): ";
@@ -79,9 +77,12 @@ int main(int argc, const char* argv[]) {
         std::istringstream iss(input);
         iss >> W >> H >> fovW;
     }
-
-    // Specify the relative directory path
-    std::string relativePath = "..\\src\\Scene\\tinyobjloader\\models\\";
+    
+    #ifdef _WIN32
+        std::string relativePath = "..\\src\\Scene\\tinyobjloader\\models\\";
+    #elif __unix__ || __unix || __linux__ || __APPLE__
+        std::string relativePath = "src/Scene/tinyobjloader/models/";
+    #endif
 
     // Prompt the user to enter the filename
     std::cout << "Please enter the name of the OBJ file (default: cornell_box): ";
@@ -94,9 +95,15 @@ int main(int argc, const char* argv[]) {
     }
 
     // Concatenate the relative path and user input to form the complete file path
-    std::string fullPath = fs::current_path().string() + "\\" + relativePath + userInput + ".obj";
+    #ifdef _WIN32
+        std::string fullPath = fs::current_path().string() + "\\" + relativePath + userInput + ".obj";
+    #elif __unix__ || __unix || __linux__ || __APPLE__
+        std::string fullPath = fs::current_path().string() + "/" + relativePath + userInput + ".obj";
+    #endif
+
     // Convert the file path to a filesystem path
     fs::path path(fullPath);
+
 
     // Check if the file exists
     if (!fs::exists(path)) {
@@ -108,11 +115,6 @@ int main(int argc, const char* argv[]) {
     std::string pathStr = path.string();
     success = scene.Load(pathStr);
 
-#elif __unix__ || __unix || __linux__
-    success = scene.Load("/home/robert/aulas/4ano/2sem/VI/TP/VI/projeto/src/Scene/tinyobjloader/models/cornell_box.obj");
-#elif __APPLE__
-    sucess = scene.load("/Users/psantos/VI-RT/VI-RT/VI-RT/Scene/tinyobjloader/models/triangle.obj");
-#endif
     if (!success) {
         std::cout << "ERROR!! :o\n";
         return 1;
