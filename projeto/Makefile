@@ -6,7 +6,7 @@ OBJ_DIR  := $(BUILD)/objects
 APP_DIR  := $(BUILD)
 SHELL	 := /bin/bash
 
-TARGET   := src
+TARGET   := renderer
 
 INCLUDE  := -Isrc/Camera/ -Isrc/Image -Isrc/Light -Isrc/Primitive -Isrc/Primitive/BRDF -Isrc/Primitive/Geometry -Isrc/Rays -Isrc/Renderer -Isrc/Scene -Isrc/Shader -Isrc/utils -Isrc/Scene/tinyobjloader/
 
@@ -19,6 +19,7 @@ SRC      :=                      \
    $(wildcard src/Renderer/*.cpp)         \
    $(wildcard src/Scene/*.cpp)         \
    $(wildcard src/Shader/*.cpp)         \
+   $(wildcard src/utils/*.cpp)         \
 
 OBJECTS  := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 DEPENDENCIES \
