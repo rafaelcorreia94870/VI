@@ -6,6 +6,7 @@
 //
 
 #include "StandardRenderer.hpp"
+#include <omp.h>
 
 void StandardRenderer::Render () {
     int W=0,H=0;  // resolution não percebo se e suposto tar a 0 ou meter aqui o valor que ta na main
@@ -14,8 +15,11 @@ void StandardRenderer::Render () {
     cam->getResolution(&W, &H);
     std::cout << "Resolution: " << W << "x" << H << "\n";
     
+    // use pragma omp to parallelize the rendering loop
+    #pragma omp parallel for schedule(dynamic, 20) num_threads(16)
     // main rendering loop: get primary rays from the camera until done
     for (int y=0 ; y< H ; y++) {  // loop over rows
+        #pragma omp parallel for schedule(dynamic, 20) num_threads(16)
         for (int x=0 ; x< W ; x++) { // loop over columns
 
             Ray primary;

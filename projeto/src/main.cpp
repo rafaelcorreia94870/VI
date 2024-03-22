@@ -79,14 +79,13 @@ int main(int argc, const char* argv[]) {
     scene.numLights++;
 
 
-
     std::cout << "Scene Load: SUCCESS!! :-)\n";
     scene.printSummary();
     std::cout << std::endl;
 
     // Image resolution
-    const int W = 1920;
-    const int H = 1080;
+    const int W = 1024;
+    const int H = 1024;
 
     img = new ImagePPM(W, H);
 

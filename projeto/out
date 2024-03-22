@@ -294,7 +294,7 @@ NÚMERO DE VÉRTICES REPETIDOS: 80
 Scene Load: SUCCESS!! :-)
 #primitives = 8 ; #lights = 1 ; #materials = 5 ;
 
-Resolution: 1920x1080
-Rendering time = 1.564 secs
+Resolution: 4096x4096
+Rendering time = 27.448 secs
 
 That's all, folks!

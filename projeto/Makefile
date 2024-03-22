@@ -1,9 +1,9 @@
-CXX      := g++ 
-CXXFLAGS := -std=c++20 -O3
+CXX      := g++
+CXXFLAGS := -pg -std=c++20 -O3 -fopenmp 
 LDFLAGS  := 
 BUILD    := ./build
 OBJ_DIR  := $(BUILD)/objects
-APP_DIR  := $(BUILD)/apps
+APP_DIR  := $(BUILD)
 SHELL	 := /bin/bash
 
 TARGET   := src
