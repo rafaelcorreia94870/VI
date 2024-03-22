@@ -25,16 +25,17 @@ void StandardRenderer::Render () {
           
             // Generate Ray (camera)
             bool success = cam->GenerateRay(x, y, &primary);
-            // print bullshit
-
+            if(!success) std::cout << "Failed to generate ray: " << x << " " << y << "\n";
+            
             // trace ray (scene)
             if(success) intersected = scene->trace(primary, &isect);
+            
             // shade this intersection (shader) - remember: depth=0
             color = shd->shade(intersected, isect, 0);
             
             // write the result into the image frame buffer (image)
-            img->set(x,y,color);
-            if(!success)std::cout << "Didnt give a color: " << success << "\n";
+            bool setColor = img->set(x,y,color);
+            if(!setColor)std::cout << "Didnt give a color: " << success << "\n";
 
             
         } // loop over columns

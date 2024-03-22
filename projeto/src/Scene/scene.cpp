@@ -85,7 +85,7 @@ bool Scene::Load (const std::string &fname) {
     std::string pathStr = path.string();
     reader_config.mtl_search_path = pathStr;
 #elif __unix__ || __unix || __linux__ || __APPLE__
-    std::string inputfile = "/home/robert/aulas/4ano/2sem/VI/TP/VI/projeto/src/Scene/tinyobjloader/models/triangle.obj";
+    std::string inputfile = "/home/robert/aulas/4ano/2sem/VI/TP/VI/projeto/src/Scene/tinyobjloader/models/cornell_box.obj";
     tinyobj::ObjReaderConfig reader_config;
     reader_config.mtl_search_path = "/home/robert/aulas/4ano/2sem/VI/TP/VI/projeto/src/Scene/tinyobjloader/models"; // Path to material files
 #endif
@@ -125,7 +125,7 @@ bool Scene::Load (const std::string &fname) {
         
 
         // Loop over faces(polygon)
-        std::cout << "----- [" << shapes[s].name << "] -----\n";
+        std::cout << "\n----- [" << shapes[s].name << "] -----\n";
         BB bb;
         for (size_t f = 0; f < m->numFaces; f++) {
             size_t fv = size_t(shapes[s].mesh.num_face_vertices[f]);
@@ -244,12 +244,10 @@ bool Scene::Load (const std::string &fname) {
         m->vertices = unique_vertices;
         m->numVertices = unique_vertices.size();
 
-        std::cout << "\n  VERTICES UNICOS: " << m->numVertices << "\n";
-
         // Define the primitive's Geometry as the mesh 
         m->bb = bb;
-        std::cout << "Bounding BOX MAX:\n\tX: " << m->bb.max.X << " Y: " << m->bb.max.Y << " Z: " << m->bb.max.Z <<"\n";
-        std::cout << "Bounding BOX MIN:\n\tX: " << m->bb.min.X << " Y: " << m->bb.min.Y << " Z: " << m->bb.min.Z << "\n";
+        std::cout << " BB max:\n\t(" << m->bb.max.X << ", " << m->bb.max.Y << ", " << m->bb.max.Z <<")\n";
+        std::cout << " BB min:\n\t(" << m->bb.min.X << ", " << m->bb.min.Y << ", " << m->bb.min.Z << ")\n";
 
         p->g = m;
         prims.push_back(p);
@@ -260,7 +258,8 @@ bool Scene::Load (const std::string &fname) {
     }
 
     std::cout << "NÚMERO DE VÉRTICES UNICOS: " << unicos << "\n";
-    std::cout << "NÚMERO DE VÉRTICES REPETIDOS: " << repetidos << "\n";
+    std::cout << "NÚMERO DE VÉRTICES REPETIDOS: " << repetidos << "\n\n";
+    std::cout << "---------------------------------------------------\n\n";
     
 
     // Loop over materials and add them to the BRDFs vector
@@ -303,6 +302,7 @@ bool Scene::trace (Ray r, Intersection *isect) {
     // iterate over all primitives
     for (auto prim_itr = prims.begin() ; prim_itr != prims.end() ; prim_itr++) {
         if ((*prim_itr)->g->intersect(r, &curr_isect)) {
+
             if (!intersection) { // first intersection
                 intersection = true;
                 *isect = curr_isect;
@@ -314,7 +314,6 @@ bool Scene::trace (Ray r, Intersection *isect) {
             }
         }
     }
-    // print if intersection
     return intersection;
 }
 

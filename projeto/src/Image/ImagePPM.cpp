@@ -47,7 +47,7 @@ bool ImagePPM::Save(std::string filename)
             << this->W << " " << this->H << "\n255\n";
         unsigned char r, g, b;
         // loop over each pixel in the image, clamp and convert to byte format
-        for (int i = 0; i < this->W * this->H; i += 3)
+        for (int i = 0; i < this->W * this->H; i++)
         {
             ofs << static_cast<unsigned char>(this->imageToSave[i].val[0]) << static_cast<unsigned char>(this->imageToSave[i].val[1]) << static_cast<unsigned char>(this->imageToSave[i].val[2]);
         }

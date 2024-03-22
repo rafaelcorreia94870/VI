@@ -53,7 +53,7 @@ int main(int argc, const char* argv[]) {
     std::string pathStr = path.string();
     success = scene.Load(pathStr);
 #elif __unix__ || __unix || __linux__
-    success = scene.Load("/home/robert/aulas/4ano/2sem/VI/TP/VI/projeto/src/Scene/tinyobjloader/models/triangle.obj");
+    success = scene.Load("/home/robert/aulas/4ano/2sem/VI/TP/VI/projeto/src/Scene/tinyobjloader/models/cornell_box.obj");
 #elif __APPLE__
     sucess = scene.load("/Users/psantos/VI-RT/VI-RT/VI-RT/Scene/tinyobjloader/models/triangle.obj");
 #endif
@@ -66,21 +66,23 @@ int main(int argc, const char* argv[]) {
     scene.lights.push_back(&ambient);
     scene.numLights++;
 
+
+
     std::cout << "Scene Load: SUCCESS!! :-)\n";
     scene.printSummary();
     std::cout << std::endl;
 
     // Image resolution
-    const int W = 127;
-    const int H = 127;
+    const int W = 1920;
+    const int H = 1080;
 
     img = new ImagePPM(W, H);
 
     // Camera parameters
-    /*
     const Point Eye ={ 280,275, -330 }, At={280,265, 0};
-    */
+    /*
     const Point Eye = { 0,125,-100 }, At = { 0, 125, 0 };
+    */
     const Vector Up={0,1,0};
     const float fovW = 90.f;
     const float fovH = fovW * (float)H/(float)W;  // in degrees

@@ -20,22 +20,8 @@
 // https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
 // Moller Trumbore intersection algorithm
 bool Triangle::intersect(Ray r, Intersection *isect) {
-    if (r.pix_x == 63 && r.pix_y==63) {
-        std::cout << "R DIR: " << r.dir.X << " " << r.dir.Y << " " << r.dir.Z << "\n";
-        std::cout << "R Origin: " << r.o.X << " " << r.o.Y << " " << r.o.Z << "\n";
-        std::cout << "R invDir: " << r.invDir.X << " " << r.invDir.Y << " " << r.invDir.Z << "\n";
-        std::cout << "R Dir: " << r.dir.X << " " << r.dir.Y << " " << r.dir.Z << "\n";
-        std::cout << "R BB MAX: " << this->bb.max.X << " " << this->bb.max.Y << " " << this->bb.max.Z << "\n";
-        std::cout << "R BB MIN: " << this->bb.min.X << " " << this->bb.min.Y << " " << this->bb.min.Z << "\n";
-
-        std::cout << "V1 (" << this->v1.X << ", " << this->v1.Y << ", " << this->v1.Z << ")\n";
-        std::cout << "V2 (" << this->v2.X << ", " << this->v2.Y << ", " << this->v2.Z << ")\n";
-        std::cout << "V3 (" << this->v3.X << ", " << this->v3.Y << ", " << this->v3.Z << ")\n";
-
-    }
 
     if (!bb.intersect(r)) {
-        std::cout << "BB intersect failed\n";
         return false;
     }
 
@@ -62,14 +48,12 @@ bool Triangle::intersect(Ray r, Intersection *isect) {
     s = v1.vec2point(r.o);
     u = ff * s.dot(h);
     if (u < 0.0 || u > 1.0) {
-        printf("NADA\n");
 
         return false;
     }
     q = s.cross(this->edge1);
     v = ff * r.dir.dot(q);
     if (v < 0.0 || u + v > 1.0) {
-        printf("NADA\n");
 
         return false;
     }
@@ -94,9 +78,7 @@ bool Triangle::intersect(Ray r, Intersection *isect) {
         
         isect->pix_x = r.pix_x;
         isect->pix_y = r.pix_y;
-
-        printf("Intersection at %f %f %f\n", pHit.X, pHit.Y, pHit.Z);
-
+        isect->isLight = false;
         return true;
     }
     else  {// This means that there is a line intersection but not a ray intersection.
