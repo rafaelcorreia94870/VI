@@ -6,7 +6,7 @@
 #include <sstream>
 
 #ifdef _WIN32
-    #include "utils/vector.hpp"
+    #include "../utils/vector.hpp"
 #elif __unix__ || __unix || __linux__ || __APPLE__
     #include "vector.hpp"
 #else

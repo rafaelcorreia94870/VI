@@ -12,6 +12,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(HEADERS
     utils/RGB.hpp
     utils/vector.hpp
+    utils/customValues.hpp
     3DSortingStruct/AccelStruct.hpp
     Camera/camera.hpp
     Camera/perspective.hpp
@@ -55,6 +56,7 @@ set(SOURCES
     Shader/DistributedShader.cpp
     Shader/PathTracerShader.cpp
     Shader/WhittedShader.cpp
+    utils/customValues.cpp
 )
 # Group source and header files by folder for Visual Studio
 foreach(file ${SOURCES} ${HEADERS})
