@@ -115,7 +115,9 @@ int main(int argc, const char* argv[]) {
         }
 
     // add an ambient light to the scene
+    
     AmbientLight ambient(RGB(0.9f, 0.9f, 0.9f));
+
     scene.lights.push_back(&ambient);
     scene.numLights++;
     // scene details

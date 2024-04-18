@@ -289,6 +289,13 @@ bool Scene::Load (const std::string &fname) {
         material->Ks = Ks;
         material->Ns = Ns;
         
+        if (i == 6) {
+            std::cout << "Ka: (" << Ka.R << ", " << Ka.G << ", " << Ka.B << ")\n"; 
+            std::cout << "Kd: (" << Kd.R << ", " << Kd.G << ", " << Kd.B << ")\n";
+            std::cout << "Ks: (" << Ks.R << ", " << Ks.G << ", " << Ks.B << ")\n";
+
+        }
+
         BRDFs.push_back(material);
     }
 

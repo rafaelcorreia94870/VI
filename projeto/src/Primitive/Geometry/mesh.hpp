@@ -36,6 +36,7 @@ typedef struct Face {
 class Mesh: public Geometry {
 private:
     bool TriangleIntersect (Ray r, Face f, Intersection *isect);
+    bool FaceIntersect(Ray r, Face f, Intersection *isect);
 public:
     int numFaces;
     std::vector<Face> faces;

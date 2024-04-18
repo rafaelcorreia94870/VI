@@ -37,9 +37,11 @@ void StandardRenderer::Render () {
             // shade this intersection (shader) - remember: depth=0
             color = shd->shade(intersected, isect, 0);
             
+
             // write the result into the image frame buffer (image)
             bool setColor = img->set(x,y,color);
             if(!setColor)std::cout << "Didnt give a color: " << success << "\n";
+            
 
             
         } // loop over columns

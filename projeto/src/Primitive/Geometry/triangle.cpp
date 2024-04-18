@@ -29,6 +29,7 @@ bool Triangle::intersect(Ray r, Intersection *isect) {
     // The dot ptoduct between the ray direction and the triangle normal will be 0
     // also we require the ray to incide on the object on the same side
     // as the normal. i.e. dot(normal,r.dir) < EPSILON
+    normal = normal.Faceforward(-1.f*r.dir);
     const float par = normal.dot(r.dir);
     if (par>(-EPSILON)) {
         return false;    // This ray is parallel to this triangle.
@@ -54,7 +55,6 @@ bool Triangle::intersect(Ray r, Intersection *isect) {
     q = s.cross(this->edge1);
     v = ff * r.dir.dot(q);
     if (v < 0.0 || u + v > 1.0) {
-
         return false;
     }
     // At this stage we can compute t to find out where the intersection point is on the line.
@@ -67,8 +67,8 @@ bool Triangle::intersect(Ray r, Intersection *isect) {
         // Fill Intersection data from triangle hit : pag 165
         Vector wo = -1.f * r.dir;
         // make sure the normal points to the same side of the surface as wo
-        Vector for_normal = normal;
-        for_normal.Faceforward(wo);
+        Vector for_normal = normal.Faceforward(wo);
+           
         isect->p = pHit;
         isect->gn = for_normal;
         isect->sn = for_normal;

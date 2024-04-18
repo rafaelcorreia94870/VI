@@ -5,7 +5,6 @@
 #else
     #error "Unsupported operating system"
 #endif
-
 // CHANGE DEFAULT VALUES HERE
 // global default values for eyeX, eyeY, eyeZ
 #define eyeX 280
@@ -20,7 +19,7 @@
 #define dH 1024
 #define dfovW 90.0f
 // global default values for filename
-#define dfilename "cornell_box"
+#define dfilename "cornell_box_VI"
 
 
 
