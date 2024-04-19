@@ -41,9 +41,19 @@ bool Perspective::GenerateRay(const int x, const int y, Ray *r, const float *cam
     Vector result;
     float xs = (2 * (x + 0.5) / this->W) - 1;
     float ys = ((2*((this->H-y-1)+0.5))/this->H) - 1;
+    float xc, yc;
 
-    float xc = xs * float(tan(this->fovW / 2));
-    float yc = ys * float(tan(this->fovH / 2));
+    if (cam_jitter == NULL) {
+        xc = 2.f * ((float)x + .5f) / W - 1.f;
+        yc = 2.f * ((float)(H - y - 1) + .5f) / H - 1.f;
+    }
+    else {
+        xc = 2.f * ((float)x + cam_jitter[0]) / W - 1.f;
+        yc = 2.f * ((float)(H - y - 1) + cam_jitter[1]) / H - 1.f;
+    }
+
+    //float xc = xs * float(tan(this->fovW / 2));
+    //float yc = ys * float(tan(this->fovH / 2));
 
     Vector xy1 = {xc, yc, 1};
 

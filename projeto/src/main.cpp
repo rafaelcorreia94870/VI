@@ -39,6 +39,27 @@
 namespace fs = std::filesystem;
 #include <time.h>
 
+//nao gosto de apontadores, mas e o que temos pra dar
+std::vector<AreaLight*> squareLight(Point p, float size) {
+    Point v1 = Point(p.X - size, p.Y, p.Z - size);
+    Point v2 = Point(p.X + size, p.Y, p.Z - size);
+    Point v3 = Point(p.X + size, p.Y, p.Z + size);
+    Point v4 = Point(p.X - size, p.Y, p.Z + size);
+    Vector n = Vector(0, 1, 0);
+
+    std::vector<AreaLight*> lights; 
+
+    AreaLight* l1 = new AreaLight(RGB(0.65, 0.65, 0.65), v1, v2, v3, n);
+    AreaLight* l2 = new AreaLight(RGB(0.65, 0.65, 0.65), v1, v3, v4, n);
+
+    lights.push_back(l1);
+    lights.push_back(l2);
+
+    return lights;
+}
+
+
+
 int main(int argc, const char* argv[]) {
     Scene scene;        // Scene
     Perspective* cam;   // Camera
@@ -116,10 +137,60 @@ int main(int argc, const char* argv[]) {
 
     // add an ambient light to the scene
     
-    AmbientLight ambient(RGB(0.9f, 0.9f, 0.9f));
+    AmbientLight ambient(RGB(0.05f, 0.05f, 0.05f));
 
     scene.lights.push_back(&ambient);
     scene.numLights++;
+
+    /*
+    PointLight pl1(RGB(0.65, 0.65, 0.65), Point(288, 508, 282));
+    scene.lights.push_back(&pl1);
+    scene.numLights++;
+
+    //make a circle of 10 lights around the pl1 light
+    for (int i = 0; i < 10; i++) {
+		float angle = i * 36.0f;
+		float x = 288 + 25 * cos(angle);
+		float z = 282 + 25 * sin(angle);
+		PointLight* pl = new PointLight(RGB(0.05, 0.05, 0.05), Point(x, 508, z));
+		scene.lights.push_back(pl);
+		scene.numLights++;
+	}
+
+    for (int i = 0; i < 10; i++) {
+        float angle = i * 36.0f;
+        float x = 288 + 50 * cos(angle);
+        float z = 282 + 50 * sin(angle);
+        PointLight* pl = new PointLight(RGB(0.10, 0.10, 0.10), Point(x, 508, z));
+        scene.lights.push_back(pl);
+        scene.numLights++;
+    }
+    */
+    //(RGB _power, Point _v1, Point _v2, Point _v3, Vector _n
+
+    /*
+    std::vector<AreaLight*> light_square = squareLight(Point(288, 508, 282), 4);
+
+    for (const auto& light : light_square) {
+        scene.lights.push_back(light);
+		scene.numLights++;
+    }
+    */
+    float size = 4;
+    Point p = Point(288, 508, 282);
+    Point v1 = Point(p.X - size, p.Y, p.Z - size);
+    Point v2 = Point(p.X + size, p.Y, p.Z - size);
+    Point v3 = Point(p.X + size, p.Y, p.Z + size);
+    Point v4 = Point(p.X - size, p.Y, p.Z + size);
+    Vector n = Vector(0, 1, 0);
+
+    AreaLight l1 = AreaLight(RGB(0.65, 0.65, 0.65), v1, v2, v3, n);
+    scene.lights.push_back(&l1);
+    scene.numLights++;
+    AreaLight l2 = AreaLight(RGB(0.65, 0.65, 0.65), v1, v3, v4, n);
+    scene.lights.push_back(&l2);
+    scene.numLights++;
+
     // scene details
     std::cout << "Scene Load: SUCCESS!! :-)\n";
     scene.printSummary();
@@ -136,7 +207,8 @@ int main(int argc, const char* argv[]) {
     
     // create the ambient shader
     RGB background(0.2f, 0.2f, 0.2f);
-    shd = new AmbientShader(&scene, background);
+    //shd = new WhittedShader(&scene, background);
+    shd = new DistributedShader(&scene, background);
 
 
     // declare the renderer
