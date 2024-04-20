@@ -10,7 +10,7 @@
 
 void StandardRenderer::Render () {
     int W=0,H=0;  // resolution não percebo se e suposto tar a 0 ou meter aqui o valor que ta na main
-    const bool jitter = true;
+    const bool jitter = false;
 
     // get resolution from the camera
     cam->getResolution(&W, &H);
@@ -36,12 +36,12 @@ void StandardRenderer::Render () {
                     success = cam->GenerateRay(x, y, &primary, jitterV);
                 }
                 else {
-                    success = cam->GenerateRay(x, y, &primary);
+                    success = cam->GenerateRay(x, y, &primary, NULL);
                 }
 
 
                 // trace ray (scene)
-                if (success) intersected = scene->trace(primary, &isect);
+                intersected = scene->trace(primary, &isect);
 
                 // shade this intersection (shader) - remember: depth=0
                 this_color = shd->shade(intersected, isect, 0);
@@ -52,12 +52,21 @@ void StandardRenderer::Render () {
                 // write the result into the image frame buffer (image)
             }
             color = color / float(spp);
+
             bool setColor = img->set(x, y, color);
+            
             if (!setColor) {
 				std::cerr << "Error setting color at pixel (" << x << ", " << y << ")" << std::endl;
 			}
 
 
         } // loop over columns
+
+        //FAZ ISTO MAIS BONITO ROBERT
+        if (y == 204) std::cout << "20% done";
+        if (y == 204*2) std::cout << "40% done";
+        if (y == 204 * 3) std::cout << "60% done";
+        if (y == 204 * 4) std::cout << "80% done";
+        if (y == 204 * 5) std::cout << "100% done";
     }   // loop over rows
 }

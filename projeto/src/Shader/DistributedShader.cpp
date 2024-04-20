@@ -26,6 +26,8 @@ RGB DistributedShader::directLighting (Intersection isect, Phong *f) {
                 RGB Ka = f->Ka;
                 this_l_color = Ka * l->L();
             }
+            color += this_l_color;
+            continue;
         }
         if (l->type == POINT_LIGHT) {  // is it a point light ?
             if (!f->Kd.isZero()) {
@@ -61,8 +63,11 @@ RGB DistributedShader::directLighting (Intersection isect, Phong *f) {
                     if (scene->visibility(shadow, Ldistance-EPSILON)) {  // if light source not occluded
                         this_l_color = Kd * L * cosL;
                     }
+
+                color += this_l_color;
                 } // end cosL > 0.
             }
+            continue;
         }
         if (l->type == AREA_LIGHT) {  // is it an area light ?
             
@@ -103,6 +108,7 @@ RGB DistributedShader::directLighting (Intersection isect, Phong *f) {
                 } // end cosL > 0.
                 color += this_l_color;
             }
+            continue;
         } // end area light
 
     } // for loop

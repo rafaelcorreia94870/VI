@@ -137,10 +137,12 @@ int main(int argc, const char* argv[]) {
 
     // add an ambient light to the scene
     
-    AmbientLight ambient(RGB(0.05f, 0.05f, 0.05f));
+   
+    AmbientLight ambient(RGB(0.01f, 0.01f, 0.01f));
 
     scene.lights.push_back(&ambient);
     scene.numLights++;
+    
 
     /*
     PointLight pl1(RGB(0.65, 0.65, 0.65), Point(288, 508, 282));
@@ -148,7 +150,7 @@ int main(int argc, const char* argv[]) {
     scene.numLights++;
 
     //make a circle of 10 lights around the pl1 light
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 2; i++) {
 		float angle = i * 36.0f;
 		float x = 288 + 25 * cos(angle);
 		float z = 282 + 25 * sin(angle);
@@ -157,7 +159,7 @@ int main(int argc, const char* argv[]) {
 		scene.numLights++;
 	}
 
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 2; i++) {
         float angle = i * 36.0f;
         float x = 288 + 50 * cos(angle);
         float z = 282 + 50 * sin(angle);
@@ -166,6 +168,7 @@ int main(int argc, const char* argv[]) {
         scene.numLights++;
     }
     */
+    
     //(RGB _power, Point _v1, Point _v2, Point _v3, Vector _n
 
     /*
@@ -176,20 +179,21 @@ int main(int argc, const char* argv[]) {
 		scene.numLights++;
     }
     */
-    float size = 4;
+
+    float size = 40;
     Point p = Point(288, 508, 282);
     Point v1 = Point(p.X - size, p.Y, p.Z - size);
     Point v2 = Point(p.X + size, p.Y, p.Z - size);
     Point v3 = Point(p.X + size, p.Y, p.Z + size);
     Point v4 = Point(p.X - size, p.Y, p.Z + size);
-    Vector n = Vector(0, 1, 0);
+    Vector n = Vector(0, -1, 0);
 
-    AreaLight l1 = AreaLight(RGB(0.65, 0.65, 0.65), v1, v2, v3, n);
+    AreaLight l1 = AreaLight(RGB(0.5, 0.5, 0.5), v1, v2, v3, n);
     scene.lights.push_back(&l1);
     scene.numLights++;
-    AreaLight l2 = AreaLight(RGB(0.65, 0.65, 0.65), v1, v3, v4, n);
-    scene.lights.push_back(&l2);
-    scene.numLights++;
+    //AreaLight l2 = AreaLight(RGB(0.8, 0.8, 0.8), v1, v3, v4, n);
+    //scene.lights.push_back(&l2);
+    //scene.numLights++;
 
     // scene details
     std::cout << "Scene Load: SUCCESS!! :-)\n";
