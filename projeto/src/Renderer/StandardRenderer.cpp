@@ -10,7 +10,7 @@
 
 void StandardRenderer::Render () {
     int W=0,H=0;  // resolution não percebo se e suposto tar a 0 ou meter aqui o valor que ta na main
-    const bool jitter = false;
+    const bool jitter = true;
 
     // get resolution from the camera
     cam->getResolution(&W, &H);
@@ -36,7 +36,7 @@ void StandardRenderer::Render () {
                     success = cam->GenerateRay(x, y, &primary, jitterV);
                 }
                 else {
-                    success = cam->GenerateRay(x, y, &primary, NULL);
+                    success = cam->GenerateRay(x, y, &primary);
                 }
 
 
@@ -51,6 +51,8 @@ void StandardRenderer::Render () {
 
                 // write the result into the image frame buffer (image)
             }
+            
+
             color = color / float(spp);
 
             bool setColor = img->set(x, y, color);
@@ -63,10 +65,10 @@ void StandardRenderer::Render () {
         } // loop over columns
 
         //FAZ ISTO MAIS BONITO ROBERT
-        if (y == 204) std::cout << "20% done";
-        if (y == 204*2) std::cout << "40% done";
-        if (y == 204 * 3) std::cout << "60% done";
-        if (y == 204 * 4) std::cout << "80% done";
-        if (y == 204 * 5) std::cout << "100% done";
+        if (y == H/5) std::cout << "20% done";
+        if (y == H*2/5) std::cout << "40% done";
+        if (y == H* 3/5) std::cout << "60% done";
+        if (y == H* 4/5) std::cout << "80% done";
+        if (y == H) std::cout << "100% done";
     }   // loop over rows
 }

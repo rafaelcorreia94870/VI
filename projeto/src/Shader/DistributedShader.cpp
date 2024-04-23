@@ -108,7 +108,6 @@ RGB DistributedShader::directLighting (Intersection isect, Phong *f) {
                 } // end cosL > 0.
                 color += this_l_color;
             }
-            continue;
         } // end area light
 
     } // for loop

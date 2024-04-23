@@ -75,7 +75,6 @@ static void PrintInfo (const ObjReader myObj) {
  Use tiny load to load .obj scene descriptions
  https://github.com/tinyobjloader/tinyobjloader
  */
-
 bool Scene::Load (const std::string &fname) {
 
     tinyobj::ObjReaderConfig reader_config;
@@ -324,6 +323,7 @@ bool Scene::trace (Ray r, Intersection *isect) {
             }
         }
     }
+    //ISTO NÃO FUNCIONA
     /*
     isect->isLight = false;
     for (auto l = lights.begin(); l != lights.end(); l++) {
@@ -344,7 +344,6 @@ bool Scene::trace (Ray r, Intersection *isect) {
             }
         }
     }
-
     */
 
     return intersection;

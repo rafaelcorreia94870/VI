@@ -17,6 +17,7 @@
 #error "Unsupported operating system"
 #endif
 #include <cfloat>
+#include <iostream>
 
 const float EPSILON=1e-3;
 

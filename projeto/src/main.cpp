@@ -40,22 +40,28 @@ namespace fs = std::filesystem;
 #include <time.h>
 
 //nao gosto de apontadores, mas e o que temos pra dar
-std::vector<AreaLight*> squareLight(Point p, float size) {
+void squareLight(Point p, float size, RGB intensity, std::vector<AreaLight*> *lights) {
     Point v1 = Point(p.X - size, p.Y, p.Z - size);
     Point v2 = Point(p.X + size, p.Y, p.Z - size);
     Point v3 = Point(p.X + size, p.Y, p.Z + size);
     Point v4 = Point(p.X - size, p.Y, p.Z + size);
-    Vector n = Vector(0, 1, 0);
+    Vector ex = v2.vec2point(v1); // Edge vector from v1 to v2
+    Vector fx = v3.vec2point(v1); // Edge vector from v1 to v3
 
-    std::vector<AreaLight*> lights; 
+    // Calculate face normal using the cross product
+    Vector n = ex.cross(fx);
 
-    AreaLight* l1 = new AreaLight(RGB(0.65, 0.65, 0.65), v1, v2, v3, n);
-    AreaLight* l2 = new AreaLight(RGB(0.65, 0.65, 0.65), v1, v3, v4, n);
 
-    lights.push_back(l1);
-    lights.push_back(l2);
+    // Normalize the face normal
+    n.normalize();
 
-    return lights;
+
+    AreaLight* l1 = new AreaLight(intensity, v1, v2, v3, n);
+    AreaLight* l2 = new AreaLight(intensity, v1, v3, v4, n);
+
+    lights->push_back(l1);
+    lights->push_back(l2);
+
 }
 
 
@@ -171,29 +177,46 @@ int main(int argc, const char* argv[]) {
     
     //(RGB _power, Point _v1, Point _v2, Point _v3, Vector _n
 
-    /*
-    std::vector<AreaLight*> light_square = squareLight(Point(288, 508, 282), 4);
+    std::vector<AreaLight*> light_square;
+    squareLight(Point(278, 508, 278), 60, RGB(0.7, 0.7, 0.7), &light_square);
 
-    for (const auto& light : light_square) {
-        scene.lights.push_back(light);
+    squareLight(Point(100, 508, 100), 60, RGB(0.2, 0.2, 0.2), &light_square);
+    squareLight(Point(100, 508, 450), 60, RGB(0.2, 0.2, 0.2), &light_square);
+    squareLight(Point(450, 508, 100), 60, RGB(0.2, 0.2, 0.2), &light_square);
+    squareLight(Point(450, 508, 450), 60, RGB(0.2, 0.2, 0.2), &light_square);
+    std::cout << "Number of lights: " << light_square.size() << std::endl;
+    for (auto l = light_square.begin(); l != light_square.end(); l++) {
+        scene.lights.push_back(*l);
 		scene.numLights++;
     }
-    */
-
+    
+    /*
     float size = 40;
     Point p = Point(288, 508, 282);
     Point v1 = Point(p.X - size, p.Y, p.Z - size);
     Point v2 = Point(p.X + size, p.Y, p.Z - size);
     Point v3 = Point(p.X + size, p.Y, p.Z + size);
     Point v4 = Point(p.X - size, p.Y, p.Z + size);
-    Vector n = Vector(0, -1, 0);
+    Vector ex = v2.vec2point(v1); // Edge vector from v1 to v2
+    Vector fx = v3.vec2point(v1); // Edge vector from v1 to v3
 
-    AreaLight l1 = AreaLight(RGB(0.5, 0.5, 0.5), v1, v2, v3, n);
+    // Calculate face normal using the cross product
+    Vector n = ex.cross(fx);
+
+
+    // Normalize the face normal
+    n.normalize();
+
+    AreaLight l1 = AreaLight(RGB(0.8, 0.8, 0.8), v1, v2, v3, n);
     scene.lights.push_back(&l1);
     scene.numLights++;
-    //AreaLight l2 = AreaLight(RGB(0.8, 0.8, 0.8), v1, v3, v4, n);
-    //scene.lights.push_back(&l2);
-    //scene.numLights++;
+    AreaLight l2 = AreaLight(RGB(0.8, 0.8, 0.8), v1, v3, v4, n);
+    scene.lights.push_back(&l2);
+    scene.numLights++;
+    */
+
+
+    
 
     // scene details
     std::cout << "Scene Load: SUCCESS!! :-)\n";
@@ -216,7 +239,7 @@ int main(int argc, const char* argv[]) {
 
 
     // declare the renderer
-    int spp=1;     // samples per pixel
+    int spp=16;     // samples per pixel
     StandardRenderer myRender (cam, &scene, img, shd, spp);
     // render
     start = clock();
