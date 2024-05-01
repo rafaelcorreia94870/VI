@@ -239,7 +239,7 @@ int main(int argc, const char* argv[]) {
 
 
     // declare the renderer
-    int spp=16;     // samples per pixel
+    int spp=4;     // samples per pixel
     StandardRenderer myRender (cam, &scene, img, shd, spp);
     // render
     start = clock();

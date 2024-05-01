@@ -23,9 +23,9 @@ void StandardRenderer::Render () {
             Ray primary;
             Intersection isect;
             bool intersected;
-            RGB color(0., 0., 0.), this_color(0.,0.,0.);
+            RGB color(0., 0., 0.);
             for (int ss = 0; ss < spp; ss++) {
-
+				RGB this_color(0., 0., 0.);
 
                 // Generate Ray (camera)
                 bool success = false;

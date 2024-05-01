@@ -106,7 +106,6 @@ RGB DistributedShader::directLighting (Intersection isect, Phong *f) {
                         color += (Kd * L * cosL) / l_pdf;
                     }
                 } // end cosL > 0.
-                color += this_l_color;
             }
         } // end area light
 
