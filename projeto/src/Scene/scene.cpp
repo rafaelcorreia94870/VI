@@ -323,8 +323,7 @@ bool Scene::trace (Ray r, Intersection *isect) {
             }
         }
     }
-    //ISTO NÃO FUNCIONA
-    
+
     isect->isLight = false;
     for (auto l = lights.begin(); l != lights.end(); l++) {
         if ((*l)->type == AREA_LIGHT) {
@@ -344,6 +343,7 @@ bool Scene::trace (Ray r, Intersection *isect) {
             }
         }
     }
+  
     
 
     return intersection;

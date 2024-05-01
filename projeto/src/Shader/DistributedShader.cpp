@@ -119,13 +119,11 @@ RGB DistributedShader::specularReflection (Intersection isect, Phong *f, int dep
     float pdf;
     
     // generate the specular ray
-    
     // IDEAL SPECULAR REFLECTION
     // direction R = 2 (N.V) N - V
     float cos = isect.gn.dot(isect.wo);
     Rdir = 2.f * cos * isect.gn - isect.wo;
     
-
     if (f->Ns < 1000) { // glossy materials
         // actual direction distributed around Rdir according to the cosine lobe
         // generate the cosine lobel sampled direction around (0,0,1)
@@ -168,7 +166,7 @@ RGB DistributedShader::specularReflection (Intersection isect, Phong *f, int dep
         intersected = scene->trace(specular, &s_isect);
 
         // shade this intersection
-        RGB Rcolor = shade (intersected, s_isect, depth+1);
+        RGB Rcolor = shade(intersected, s_isect, depth+1);
         
         //color = (f->Ks * cos_pow * Rcolor) /pdf ;
         color = (f->Ks  * Rcolor) /pdf ;
@@ -192,8 +190,9 @@ RGB DistributedShader::specularReflection (Intersection isect, Phong *f, int dep
         intersected = scene->trace(specular, &s_isect);
 
         // shade this intersection
-        RGB Rcolor = shade (intersected, s_isect, depth+1);
+        RGB Rcolor = shade(intersected, s_isect, depth+1);
         
+
         color = (f->Ks  * Rcolor)  ;
         return color;
     }
@@ -209,12 +208,14 @@ RGB DistributedShader::shade(bool intersected, Intersection isect, int depth) {
 
     Phong* f = (Phong*)isect.f;
 
+
     // if there is a specular component sample it
     if (!f->Ks.isZero() && depth < 4)
         color += specularReflection(isect, f, depth + 1);
 
     // if there is a diffuse component do direct light
-    if (!f->Kd.isZero()) color += directLighting(isect, f);
+    if (!f->Kd.isZero())
+        color += directLighting(isect, f);
 
     return color;
 
