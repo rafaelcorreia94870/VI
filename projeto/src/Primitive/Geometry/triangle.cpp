@@ -29,8 +29,8 @@ bool Triangle::intersect(Ray r, Intersection *isect) {
     // The dot ptoduct between the ray direction and the triangle normal will be 0
     // also we require the ray to incide on the object on the same side
     // as the normal. i.e. dot(normal,r.dir) < EPSILON
-    normal = normal.Faceforward(-1.f*r.dir);
-    const float par = normal.dot(r.dir);
+    Vector newnormal = normal.Faceforward(-1.f*r.dir);
+    const float par = newnormal.dot(r.dir);
     if (par>(-EPSILON)) {
         return false;    // This ray is parallel to this triangle.
     }
