@@ -5,6 +5,7 @@
 //  Created by Luis Paulo Santos on 30/01/2023.
 //
 #include <iostream>
+
 #ifdef _WIN32
     #include "Scene/scene.hpp"
     #include "Camera/perspective.hpp"
@@ -40,7 +41,7 @@ namespace fs = std::filesystem;
 #include <time.h>
 
 //nao gosto de apontadores, mas e o que temos pra dar
-void squareLight(Point p, float size, RGB intensity, std::vector<AreaLight*> *lights) {
+void squareLight(Point p, float size, RGB intensity, std::vector <Light *> *lights,int *num) {
     Point v1 = Point(p.X - size, p.Y, p.Z - size);
     Point v2 = Point(p.X + size, p.Y, p.Z - size);
     Point v3 = Point(p.X + size, p.Y, p.Z + size);
@@ -60,7 +61,9 @@ void squareLight(Point p, float size, RGB intensity, std::vector<AreaLight*> *li
     AreaLight* l2 = new AreaLight(intensity, v1, v3, v4, n);
 
     lights->push_back(l1);
+    (*num)++;
     lights->push_back(l2);
+    (*num)++;
 
 }
 
@@ -82,19 +85,29 @@ int main(int argc, const char* argv[]) {
     // Camera setup 
     Point Eye, At;
     float fovW;
+    
+    // Samples per pixel
+    int spp;
 
     // Options for the user to choose from
     if (argc > 1) {
         // if flag -d is set then use default values
         if (std::string(argv[1]) == "-d") {
-            defaultCornellBox(&Eye, &At, &fovW, &W, &H, &filename);
+            defaultCornellBox(&Eye, &At, &fovW, &W, &H, &spp, &filename);
             std::cout << "Using default values for " << filename << std::endl;
         }
         // if flag -t is set then use default values for triangle
         else if (std::string(argv[1]) == "-t"){
-            defaultTriangle(&Eye, &At, &fovW, &W, &H, &filename);
+            defaultTriangle(&Eye, &At, &fovW, &W, &H, &spp, &filename);
             std::cout << "Using default values for " << filename << std::endl;
         }
+        // if flag -r is set then use default values and custom resolution
+        else if (std::string(argv[1]) == "-r")
+        {
+            defaultCornellBox(&Eye, &At, &fovW, &W, &H, &spp, &filename);
+            getCustomFov(&fovW, &W, &H);
+        }
+        
         // if flag -h is set then print help
         else if (std::string(argv[1]) == "-h"){
             std::cout << "Usage: " << argv[0] << " [-d]" << std::endl;
@@ -113,7 +126,7 @@ int main(int argc, const char* argv[]) {
     }
     // If no options are set, get custom values from the user
     else {
-        getCustomValues(&Eye, &At, &fovW, &W, &H, &filename);
+        getCustomValues(&Eye, &At, &fovW, &W, &H, &spp, &filename);
     }
 
     // Concatenate the relative path and user input to form the complete file path
@@ -142,14 +155,10 @@ int main(int argc, const char* argv[]) {
         }
 
     // add an ambient light to the scene
-    
-   
     AmbientLight ambient(RGB(0.01f, 0.01f, 0.01f));
-
     scene.lights.push_back(&ambient);
     scene.numLights++;
     
-
     /*
     PointLight pl1(RGB(0.65, 0.65, 0.65), Point(288, 508, 282));
     scene.lights.push_back(&pl1);
@@ -177,46 +186,15 @@ int main(int argc, const char* argv[]) {
     
     //(RGB _power, Point _v1, Point _v2, Point _v3, Vector _n
 
+    // Area lights for the cornell box
     std::vector<AreaLight*> light_square;
-    squareLight(Point(278, 508, 278), 60, RGB(0.7, 0.7, 0.7), &light_square);
-
-    squareLight(Point(100, 508, 100), 60, RGB(0.2, 0.2, 0.2), &light_square);
-    squareLight(Point(100, 508, 450), 60, RGB(0.2, 0.2, 0.2), &light_square);
-    squareLight(Point(450, 508, 100), 60, RGB(0.2, 0.2, 0.2), &light_square);
-    squareLight(Point(450, 508, 450), 60, RGB(0.2, 0.2, 0.2), &light_square);
-    std::cout << "Number of lights: " << light_square.size() << std::endl;
-    for (auto l = light_square.begin(); l != light_square.end(); l++) {
-        scene.lights.push_back(*l);
-		scene.numLights++;
-    }
-    
-    /*
-    float size = 40;
-    Point p = Point(288, 508, 282);
-    Point v1 = Point(p.X - size, p.Y, p.Z - size);
-    Point v2 = Point(p.X + size, p.Y, p.Z - size);
-    Point v3 = Point(p.X + size, p.Y, p.Z + size);
-    Point v4 = Point(p.X - size, p.Y, p.Z + size);
-    Vector ex = v2.vec2point(v1); // Edge vector from v1 to v2
-    Vector fx = v3.vec2point(v1); // Edge vector from v1 to v3
-
-    // Calculate face normal using the cross product
-    Vector n = ex.cross(fx);
-
-
-    // Normalize the face normal
-    n.normalize();
-
-    AreaLight l1 = AreaLight(RGB(0.8, 0.8, 0.8), v1, v2, v3, n);
-    scene.lights.push_back(&l1);
-    scene.numLights++;
-    AreaLight l2 = AreaLight(RGB(0.8, 0.8, 0.8), v1, v3, v4, n);
-    scene.lights.push_back(&l2);
-    scene.numLights++;
+    int height = 547.99;
+    squareLight(Point(278, height, 278), 60, RGB(0.7, 0.7, 0.7), &(scene.lights), &(scene.numLights));
+    /* squareLight(Point(100, height, 100), 60, RGB(0.2, 0.2, 0.2),  &(scene.lights), &(scene.numLights));
+    squareLight(Point(100, height, 450), 60, RGB(0.2, 0.2, 0.2),  &(scene.lights), &(scene.numLights));
+    squareLight(Point(450, height, 100), 60, RGB(0.2, 0.2, 0.2),  &(scene.lights), &(scene.numLights));
+    squareLight(Point(450, height, 450), 60, RGB(0.2, 0.2, 0.2),  &(scene.lights), &(scene.numLights));
     */
-
-
-    
 
     // scene details
     std::cout << "Scene Load: SUCCESS!! :-)\n";
@@ -235,13 +213,12 @@ int main(int argc, const char* argv[]) {
     // create the ambient shader
     RGB background(0.2f, 0.2f, 0.2f);
     //shd = new WhittedShader(&scene, background);
-    shd = new DistributedShader(&scene, background);
+    //shd = new DistributedShader(&scene, background);
+    shd = new PathTracerShader(&scene, background);
 
-
-    // declare the renderer
-    int spp=4;     // samples per pixel
+    // setup the renderer
     StandardRenderer myRender (cam, &scene, img, shd, spp);
-    // render
+
     start = clock();
     myRender.Render();
     end = clock();

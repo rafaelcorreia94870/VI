@@ -18,9 +18,10 @@ void getCustomEyePoint(Point* Eye);
 void getCustomAtPoint(Point* At);
 void getCustomFov(float* fovW, int* W, int* H);
 void getCustomFilename(std::string* userInput);
+void getCustomSPP(int* spp);
 
-void getCustomValues(Point *Eye, Point *At, float *fovW, int *W, int *H, std::string *filename);
-void defaultCornellBox(Point *Eye, Point *At, float *fovW, int *W, int *H, std::string *filename);
-void defaultTriangle(Point *Eye, Point *At, float *fovW, int *W, int *H, std::string *filename);
+void getCustomValues(Point *Eye, Point *At, float *fovW, int *W, int *H, int *spp, std::string *filename);
+void defaultCornellBox(Point *Eye, Point *At, float *fovW, int *W, int *H, int *spp, std::string *filename);
+void defaultTriangle(Point *Eye, Point *At, float *fovW, int *W, int *H, int *spp, std::string *filename);
 
 #endif // CUSTOM_VALUES_HPP

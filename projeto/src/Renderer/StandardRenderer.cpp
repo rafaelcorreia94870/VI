@@ -65,10 +65,10 @@ void StandardRenderer::Render () {
         } // loop over columns
 
         //FAZ ISTO MAIS BONITO ROBERT
-        if (y == H/5) std::cout << "20% done";
-        if (y == H*2/5) std::cout << "40% done";
-        if (y == H* 3/5) std::cout << "60% done";
-        if (y == H* 4/5) std::cout << "80% done";
+        if (y == H/5) std::cout << "20% done ";
+        if (y == H*2/5) std::cout << "40% done ";
+        if (y == H* 3/5) std::cout << "60% done ";
+        if (y == H* 4/5) std::cout << "80% done ";
         if (y == H) std::cout << "100% done";
     }   // loop over rows
 }

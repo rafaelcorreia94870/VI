@@ -15,11 +15,14 @@
 #define atY 265
 #define atZ 0
 // global default values for W, H, fovW
-#define dW 1024
-#define dH 1024
+#define dW 200
+#define dH 200
 #define dfovW 90.0f
 // global default values for filename
 #define dfilename "cornell_box_VI"
+
+// global default value for spp
+#define dspp 4
 
 
 
@@ -80,26 +83,43 @@ void getCustomFilename(std::string *userInput) {
     }
 }
 
-void defaultCornellBox(Point *Eye, Point *At, float *fovW, int *W, int *H, std::string *filename) {
-    *W = 1024;
-    *H = 1024;
-    *Eye ={280, 275, -330}, *At = {280, 265, 0};
-    *fovW = 90.f;
-    *filename = "cornell_box";
+void defaultCornellBox(Point *Eye, Point *At, float *fovW, int *W, int *H, int *spp, std::string *filename) {
+    *W = dW;
+    *H = dH;
+    *Eye ={eyeX, eyeY, eyeZ}, *At = {atX, atY, atZ};
+    *fovW = dfovW;
+    *filename = dfilename;
+    *spp = dspp;
 }
 
-void defaultTriangle(Point *Eye, Point *At, float *fovW, int *W, int *H, std::string *filename) {
+void defaultTriangle(Point *Eye, Point *At, float *fovW, int *W, int *H, int *spp, std::string *filename) {
     *W = 512;
     *H = 512;
     *Eye ={0, 125, -200}, *At={0, 125, 0};
     *fovW = 90.f;
     *filename = "triangle";
+    *spp = 4;
 }
 
-void getCustomValues(Point *Eye, Point *At, float *fovW, int *W, int *H, std::string *filename) {
+void getCustomValues(Point *Eye, Point *At, float *fovW, int *W, int *H, int *spp, std::string *filename) {
     // Get custom values from the user
     getCustomEyePoint(Eye);
     getCustomAtPoint(At);
     getCustomFov(fovW, W, H);
     getCustomFilename(filename);
+    getCustomSPP(spp);
+}
+
+void getCustomSPP(int *spp) {
+    // Get custom values from the user
+    std::cout << "Enter the number of samples per pixel (default:" << dspp <<"): ";
+    std::string input;
+    std::getline(std::cin, input);
+    if (!input.empty()) {
+        std::istringstream iss(input);
+        iss >> *spp;
+    }
+    else {
+        *spp = dspp;
+    }
 }

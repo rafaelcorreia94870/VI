@@ -135,6 +135,7 @@ RGB PathTracerShader::directLighting (Intersection isect, Phong *f){
 RGB PathTracerShader::specularReflection (Intersection isect, Phong *f, int depth) {
     RGB color(0.,0.,0.);
     Vector Rdir, s_dir;
+    float pdf;
     
     // generate the specular ray
     
@@ -154,9 +155,21 @@ RGB PathTracerShader::specularReflection (Intersection isect, Phong *f, int dept
         rnd[1] = ((float)rand()) / ((float)RAND_MAX);
         
         Vector S_around_N;
-        //  generate s_dir
-        // ...
+        const float cos_theta = powf(rnd[1], 1./(f->Ns+1.));
+        S_around_N.Z = cos_theta;
+        const float aux_r1 = powf(rnd[1], 2./(f->Ns+1.));
+        S_around_N.Y = sinf(2.*M_PI*rnd[0])*sqrtf(1.-aux_r1);
+        S_around_N.X = cosf(2.*M_PI*rnd[0])*sqrtf(1.-aux_r1);
+        const float cos_pow = powf(cos_theta, f->Ns)/(2.f*M_PI);
+        pdf = (f->Ns+1.f)*cos_pow;
+
+        // generate a coordinate system from Rdir
+        Vector Rx, Ry;
+        Rdir.CoordinateSystem(&Rx, &Ry);
         
+        s_dir = S_around_N.Rotate  (Rx, Ry, Rdir);
+        //  */
+
         Ray specular(isect.p, s_dir);
         
         specular.pix_x = isect.pix_x;
@@ -176,7 +189,8 @@ RGB PathTracerShader::specularReflection (Intersection isect, Phong *f, int dept
         RGB Rcolor = shade (intersected, s_isect, depth+1);
         
         // evaluate this ray contribution, i.e., color
-        // ...
+        // *
+        color = (f->Ks  * Rcolor) /pdf ;
 
         return color;
 
@@ -209,6 +223,7 @@ RGB PathTracerShader::specularReflection (Intersection isect, Phong *f, int dept
 RGB PathTracerShader::diffuseReflection (Intersection isect, Phong *f, int depth) {
     RGB color(0.,0.,0.);
     Vector dir;
+    float pdf;
     
     // generate the specular ray
     
@@ -220,13 +235,16 @@ RGB PathTracerShader::diffuseReflection (Intersection isect, Phong *f, int depth
         
     Vector D_around_Z;
     // cosine sampling
-    // ...
-        
+    float cos_theta= D_around_Z.Z = sqrtf(rnd[1]);         
+    D_around_Z.Y = sinf(2.*M_PI*rnd[0])*sqrtf(1.-rnd[1]);
+    D_around_Z.X = cosf(2.*M_PI*rnd[0])*sqrtf(1.-rnd[1]);
+    pdf = cos_theta / ( M_PI );
+
     // generate a coordinate system from N
     Vector Rx, Ry;
     isect.gn.CoordinateSystem(&Rx, &Ry);
         
-    dir = D_around_Z.Rotate  (Rx, Ry, isect.gn);
+    dir = D_around_Z.Rotate(Rx, Ry, isect.gn);
         
     Ray diffuse(isect.p, dir);
         
@@ -245,7 +263,8 @@ RGB PathTracerShader::diffuseReflection (Intersection isect, Phong *f, int depth
 
     if (!d_isect.isLight) {  // if light source return 0 ; handled by direct
         // shade this intersection
-        // ...
+        RGB Rcolor = shade (intersected, d_isect, depth+1);
+        color = (f->Kd * cos_theta * Rcolor) /pdf ;
     }
     return color;
 
@@ -267,19 +286,39 @@ RGB PathTracerShader::shade(bool intersected, Intersection isect, int depth) {
     // get the BRDF
     Phong *f = (Phong *)isect.f;
     
+    /*
+    // Funciona bem
     if (depth <MAX_DEPTH) {
-        if (!f->Kd.isZero()) {
-            color += specularReflection (isect, f, depth) ;
-        }
-        if (!f->Kd.isZero()) {
-            color += diffuseReflection (isect, f, depth) ;
-        }
+        if (!f->Ks.isZero()) color+= specularReflection (isect, f, depth);
+        if (!f->Kd.isZero()) color+= diffuseReflection (isect, f, depth);
     }
+    // if there is a diffuse component do direct light
+    if (!f->Kd.isZero()) color += directLighting(isect, f);
+    return color;
 
     // if there is a diffuse component do direct light
     if (!f->Kd.isZero()) {
         color += directLighting(isect, f);
     }
-        
+    */  
+
+    // Russian roulette
+    float rnd_russian = ((float)rand()) / ((float)RAND_MAX);
+    if (depth <MAX_DEPTH || rnd_russian < continue_p) {
+    RGB lcolor;
+    // random select between specular and diffuse
+    float rnd = ((float)rand()) / ((float)RAND_MAX);
+    if (rnd < f->Ks.Y()) {
+        lcolor = specularReflection (isect, f, depth+1);
+    }
+    else {
+        lcolor = diffuseReflection (isect, f, depth+1);
+    }
+    if (depth<MAX_DEPTH) // No Russian roulette
+        color += lcolor;
+    else color += lcolor / continue_p;
+    }
+    // if there is a diffuse component do direct light
+    if (!f->Kd.isZero()) color += directLighting(isect, f);
     return color;
 };

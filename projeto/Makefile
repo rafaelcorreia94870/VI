@@ -1,6 +1,6 @@
 CXX      := g++
-CXXFLAGS := -pg -std=c++20 -O3 -fopenmp 
-LDFLAGS  := 
+CXXFLAGS := -pg -std=c++20 -O3 -fopenmp
+LDFLAGS  := -lglfw -lGLU -lGL -lXrandr -lXxf86vm -lXi -lXinerama -lX11 -lrt -ldl
 BUILD    := ./build
 OBJ_DIR  := $(BUILD)/objects
 APP_DIR  := $(BUILD)

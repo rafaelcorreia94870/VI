@@ -26,6 +26,10 @@ typedef struct BB {
 public:
     Point min, max;
     bool hasPoint = false;
+    BB () {
+        min = Point(-FLT_MAX,-FLT_MAX,-FLT_MAX);
+        max = Point(FLT_MAX,FLT_MAX,FLT_MAX);
+    }
     void update (Point p) {
         if (!hasPoint) {
             this->min = p;

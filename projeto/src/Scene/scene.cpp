@@ -124,7 +124,7 @@ bool Scene::Load (const std::string &fname) {
 
         // Loop over faces(polygon)
         std::cout << "\n----- [" << shapes[s].name << "] -----\n";
-        BB bb;
+        BB *bb= new BB();
         for (size_t f = 0; f < m->numFaces; f++) {
             size_t fv = size_t(shapes[s].mesh.num_face_vertices[f]);
             std::cout << "\nTriangle " << f+1 << "/" << m->numFaces << "\n";
@@ -176,7 +176,7 @@ bool Scene::Load (const std::string &fname) {
                 std::cout << "  v[" << idx.vertex_index << "]: ("
                     << vert.X << ", " << vert.Y << ", " << vert.Z << ")\n";
                 face_vertices.push_back(vert);
-                bb.update(vert);
+                bb->update(vert);
 
                 // Check if `normal_index` is zero or positive. negative = no normal data
                 if (idx.normal_index >= 0) {
@@ -243,7 +243,7 @@ bool Scene::Load (const std::string &fname) {
         m->numVertices = unique_vertices.size();
 
         // Define the primitive's Geometry as the mesh 
-        m->bb = bb;
+        m->bb = *bb;
         std::cout << " BB max:\n\t(" << m->bb.max.X << ", " << m->bb.max.Y << ", " << m->bb.max.Z <<")\n";
         std::cout << " BB min:\n\t(" << m->bb.min.X << ", " << m->bb.min.Y << ", " << m->bb.min.Z << ")\n";
 
@@ -324,7 +324,10 @@ bool Scene::trace (Ray r, Intersection *isect) {
         }
     }
 
-    isect->isLight = false;
+    if(isect->pix_x!= -1){
+
+    
+     isect->isLight = false;
     for (auto l = lights.begin(); l != lights.end(); l++) {
         if ((*l)->type == AREA_LIGHT) {
             AreaLight* al = (AreaLight*)*l;
@@ -342,8 +345,8 @@ bool Scene::trace (Ray r, Intersection *isect) {
                 }
             }
         }
-    }
-  
+    } 
+  }
     
 
     return intersection;

@@ -176,7 +176,7 @@ RGB DistributedShader::specularReflection (Intersection isect, Phong *f, int dep
     else {          // ideal specular reflection
         Ray specular(isect.p, Rdir);
         
-        specular.pix_x = isect.pix_x;
+        specular.pix_x = -1;
         specular.pix_y = isect.pix_y;
         
         specular.FaceID = isect.FaceID;
