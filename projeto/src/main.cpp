@@ -5,6 +5,7 @@
 //  Created by Luis Paulo Santos on 30/01/2023.
 //
 #include <iostream>
+#include <GLFW/glfw3.h>
 
 #ifdef _WIN32
     #include "Scene/scene.hpp"
@@ -32,6 +33,8 @@
     #include "PointLight.hpp"
     #include "AreaLight.hpp"
     #include "customValues.hpp"
+    #include "Window.hpp"
+
 #else
     #error "Unsupported operating system"
 #endif
@@ -230,5 +233,13 @@ int main(int argc, const char* argv[]) {
     // print rendering time
     fprintf (stdout, "Rendering time = %.3lf secs\n\n", cpu_time_used);
     std::cout << "That's all, folks!" << std::endl;
+
+    // Create an instance of the Window class
+
+    Window window(W, H, filename.c_str());
+
+    // Render the image in the window
+    window.render(img->getData());
+
     return 0;
 }

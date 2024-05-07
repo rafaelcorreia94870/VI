@@ -11,16 +11,24 @@
 #include "image.hpp"
 
 class ImagePPM: public Image {
+private:
     typedef struct {
         unsigned char val[3];  // r,g,b
     } PPM_pixel;
     PPM_pixel *imageToSave;
-    void ToneMap ();
+    void ToneMap();
 
 public:
-    ImagePPM(const int W, const int H):Image(W, H) {}
-    bool Save (std::string filename);
+    ImagePPM(const int W, const int H):Image(W, H) {
+        imageToSave = new PPM_pixel[W*H];
+    }
+    ~ImagePPM() {
+        if (imageToSave != nullptr) delete[] imageToSave;
+    }
+    bool Save(std::string filename);
+    const unsigned char* getData() const;
     Image readPPM(const char* filename);
 };
 
 #endif /* ImagePPM_hpp */
+

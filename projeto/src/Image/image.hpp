@@ -13,7 +13,6 @@
 
 #ifdef _WIN32
 #include "../utils/RGB.hpp"
-
 #elif __unix__ || __unix || __linux__ || __APPLE__
 #include "RGB.hpp"
 #else
@@ -25,26 +24,27 @@ protected:
     RGB *imagePlane;
     int W,H;
 public:
-
-    Image(): W(0),H(0),imagePlane(NULL) {}
-    Image(const int W, const int H): W(W),H(H) {
+    Image(): W(0), H(0), imagePlane(nullptr) {}
+    Image(const int W, const int H): W(W), H(H) {
         imagePlane = new RGB[W*H];
         memset((void *)imagePlane, 0, W*H*sizeof(RGB));  // set image plane to 0
     }
     ~Image() {
-        if (imagePlane!=NULL) delete[] imagePlane;
+        if (imagePlane != nullptr) delete[] imagePlane;
     }
-    bool set (int x, int y, const RGB &rgb) {
-        if (x>W || y>H) return false;
+    bool set(int x, int y, const RGB &rgb) {
+        if (x >= W || y >= H || x < 0 || y < 0) return false;
         imagePlane[y*W+x] = rgb;
         return true;
     }
-    bool add (int x, int y, const RGB &rgb) {
-        if (x>W || y>H) return false;
+    bool add(int x, int y, const RGB &rgb) {
+        if (x >= W || y >= H || x < 0 || y < 0) return false;
         imagePlane[y*W+x] += rgb;
         return true;
     }
-    bool Save (std::string filename) {return true;}
+    const RGB* getData() const { return imagePlane; }
+    bool Save(std::string filename) { return true; }
 };
 
 #endif /* image_hpp */
+

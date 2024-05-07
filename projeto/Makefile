@@ -8,7 +8,7 @@ SHELL	 := /bin/bash
 
 TARGET   := renderer
 
-INCLUDE  := -Isrc/Camera/ -Isrc/Image -Isrc/Light -Isrc/Primitive -Isrc/Primitive/BRDF -Isrc/Primitive/Geometry -Isrc/Rays -Isrc/Renderer -Isrc/Scene -Isrc/Shader -Isrc/utils -Isrc/Scene/tinyobjloader/
+INCLUDE  := -Isrc/Camera/ -Isrc/Image -Isrc/Light -Isrc/Primitive -Isrc/Primitive/BRDF -Isrc/Primitive/Geometry -Isrc/Rays -Isrc/Renderer -Isrc/Scene -Isrc/Shader -Isrc/Window -Isrc/utils -Isrc/Scene/tinyobjloader/
 
 SRC      :=                      \
    $(wildcard src/*.cpp) \
@@ -19,6 +19,7 @@ SRC      :=                      \
    $(wildcard src/Renderer/*.cpp)         \
    $(wildcard src/Scene/*.cpp)         \
    $(wildcard src/Shader/*.cpp)         \
+   $(wildcard src/Window/*.cpp)         \
    $(wildcard src/utils/*.cpp)         \
 
 OBJECTS  := $(SRC:%.cpp=$(OBJ_DIR)/%.o)

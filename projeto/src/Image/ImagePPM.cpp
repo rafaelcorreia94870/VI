@@ -105,3 +105,16 @@ Image readPPM(const char *filename)
 
     return src;
 }
+
+const unsigned char* ImagePPM::getData() const {
+    // Convert the image data to the appropriate format for OpenGL
+    unsigned char* imageData = new unsigned char[W * H * 3]; // Allocate memory for the image data
+    for (int i = 0; i < W * H; ++i) {
+        imageData[i * 3] = static_cast<unsigned char>(imageToSave[i].val[0]); // Red channel
+        imageData[i * 3 + 1] = static_cast<unsigned char>(imageToSave[i].val[1]); // Green channel
+        imageData[i * 3 + 2] = static_cast<unsigned char>(imageToSave[i].val[2]); // Blue channel
+    }
+    return imageData;
+}
+
+

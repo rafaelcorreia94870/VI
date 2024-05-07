@@ -1,1 +1,0 @@
-Enter Eye point (X Y Z), or press Enter to use default (280, 275, -330): Enter At point (X Y Z), or press Enter to use default (280, 265, 0): Enter Resolution (W H fov), or press Enter to use default (1024, 1024, 90): 

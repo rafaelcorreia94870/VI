@@ -15,8 +15,8 @@
 #define atY 265
 #define atZ 0
 // global default values for W, H, fovW
-#define dW 200
-#define dH 200
+#define dW 256
+#define dH 256
 #define dfovW 90.0f
 // global default values for filename
 #define dfilename "cornell_box_VI"
