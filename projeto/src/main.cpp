@@ -5,9 +5,9 @@
 //  Created by Luis Paulo Santos on 30/01/2023.
 //
 #include <iostream>
-#include <GLFW/glfw3.h>
 
 #ifdef _WIN32
+    #include "Window/Window.hpp"
     #include "Scene/scene.hpp"
     #include "Camera/perspective.hpp"
     #include "Renderer/StandardRenderer.hpp"
@@ -21,6 +21,7 @@
     #include "Light/AreaLight.hpp"
     #include "utils/customValues.hpp"
 #elif __unix__ || __unix || __linux__ || __APPLE__
+    #include <GLFW/glfw3.h>
     #include "scene.hpp"
     #include "perspective.hpp"
     #include "StandardRenderer.hpp"

@@ -1,8 +1,11 @@
-#ifndef WINDOW_HPP
-#define WINDOW_HPP
+
 
 #include <GLFW/glfw3.h>
 
+
+
+#ifndef WINDOW_HPP
+#define WINDOW_HPP
 class Window {
 private:
     GLFWwindow* window;

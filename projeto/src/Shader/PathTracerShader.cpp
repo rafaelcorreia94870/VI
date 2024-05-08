@@ -7,6 +7,8 @@
 
 #include "PathTracerShader.hpp"
 #include <stdlib.h>
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include <math.h>
 
 //#include "DEB.h"
@@ -158,7 +160,7 @@ RGB PathTracerShader::specularReflection (Intersection isect, Phong *f, int dept
         const float cos_theta = powf(rnd[1], 1./(f->Ns+1.));
         S_around_N.Z = cos_theta;
         const float aux_r1 = powf(rnd[1], 2./(f->Ns+1.));
-        S_around_N.Y = sinf(2.*M_PI*rnd[0])*sqrtf(1.-aux_r1);
+        S_around_N.Y = sinf(2.* M_PI *rnd[0])*sqrtf(1.-aux_r1);
         S_around_N.X = cosf(2.*M_PI*rnd[0])*sqrtf(1.-aux_r1);
         const float cos_pow = powf(cos_theta, f->Ns)/(2.f*M_PI);
         pdf = (f->Ns+1.f)*cos_pow;
