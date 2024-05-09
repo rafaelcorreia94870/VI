@@ -36,3 +36,4 @@ or already have CMAKE VERSION 3.10 or up.
 ## Screenshots
 
 ![Screenshot 1](images/screenshot1.png)
+![Screenshot 2](images/screenshot2.png)
