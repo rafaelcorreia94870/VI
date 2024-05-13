@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include <iostream>
 
-#include <GLES2/gl2.h>
+
 
 Window::Window(int width, int height, const char* title) : width(width), height(height) {
     // Initialize GLFW
@@ -31,7 +31,7 @@ Window::Window(int width, int height, const char* title) : width(width), height(
     glLoadIdentity();
 
     // Bind default framebuffer
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    //glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
