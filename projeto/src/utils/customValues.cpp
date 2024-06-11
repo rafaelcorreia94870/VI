@@ -1,9 +1,9 @@
 #ifdef _WIN32
-    #include "../utils/customValues.hpp"    
+#include "../utils/customValues.hpp"
 #elif __unix__ || __unix || __linux__ || __APPLE__
-    #include "customValues.hpp"
+#include "customValues.hpp"
 #else
-    #error "Unsupported operating system"
+#error "Unsupported operating system"
 #endif
 // CHANGE DEFAULT VALUES HERE
 // global default values for eyeX, eyeY, eyeZ
@@ -22,86 +22,98 @@
 #define dfilename "cornell_box_VI"
 
 // global default value for spp
-#define dspp 4
+#define dspp 16
 
-
-
-void getCustomEyePoint(Point *Eye) {
+void getCustomEyePoint(Point *Eye)
+{
     // Get custom values from the user
     std::cout << "Enter Eye point (X Y Z), or press Enter to use default (" << eyeX << ", " << eyeY << ", " << eyeZ << "): ";
     std::string input;
     std::getline(std::cin, input);
-    if (!input.empty()) {
+    if (!input.empty())
+    {
         std::istringstream iss(input);
         iss >> Eye->X >> Eye->Y >> Eye->Z;
     }
-    else {
+    else
+    {
         Eye->X = eyeX;
         Eye->Y = eyeY;
         Eye->Z = eyeZ;
     }
 }
 
-void getCustomAtPoint(Point *At) {
+void getCustomAtPoint(Point *At)
+{
     // Get custom values from the user
     std::cout << "Enter At point (X Y Z), or press Enter to use default (" << atX << ", " << atY << ", " << atZ << "): ";
     std::string input;
     std::getline(std::cin, input);
-    if (!input.empty()) {
+    if (!input.empty())
+    {
         std::istringstream iss(input);
         iss >> At->X >> At->Y >> At->Z;
     }
-    else {
+    else
+    {
         At->X = atX;
         At->Y = atY;
         At->Z = atZ;
     }
 }
 
-void getCustomFov(float *fovW, int *W, int *H) {
+void getCustomFov(float *fovW, int *W, int *H)
+{
     std::cout << "Enter Resolution (W H fov), or press Enter to use default (" << dW << ", " << dH << ", " << dfovW << "): ";
     std::string input;
     std::getline(std::cin, input);
 
-    if (!input.empty()) {
+    if (!input.empty())
+    {
         std::istringstream iss(input);
         iss >> *W >> *H >> *fovW;
     }
-    else {
+    else
+    {
         *W = dW;
         *H = dH;
         *fovW = dfovW;
     }
 }
 
-void getCustomFilename(std::string *userInput) {
+void getCustomFilename(std::string *userInput)
+{
     // Prompt the user to enter the filename
     std::cout << "Please enter the name of the OBJ file (default: " << dfilename << "): ";
     std::getline(std::cin, *userInput);
-    if (userInput->empty()) {
+    if (userInput->empty())
+    {
         *userInput = dfilename;
     }
 }
 
-void defaultCornellBox(Point *Eye, Point *At, float *fovW, int *W, int *H, int *spp, std::string *filename) {
+void defaultCornellBox(Point *Eye, Point *At, float *fovW, int *W, int *H, int *spp, std::string *filename)
+{
     *W = dW;
     *H = dH;
-    *Eye ={eyeX, eyeY, eyeZ}, *At = {atX, atY, atZ};
+    *Eye = {eyeX, eyeY, eyeZ}, *At = {atX, atY, atZ};
     *fovW = dfovW;
     *filename = dfilename;
     *spp = dspp;
 }
 
-void defaultTriangle(Point *Eye, Point *At, float *fovW, int *W, int *H, int *spp, std::string *filename) {
+void defaultTriangle(Point *Eye, Point *At, float *fovW, int *W, int *H, int *spp, std::string *filename)
+{
     *W = 512;
     *H = 512;
-    *Eye ={0, 125, -200}, *At={0, 125, 0};
+    *Eye = {0, 125, -200}, *At = {0, 125, 0};
     *fovW = 90.f;
     *filename = "triangle";
     *spp = 4;
 }
 
-void getCustomValues(Point *Eye, Point *At, float *fovW, int *W, int *H, int *spp, std::string *filename) {
+void getCustomValues(Point *Eye, Point *At, float *fovW, int *W, int *H, int *spp, std::string *filename)
+{
     // Get custom values from the user
     getCustomEyePoint(Eye);
     getCustomAtPoint(At);
@@ -110,16 +122,19 @@ void getCustomValues(Point *Eye, Point *At, float *fovW, int *W, int *H, int *sp
     getCustomSPP(spp);
 }
 
-void getCustomSPP(int *spp) {
+void getCustomSPP(int *spp)
+{
     // Get custom values from the user
-    std::cout << "Enter the number of samples per pixel (default:" << dspp <<"): ";
+    std::cout << "Enter the number of samples per pixel (default:" << dspp << "): ";
     std::string input;
     std::getline(std::cin, input);
-    if (!input.empty()) {
+    if (!input.empty())
+    {
         std::istringstream iss(input);
         iss >> *spp;
     }
-    else {
+    else
+    {
         *spp = dspp;
     }
 }

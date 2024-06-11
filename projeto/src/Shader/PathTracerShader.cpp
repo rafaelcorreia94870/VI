@@ -216,7 +216,7 @@ RGB PathTracerShader::specularReflection (Intersection isect, Phong *f, int dept
         // shade this intersection
         RGB Rcolor = shade (intersected, s_isect, depth+1);
         
-        color = (f->Ks  * Rcolor)  ;
+        color = (f->Ks  * Rcolor);
         return color;
     }
     
@@ -304,6 +304,7 @@ RGB PathTracerShader::shade(bool intersected, Intersection isect, int depth) {
     }
     */  
 
+    
     // Russian roulette
     float rnd_russian = ((float)rand()) / ((float)RAND_MAX);
     if (depth <MAX_DEPTH || rnd_russian < continue_p) {
