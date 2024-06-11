@@ -20,6 +20,7 @@
 #include "Light/PointLight.hpp"
 #include "Light/AreaLight.hpp"
 #include "utils/customValues.hpp"
+#include "Renderer/ProgressiveRenderer.hpp"
 #elif __unix__ || __unix || __linux__ || __APPLE__
 #include <GLFW/glfw3.h>
 #include "scene.hpp"

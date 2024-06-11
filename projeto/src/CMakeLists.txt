@@ -33,6 +33,7 @@ set(HEADERS
     Rays/ray.hpp
     Renderer/renderer.hpp
     Renderer/StandardRenderer.hpp
+    Renderer/ProgressiveRenderer.hpp
     Scene/scene.hpp
     Scene/tinyobjloader/tiny_obj_loader.h
     Shader/shader.hpp
@@ -52,6 +53,7 @@ set(SOURCES
     Primitive/Geometry/triangle.cpp
     Primitive/Geometry/mesh.cpp
     Renderer/StandardRenderer.cpp
+    Renderer/ProgressiveRenderer.cpp
     Scene/scene.cpp
     Shader/AmbientShader.cpp
     Shader/DistributedShader.cpp
