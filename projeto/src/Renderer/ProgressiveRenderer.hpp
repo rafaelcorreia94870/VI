@@ -13,13 +13,14 @@ private:
     int width;
     int height;
     int frameCount;
+    bool jitter;
     Window *window; // Add this member
 public:
-    ProgressiveRenderer(Camera *cam, Scene *scene, Image *img, Shader *shd, int _spp, Window *window)
+    ProgressiveRenderer(Camera *cam, Scene *scene, Image *img, Shader *shd, int _spp, Window *window, bool _jitter)
         : Renderer(cam, scene, img, shd), window(window)
     {
         spp = _spp;
-        cam->getResolution(&width, &height);
+        jitter = _jitter;
         frameCount = 0;
     }
 

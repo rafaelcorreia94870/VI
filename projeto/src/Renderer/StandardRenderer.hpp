@@ -14,11 +14,13 @@ class StandardRenderer : public Renderer
 {
 private:
     int spp;
+    bool jitter;
 
 public:
-    StandardRenderer(Camera *cam, Scene *scene, Image *img, Shader *shd, int _spp) : Renderer(cam, scene, img, shd)
+    StandardRenderer(Camera *cam, Scene *scene, Image *img, Shader *shd, int _spp, bool _jitter) : Renderer(cam, scene, img, shd)
     {
         spp = _spp;
+        jitter = _jitter;
     }
     void Render();
 };

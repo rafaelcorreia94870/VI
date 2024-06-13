@@ -48,6 +48,13 @@ namespace fs = std::filesystem;
 #include <time.h>
 #include <ctime>
 
+#define STD_RENDERER 0
+#define PROGR_RENDERER 1
+
+#define WHITTED_SHADER 0
+#define DISTRIBUTED_SHADER 1
+#define PATH_TRACER_SHADER 2
+
 // nao gosto de apontadores, mas e o que temos pra dar
 void squareLight(Point p, float size, RGB intensity, std::vector<Light *> *lights, int *num)
 {
@@ -91,7 +98,7 @@ int main(int argc, const char *argv[])
     Point Eye, At;
     float fovW;
 
-    // Samples per pixel
+    // Number of samples per pixel
     int spp;
 
     // Options for the user to choose from
@@ -166,51 +173,13 @@ int main(int argc, const char *argv[])
         std::cout << "ERROR!! :o\n";
         return 1;
     }
+    std::cout << "Scene Loaded.\n";
 
     // add an ambient light to the scene
     AmbientLight ambient(RGB(0.01f, 0.01f, 0.01f));
     scene.lights.push_back(&ambient);
     scene.numLights++;
 
-    /* PointLight pl1(RGB(0.65, 0.65, 0.65), Point(288, 508, 282));
-    scene.lights.push_back(&pl1);
-    scene.numLights++; */
-
-    /*
-    //make a circle of 10 lights around the pl1 light
-    for (int i = 0; i < 2; i++) {
-        float angle = i * 36.0f;
-        float x = 288 + 25 * cos(angle);
-        float z = 282 + 25 * sin(angle);
-        PointLight* pl = new PointLight(RGB(0.05, 0.05, 0.05), Point(x, 508, z));
-        scene.lights.push_back(pl);
-        scene.numLights++;
-    }
-
-    for (int i = 0; i < 2; i++) {
-        float angle = i * 36.0f;
-        float x = 288 + 50 * cos(angle);
-        float z = 282 + 50 * sin(angle);
-        PointLight* pl = new PointLight(RGB(0.10, 0.10, 0.10), Point(x, 508, z));
-        scene.lights.push_back(pl);
-        scene.numLights++;
-    }
-    */
-
-    //(RGB _power, Point _v1, Point _v2, Point _v3, Vector _n
-
-    // Area lights for the cornell box
-    std::vector<AreaLight *> light_square;
-    int height = 547.99;
-    squareLight(Point(278, height, 278), 60, RGB(0.4, 0.4, 0.4), &(scene.lights), &(scene.numLights));
-    /* squareLight(Point(100, height, 100), 60, RGB(0.2, 0.2, 0.2),  &(scene.lights), &(scene.numLights));
-    squareLight(Point(100, height, 450), 60, RGB(0.2, 0.2, 0.2),  &(scene.lights), &(scene.numLights));
-    squareLight(Point(450, height, 100), 60, RGB(0.2, 0.2, 0.2),  &(scene.lights), &(scene.numLights));
-    squareLight(Point(450, height, 450), 60, RGB(0.2, 0.2, 0.2),  &(scene.lights), &(scene.numLights));
-    */
-
-    // scene details
-    std::cout << "Scene Load: SUCCESS!! :-)\n";
     scene.printSummary();
     std::cout << std::endl;
 
@@ -225,28 +194,106 @@ int main(int argc, const char *argv[])
 
     // create the ambient shader
     RGB background(0.2f, 0.2f, 0.2f);
-    // shd = new WhittedShader(&scene, background);
-    // shd = new DistributedShader(&scene, background);
 
-    // Create an instance of the Window class
-    shd = new PathTracerShader(&scene, background);
+    // Define the shader and renderer type
+    int shaderType;
+    int renderType;
+    getShaderType(&shaderType);
+    getRenderType(&renderType);
+
+    PointLight pl1(RGB(0.65, 0.65, 0.65), Point(288, 508, 282));
+
+    // Define the shader type
+    if (shaderType == PATH_TRACER_SHADER)
+    {
+        bool russianRoulette;
+        getRussianRoulette(&russianRoulette);
+        int numAreaLights;
+        getNumLights(&numAreaLights);
+        shd = new PathTracerShader(&scene, background, russianRoulette);
+        std::vector<AreaLight *> light_square;
+        int height = 547.99;
+        if (numAreaLights == 1)
+        {
+            squareLight(Point(278, height, 278), 60, RGB(0.4, 0.4, 0.4), &(scene.lights), &(scene.numLights));
+        }
+        else if (numAreaLights == 5)
+        {
+            squareLight(Point(278, height, 278), 60, RGB(0.4, 0.4, 0.4), &(scene.lights), &(scene.numLights));
+            squareLight(Point(100, height, 100), 60, RGB(0.2, 0.2, 0.2), &(scene.lights), &(scene.numLights));
+            squareLight(Point(100, height, 450), 60, RGB(0.2, 0.2, 0.2), &(scene.lights), &(scene.numLights));
+            squareLight(Point(450, height, 100), 60, RGB(0.2, 0.2, 0.2), &(scene.lights), &(scene.numLights));
+            squareLight(Point(450, height, 450), 60, RGB(0.2, 0.2, 0.2), &(scene.lights), &(scene.numLights));
+        }
+    }
+    else
+    {
+        if (shaderType == WHITTED_SHADER)
+        {
+            shd = new WhittedShader(&scene, background);
+        }
+        else if (shaderType == DISTRIBUTED_SHADER)
+        {
+            shd = new DistributedShader(&scene, background);
+        }
+
+        scene.lights.push_back(&pl1);
+        scene.numLights++;
+
+        // make a circle of 10 lights around the pl1 light
+        for (int i = 0; i < 2; i++)
+        {
+            float angle = i * 36.0f;
+            float x = 288 + 25 * cos(angle);
+            float z = 282 + 25 * sin(angle);
+            PointLight *pl = new PointLight(RGB(0.05, 0.05, 0.05), Point(x, 508, z));
+            scene.lights.push_back(pl);
+            scene.numLights++;
+        }
+
+        for (int i = 0; i < 2; i++)
+        {
+            float angle = i * 36.0f;
+            float x = 288 + 50 * cos(angle);
+            float z = 282 + 50 * sin(angle);
+            PointLight *pl = new PointLight(RGB(0.10, 0.10, 0.10), Point(x, 508, z));
+            scene.lights.push_back(pl);
+            scene.numLights++;
+        }
+    }
+
+    bool jitter;
+    getJitter(&jitter);
+
     Window window(W, H, filename.c_str());
 
-    // Setup the renderer
-    // StandardRenderer myRender(cam, &scene, img, shd, spp);
-    ProgressiveRenderer renderer(cam, &scene, img, shd, spp, &window);
+    // Define the renderer type
+    if (renderType == STD_RENDERER)
+    {
+        StandardRenderer myRender(cam, &scene, img, shd, spp, jitter);
+        start = clock();
+        myRender.Render();
+        end = clock();
+        cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+        // save the image to a file
+        img->Save(filename + "_rendered.ppm");
 
-    start = clock();
-    // myRender.Render();
-    renderer.render();
-    end = clock();
-    cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+        // Update the window with the final image
+        window.render(img->getData());
+    }
+    else if (renderType == PROGR_RENDERER)
+    {
+        ProgressiveRenderer renderer(cam, &scene, img, shd, spp, &window, jitter);
+        start = clock();
+        renderer.render();
+        end = clock();
+        cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+        // save the image to a file
+        img->Save(filename + "_rendered.ppm");
 
-    // save the image to a file
-    img->Save(filename + "_rendered.ppm");
-
-    // Update the window with the final image
-    // window.render(img->getData());
+        // Update the window with the final image
+        window.render(img->getCharData());
+    }
 
     // print rendering time
     fprintf(stdout, "Rendering time = %.3lf secs\n\n", cpu_time_used);

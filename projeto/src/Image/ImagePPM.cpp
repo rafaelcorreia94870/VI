@@ -13,8 +13,7 @@ void ImagePPM::ToneMap()
 {
     imageToSave = new PPM_pixel[W * H];
 
-    // loop over each pixel in the image, clamp and convert to byte format
-    for (int j = 0; j < H; j++)
+    for (int j = 0; j < H; ++j)
     {
         for (int i = 0; i < W; ++i)
         {
@@ -27,29 +26,28 @@ void ImagePPM::ToneMap()
 
 bool ImagePPM::Save(std::string filename)
 {
-
-    // convert from float to {0,1,..., 255}
     ToneMap();
 
-    // write imageToSave to file
-    if (this->W == 0 || this->H == 0)
+    if (W == 0 || H == 0)
     {
         fprintf(stderr, "Can't save an empty image\n");
         return false;
     }
+
     std::ofstream ofs;
     try
     {
-        ofs.open(filename, std::ios::binary); // need to spec. binary mode for Windows users
+        ofs.open(filename, std::ios::binary);
         if (ofs.fail())
             throw("Can't open output file");
+
         ofs << "P6\n"
-            << this->W << " " << this->H << "\n255\n";
-        unsigned char r, g, b;
-        // loop over each pixel in the image, clamp and convert to byte format
-        for (int i = 0; i < this->W * this->H; i++)
+            << W << " " << H << "\n255\n";
+        for (int i = 0; i < W * H; ++i)
         {
-            ofs << static_cast<unsigned char>(this->imageToSave[i].val[0]) << static_cast<unsigned char>(this->imageToSave[i].val[1]) << static_cast<unsigned char>(this->imageToSave[i].val[2]);
+            ofs << static_cast<unsigned char>(imageToSave[i].val[0])
+                << static_cast<unsigned char>(imageToSave[i].val[1])
+                << static_cast<unsigned char>(imageToSave[i].val[2]);
         }
         ofs.close();
     }
@@ -57,10 +55,8 @@ bool ImagePPM::Save(std::string filename)
     {
         fprintf(stderr, "%s\n", err);
         ofs.close();
+        return false;
     }
-
-    // Details and code on PPM files available at:
-    // https://www.scratchapixel.com/lessons/digital-imaging/simple-image-manipulations/reading-writing-images.html
 
     return true;
 }

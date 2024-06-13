@@ -1,4 +1,6 @@
 #include "ProgressiveRenderer.hpp"
+#include "../Image/ImagePPM.hpp"
+
 #include <iostream>
 #include <sstream>
 #include <iomanip>
@@ -8,12 +10,12 @@ void ProgressiveRenderer::render()
     std::cout << "Progressive rendering started." << std::endl;
     cam->getResolution(&width, &height);
 
-    // Initialize the accumulation buffer with zeros
     accumulationBuffer.resize(width * height * 3, 0.0f);
 
-    // Loop for progressive rendering using spp samples per iteration
     int ss = 0;
-    while (window->isRunning())
+    bool done = false;
+
+    while (window->isRunning() && !done)
     {
         if (!window->isPaused())
         {
@@ -21,38 +23,43 @@ void ProgressiveRenderer::render()
             std::cout << "Rendering sample " << ss << std::endl;
             renderFrame(width, height);
 
-            // Save intermediate image
-            /* std::ostringstream filename;
-            filename << "progressive_output_" << std::setw(4) << std::setfill('0') << ss << ".ppm";
-            img->Save(filename.str());
-            std::cout << "Frame " << ss << " completed." << std::endl; */
-
-            // Update the window with the intermediate image
             const unsigned char *imageData = img->getCharData();
             window->update(imageData);
+
+            if (ss % 256 == 0)
+            {
+                // Save intermediate image for debugging
+                std::ostringstream filename;
+                filename << "intermediate_imgs/progressive_output_" << std::setw(4) << std::setfill('0') << ss << ".ppm";
+                std::cout << "Saving intermediate image to " << filename.str() << std::endl;
+
+                ImagePPM *imgPPM = dynamic_cast<ImagePPM *>(img);
+                if (imgPPM && !imgPPM->Save(filename.str()))
+                {
+                    std::cerr << "Failed to save image to " << filename.str() << std::endl;
+                }
+            }
         }
 
-        // Poll events regardless of pause state
         window->pollEvents();
+
+        if (spp > 0)
+        {
+            done = ss >= spp;
+        }
     }
 
-    // Normalize the accumulated colors by the number of samples per pixel
-    img->normalize(ss);
-
-    // Keep the window open until the user closes it
+    // Normalize and save the final image
+    img->Save("final_output.ppm");
     window->waitUntilClose();
 }
 
 void ProgressiveRenderer::renderFrame(int width, int height)
 {
-    const bool jitter = true;
-
-    // Perform path tracing for one frame
     for (int y = 0; y < height; ++y)
     {
         for (int x = 0; x < width; ++x)
         {
-            // Create a ray for the current pixel
             Ray primary;
             bool success = false;
             if (jitter)
@@ -73,23 +80,19 @@ void ProgressiveRenderer::renderFrame(int width, int height)
                 continue;
             }
 
-            // Trace the ray and get the intersection
             Intersection isect;
             bool intersected = scene->trace(primary, &isect);
 
-            // Shade the intersection point
             RGB color = shd->shade(intersected, isect, 0);
 
-            // Accumulate the color
             accumulationBuffer[(y * width + x) * 3 + 0] += color.R;
             accumulationBuffer[(y * width + x) * 3 + 1] += color.G;
             accumulationBuffer[(y * width + x) * 3 + 2] += color.B;
 
-            // Set the accumulated color to the image for display purposes
             RGB accumulatedColor(
-                accumulationBuffer[(y * width + x) * 3 + 0] / frameCount,
-                accumulationBuffer[(y * width + x) * 3 + 1] / frameCount,
-                accumulationBuffer[(y * width + x) * 3 + 2] / frameCount);
+                accumulationBuffer[(y * width + x) * 3 + 0] / (frameCount + 1),
+                accumulationBuffer[(y * width + x) * 3 + 1] / (frameCount + 1),
+                accumulationBuffer[(y * width + x) * 3 + 2] / (frameCount + 1));
 
             if (!img->set(x, y, accumulatedColor))
             {

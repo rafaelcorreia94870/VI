@@ -138,20 +138,22 @@ void Window::render(const unsigned char *imageData)
     glEnable(GL_TEXTURE_2D);
 
     // Render the updated texture
-    glClear(GL_COLOR_BUFFER_BIT);
-    glBegin(GL_QUADS);
-    glTexCoord2f(0, 1);
-    glVertex2f(0, 0);
-    glTexCoord2f(1, 1);
-    glVertex2f(width, 0);
-    glTexCoord2f(1, 0);
-    glVertex2f(width, height);
-    glTexCoord2f(0, 0);
-    glVertex2f(0, height);
-    glEnd();
-    glfwSwapBuffers(window);
-    glfwPollEvents();
-
+    while (!glfwWindowShouldClose(window))
+    {
+        glClear(GL_COLOR_BUFFER_BIT);
+        glBegin(GL_QUADS);
+        glTexCoord2f(0, 1);
+        glVertex2f(0, 0);
+        glTexCoord2f(1, 1);
+        glVertex2f(width, 0);
+        glTexCoord2f(1, 0);
+        glVertex2f(width, height);
+        glTexCoord2f(0, 0);
+        glVertex2f(0, height);
+        glEnd();
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
     glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture
 }
 

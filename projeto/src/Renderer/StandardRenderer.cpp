@@ -11,7 +11,6 @@
 void StandardRenderer::Render()
 {
     int W = 0, H = 0; // resolution não percebo se e suposto tar a 0 ou meter aqui o valor que ta na main
-    const bool jitter = true;
 
     // get resolution from the camera
     cam->getResolution(&W, &H);
@@ -53,7 +52,6 @@ void StandardRenderer::Render()
 
                 color += this_color;
 
-                // write the result into the image frame buffer (image)
             }
 
             color = color / float(spp);

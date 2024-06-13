@@ -33,7 +33,7 @@ public:
     {
         memset((void *)imagePlane, 0, W * H * sizeof(RGB)); // set image plane to 0
     }
-    ~Image()
+    virtual     ~Image()
     {
         if (imagePlane != nullptr)
             delete[] imagePlane;
@@ -56,18 +56,6 @@ public:
     }
     const RGB *getData() const { return imagePlane; }
     bool Save(std::string filename) { return true; }
-
-    // Normalize the image by dividing each pixel by the number of samples
-    void normalize(int samplesPerPixel)
-    {
-        for (int i = 0; i < W * H; ++i)
-        {
-            if (samplesPerPixel > 0)
-            {
-                imagePlane[i] /= samplesPerPixel;
-            }
-        }
-    }
 
     // Convert image data to unsigned char format for OpenGL
     const unsigned char *getCharData()

@@ -6,22 +6,26 @@
 #include <sstream>
 
 #ifdef _WIN32
-    #include "../utils/vector.hpp"
+#include "../utils/vector.hpp"
 #elif __unix__ || __unix || __linux__ || __APPLE__
-    #include "vector.hpp"
+#include "vector.hpp"
 #else
-    #error "Unsupported operating system"
+#error "Unsupported operating system"
 #endif
 
-
-void getCustomEyePoint(Point* Eye);
-void getCustomAtPoint(Point* At);
-void getCustomFov(float* fovW, int* W, int* H);
-void getCustomFilename(std::string* userInput);
-void getCustomSPP(int* spp);
+void getCustomEyePoint(Point *Eye);
+void getCustomAtPoint(Point *At);
+void getCustomFov(float *fovW, int *W, int *H);
+void getCustomFilename(std::string *userInput);
+void getCustomSPP(int *spp);
 
 void getCustomValues(Point *Eye, Point *At, float *fovW, int *W, int *H, int *spp, std::string *filename);
 void defaultCornellBox(Point *Eye, Point *At, float *fovW, int *W, int *H, int *spp, std::string *filename);
 void defaultTriangle(Point *Eye, Point *At, float *fovW, int *W, int *H, int *spp, std::string *filename);
 
+void getShaderType(int *shaderType);
+void getRenderType(int *renderType);
+void getNumLights(int *numLights);
+void getJitter(bool *jitter);
+void getRussianRoulette(bool *russianRoulette);
 #endif // CUSTOM_VALUES_HPP

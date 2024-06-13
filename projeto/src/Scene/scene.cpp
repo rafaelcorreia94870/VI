@@ -130,12 +130,12 @@ bool Scene::Load(const std::string &fname)
         m->numFaces = shapes[s].mesh.num_face_vertices.size();
 
         // Loop over faces(polygon)
-        std::cout << "\n----- [" << shapes[s].name << "] -----\n";
+        //std::cout << "\n----- [" << shapes[s].name << "] -----\n";
         BB *bb = new BB();
         for (size_t f = 0; f < m->numFaces; f++)
         {
             size_t fv = size_t(shapes[s].mesh.num_face_vertices[f]);
-            std::cout << "\nTriangle " << f + 1 << "/" << m->numFaces << "\n";
+            //std::cout << "\nTriangle " << f + 1 << "/" << m->numFaces << "\n";
 
             Face *face = new Face;
             std::vector<Point> face_vertices; // Accumulator for geometriNnormal (face normal) calculations
@@ -186,8 +186,8 @@ bool Scene::Load(const std::string &fname)
                 }
 
                 // Print existing vertices
-                std::cout << "  v[" << idx.vertex_index << "]: ("
-                          << vert.X << ", " << vert.Y << ", " << vert.Z << ")\n";
+                /* std::cout << "  v[" << idx.vertex_index << "]: ("
+                          << vert.X << ", " << vert.Y << ", " << vert.Z << ")\n"; */
                 face_vertices.push_back(vert);
                 bb->update(vert);
 
@@ -244,7 +244,7 @@ bool Scene::Load(const std::string &fname)
                 m->normals.push_back(face->geoNormal);
                 m->numNormals++;
 
-                std::cout << "      n[" << f << "]: (" << face->geoNormal.X << ", " << face->geoNormal.Y << ", " << face->geoNormal.Z << ")\n";
+                // std::cout << "      n[" << f << "]: (" << face->geoNormal.X << ", " << face->geoNormal.Y << ", " << face->geoNormal.Z << ")\n";
             }
 
             face_vertices.clear();
@@ -258,20 +258,20 @@ bool Scene::Load(const std::string &fname)
 
         // Define the primitive's Geometry as the mesh
         m->bb = *bb;
-        std::cout << " BB max:\n\t(" << m->bb.max.X << ", " << m->bb.max.Y << ", " << m->bb.max.Z << ")\n";
-        std::cout << " BB min:\n\t(" << m->bb.min.X << ", " << m->bb.min.Y << ", " << m->bb.min.Z << ")\n";
+        /* std::cout << " BB max:\n\t(" << m->bb.max.X << ", " << m->bb.max.Y << ", " << m->bb.max.Z << ")\n";
+        std::cout << " BB min:\n\t(" << m->bb.min.X << ", " << m->bb.min.Y << ", " << m->bb.min.Z << ")\n"; */
 
         p->g = m;
         prims.push_back(p);
 
         // Define the mesh material (assuming all faces have the same material) as the first face material
         p->material_ndx = shapes[s].mesh.material_ids[0];
-        std::cout << "\nMaterial: " << p->material_ndx << "\n\n";
+        //std::cout << "\nMaterial: " << p->material_ndx << "\n\n";
     }
 
-    std::cout << "NÚMERO DE VÉRTICES UNICOS: " << unicos << "\n";
+    /* std::cout << "NÚMERO DE VÉRTICES UNICOS: " << unicos << "\n";
     std::cout << "NÚMERO DE VÉRTICES REPETIDOS: " << repetidos << "\n\n";
-    std::cout << "---------------------------------------------------\n\n";
+    std::cout << "---------------------------------------------------\n\n"; */
 
     // Loop over materials and add them to the BRDFs vector
     for (size_t i = 0; i < materials.size(); i++)
@@ -304,12 +304,12 @@ bool Scene::Load(const std::string &fname)
         material->Ks = Ks;
         material->Ns = Ns;
 
-        if (i == 6)
+        /* if (i == 6)
         {
             std::cout << "Ka: (" << Ka.R << ", " << Ka.G << ", " << Ka.B << ")\n";
             std::cout << "Kd: (" << Kd.R << ", " << Kd.G << ", " << Kd.B << ")\n";
             std::cout << "Ks: (" << Ks.R << ", " << Ks.G << ", " << Ks.B << ")\n";
-        }
+        } */
 
         BRDFs.push_back(material);
     }

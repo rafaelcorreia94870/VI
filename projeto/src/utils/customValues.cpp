@@ -138,3 +138,141 @@ void getCustomSPP(int *spp)
         *spp = dspp;
     }
 }
+
+void getShaderType(int *shaderType)
+{
+    std::cout << "Enter the shader type (default: PathTracing)\n  W: Whitted \n  D: Distributed\n  P: PathTracing\n  > ";
+    std::string input;
+    std::getline(std::cin, input);
+    if (!input.empty())
+    {
+        if (input == "W")
+        {
+            *shaderType = 0;
+        }
+        else if (input == "D")
+        {
+            *shaderType = 1;
+        }
+        else if (input == "P")
+        {
+            *shaderType = 2;
+        }
+        else
+        {
+            std::cout << "Invalid input. Using default shader type (Path Tracing)" << std::endl;
+            *shaderType = 2;
+        }
+    }
+    else
+    {
+        *shaderType = 2;
+    }
+}
+void getRenderType(int *renderType)
+{
+    std::cout << "Enter the render type (default: Progressive)\n  S: Standard \n  P: Progressive\n  > ";
+    std::string input;
+    std::getline(std::cin, input);
+    if (!input.empty())
+    {
+        if (input == "S")
+        {
+            *renderType = 0;
+        }
+        else if (input == "P")
+        {
+            *renderType = 1;
+        }
+        else
+        {
+            std::cout << "Invalid input. Using default render type (Progressive)" << std::endl;
+            *renderType = 1;
+        }
+    }
+    else
+    {
+        *renderType = 1;
+    }
+}
+
+void getNumLights(int *numLights)
+{
+    std::cout << "Enter the number of lights (1: 1 light, 5: 5 lights): ";
+    std::string input;
+    std::getline(std::cin, input);
+    if (!input.empty())
+    {
+        if (input == "1")
+        {
+            *numLights = 1;
+        }
+        else if (input == "5")
+        {
+            *numLights = 5;
+        }
+        else
+        {
+            std::cout << "Invalid input. Using default number of lights (1 light)" << std::endl;
+            *numLights = 1;
+        }
+    }
+    else
+    {
+        *numLights = 1;
+    }
+}
+
+void getJitter(bool *jitter)
+{
+    std::cout << "Enable jitter? (y/n): ";
+    std::string input;
+    std::getline(std::cin, input);
+    if (!input.empty())
+    {
+        if (input == "y")
+        {
+            *jitter = true;
+        }
+        else if (input == "n")
+        {
+            *jitter = false;
+        }
+        else
+        {
+            std::cout << "Invalid input. Using default value: jitter" << std::endl;
+            *jitter = true;
+        }
+    }
+    else
+    {
+        *jitter = true;
+    }
+}
+
+void getRussianRoulette(bool *russianRoulette)
+{
+    std::cout << "Enable Russian Roulette? (y/n): ";
+    std::string input;
+    std::getline(std::cin, input);
+    if (!input.empty())
+    {
+        if (input == "y")
+        {
+            *russianRoulette = true;
+        }
+        else if (input == "n")
+        {
+            *russianRoulette = false;
+        }
+        else
+        {
+            std::cout << "Invalid input. Using default value: Russian Roulette" << std::endl;
+            *russianRoulette = true;
+        }
+    }
+    else
+    {
+        *russianRoulette = true;
+    }
+}
