@@ -26,7 +26,7 @@ void ProgressiveRenderer::render()
             const unsigned char *imageData = img->getCharData();
             window->update(imageData);
 
-            if (ss % 256 == 0)
+            if (ss % 256 == 0 || ss == 1)
             {
                 // Save intermediate image for debugging
                 std::ostringstream filename;
@@ -49,6 +49,7 @@ void ProgressiveRenderer::render()
         }
     }
 
+    std::cout << "Progressive rendering finished." << std::endl;
     // Normalize and save the final image
     img->Save("final_output.ppm");
     window->waitUntilClose();
